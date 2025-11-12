@@ -9,10 +9,10 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Usuarios master predefinidos - VERIFICAR COMILLAS Y COMAS
-  const MASTER_USERS = {
-    'billy': 'billy',
-    'yurkel': 'yurkel'
+  // SOLUCIÓN: Agregar coma entre propiedades
+  const MASTER_USERS = {    
+    'yurkel': 'yurkel',  // ← COMA AGREGADA AQUÍ
+    'noel': 'noel'
   };
 
   const handleSubmit = (e) => {
@@ -22,17 +22,21 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
 
     // Simular carga
     setTimeout(() => {
-      if (MASTER_USERS[formData.username] && MASTER_USERS[formData.username] === formData.password) {
+      // SOLUCIÓN: Convertir a minúsculas para evitar errores de case
+      const usernameLower = formData.username.toLowerCase();
+      const passwordLower = formData.password.toLowerCase();
+      
+      if (MASTER_USERS[usernameLower] && MASTER_USERS[usernameLower] === passwordLower) {
         const userData = {
-          uid: `master-${formData.username}`,
-          email: `${formData.username}@factibilidadpro.com`,
-          displayName: `${formData.username} Master`,
+          uid: `master-${usernameLower}`,
+          email: `${usernameLower}@gmail.com`,
+          displayName: `${usernameLower} Master`,
           isMaster: true,
           role: 'master'
         };
         onLogin(userData);
       } else {
-        setError('Credenciales master incorrectas. Usa: billy/billy o yurkel/yurkel');
+        setError('Credenciales master incorrectas. Verifique si las mayúsculas están activas');
       }
       setIsLoading(false);
     }, 1000);
@@ -77,9 +81,10 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              placeholder="billy o yurkel"
+              placeholder="yurkel"
               required
               disabled={isLoading}
+              autoComplete="off" // Cambiado a "off" para mejor prevención
             />
           </div>
           
@@ -90,9 +95,10 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="mismo que el usuario"
+              placeholder="Contraseña"
               required
               disabled={isLoading}
+              autoComplete="new-password"
             />
           </div>
           
@@ -125,10 +131,10 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
             <button 
               type="button"
               className="user-btn"
-              onClick={() => autoFillCredentials('billy')}
+              onClick={() => autoFillCredentials('noel')}
               disabled={isLoading}
             >
-              Billy (Admin)
+              Noel (Admin)
             </button>
             <button 
               type="button"
@@ -139,12 +145,11 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
               Yurkel (Admin)
             </button>
           </div>
-          <div className="demo-info">
-            <p><strong>Contraseña:</strong> mismo que el usuario</p>
+          <div className="demo-info">            
             <p><strong>Permisos:</strong> Acceso completo al sistema</p>
           </div>
         </div>
       </div>
     </div>
   );
-}
+} 
