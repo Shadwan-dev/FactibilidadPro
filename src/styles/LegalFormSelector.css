@@ -1,0 +1,272 @@
+/* src/styles/LegalFormSelector.css */
+
+/* Contenedor principal del selector */
+.legal-form-selector {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Header del selector */
+  .legal-form-selector__header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .legal-form-selector__header h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .legal-form-selector__header p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  /* Contenedor de opciones */
+  .legal-form-selector__options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  /* Opciones individuales */
+  .legal-form-selector__option {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e1e5e9;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .legal-form-selector__option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Header de cada opción */
+  .legal-form-selector__option-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  
+  .legal-form-selector__option-header h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .legal-form-selector__badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: #9b59b6;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  /* Contenido de cada opción */
+  .legal-form-selector__option-content {
+    padding: 1.5rem;
+  }
+  
+  .legal-form-selector__option-content p {
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+    color: #34495e;
+  }
+  
+  .legal-form-selector__option-content ul {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.2rem;
+  }
+  
+  .legal-form-selector__option-content li {
+    margin-bottom: 0.5rem;
+    color: #5a6c7d;
+    line-height: 1.4;
+  }
+  
+  /* Botones */
+  .legal-form-selector__btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+  }
+  
+  .legal-form-selector__btn--primary {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    color: white;
+  }
+  
+  .legal-form-selector__btn--primary:hover {
+    background: linear-gradient(135deg, #8e44ad 0%, #7d3c98 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+  }
+  
+  .legal-form-selector__btn--secondary {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+  }
+  
+  .legal-form-selector__btn--secondary:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #21618c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  }
+  
+  /* Sección de ayuda */
+  .legal-form-selector__help {
+    background: #f3e8fd;
+    border: 1px solid #d6c2f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .legal-form-selector__help h5 {
+    margin: 0 0 1rem 0;
+    color: #6f42c1;
+    font-size: 1.1rem;
+  }
+  
+  .legal-form-selector__help p {
+    margin: 0;
+    color: #5a4fcf;
+    line-height: 1.5;
+  }
+  
+  /* Contenedor del formulario seleccionado */
+  .legal-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .legal-form-container__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e1e5e9;
+  }
+  
+  .legal-form-container__back-btn {
+    padding: 0.7rem 1.2rem;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  
+  .legal-form-container__back-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+  }
+  
+  .legal-form-container__mode {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .legal-form-selector {
+      padding: 1rem;
+    }
+    
+    .legal-form-selector__options {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .legal-form-selector__header {
+      padding: 1.5rem;
+    }
+    
+    .legal-form-selector__header h3 {
+      font-size: 1.4rem;
+    }
+    
+    .legal-form-selector__header p {
+      font-size: 1rem;
+    }
+    
+    .legal-form-container__header {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+    
+    .legal-form-container {
+      padding: 1rem;
+    }
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .legal-form-selector,
+  .legal-form-container {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Estados de carga */
+  .legal-form-selector__btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  /* Efectos de foco para accesibilidad */
+  .legal-form-selector__btn:focus {
+    outline: 2px solid #9b59b6;
+    outline-offset: 2px;
+  }
+  
+  .legal-form-container__back-btn:focus {
+    outline: 2px solid #9b59b6;
+    outline-offset: 2px;
+  }
