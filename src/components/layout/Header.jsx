@@ -27,7 +27,7 @@ export function Header({ username, onLogout }) {
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <h2>📊 CUM FactibilidadPro</h2>
+          <h2>📊 FactibilidadPro</h2>
         </div>
         
         <nav className="navigation">
