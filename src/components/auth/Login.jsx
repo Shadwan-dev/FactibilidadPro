@@ -13,6 +13,12 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
+    console.log('🔧 Debug Firebase Config:', {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      // Verifica si son undefined
+    });
     e.preventDefault();
     setError('');
     setIsLoading(true);

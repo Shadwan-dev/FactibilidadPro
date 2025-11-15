@@ -1,17 +1,16 @@
-// src/firebase/config.js (CONFIGURACIÓN CORRECTA)
+// src/firebase/config.js (CONFIGURACIÓN CON VARIABLES DE ENTORNO)
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// ✅ ESTA ES TU CONFIGURACIÓN REAL - ÚSALA ASÍ
+// ✅ CONFIGURACIÓN CON VARIABLES DE ENTORNO
 const firebaseConfig = {
-  apiKey: "AIzaSyAWH5Ex4XjleIZdptlxHH7BU53qPzd8U1A",
-  authDomain: "cum-factibilidadpro.firebaseapp.com",
-  projectId: "cum-factibilidadpro",
-  storageBucket: "cum-factibilidadpro.firebasestorage.app",
-  messagingSenderId: "279112351872",
-  appId: "1:279112351872:web:05a7a87990889470106665",
-  measurementId: "G-4RV4MYP5TB"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase

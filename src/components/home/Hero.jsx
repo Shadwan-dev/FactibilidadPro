@@ -7,12 +7,11 @@ export function Hero() {
     <section className="hero">
       <div className="hero-content">
         <h1 className="hero-title">
-          Toma Decisiones Inteligentes con 
-          <span className="highlight"> Nuestro Software de Factibilidad</span>
+          Un Balance Perfecto entre lo 
+          <span className="highlight"> Profesional y la Mejor Guía</span>
         </h1>
         <p className="hero-description">
-          Analiza la viabilidad de tus proyectos de manera rápida, precisa y profesional. 
-          Evaluación financiera, técnica, de mercado y legal en una sola plataforma.
+        Solo una Idea es suficiente para iniciar tu empresa, acercate a tu mejor mentor para tu negocio.
         </p>
         <div className="hero-buttons">
           <Link to="/login" className="btn btn-primary">

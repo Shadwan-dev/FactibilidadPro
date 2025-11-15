@@ -1,0 +1,182 @@
+/* src/styles/StepByStepWizard.css */
+.step-by-step-wizard {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .wizard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .wizard-back-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .wizard-progress {
+    margin-bottom: 3rem;
+  }
+  
+  .progress-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.5s ease;
+  }
+  
+  .progress-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  .progress-step {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .progress-step.active {
+    background: #e3f2fd;
+    border: 2px solid #2196f3;
+  }
+  
+  .progress-step.completed {
+    background: #e8f5e8;
+    border: 1px solid #4caf50;
+  }
+  
+  .step-number {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: #6c757d;
+    color: white;
+    border-radius: 50%;
+    margin: 0 auto 0.5rem;
+    line-height: 30px;
+  }
+  
+  .progress-step.active .step-number {
+    background: #2196f3;
+  }
+  
+  .progress-step.completed .step-number {
+    background: #4caf50;
+  }
+  
+  .step-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .wizard-content {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+  
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .step-icon {
+    font-size: 2.5rem;
+  }
+  
+  .step-content h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  .step-guided-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .guided-question label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .guided-question input,
+  .guided-question textarea,
+  .guided-question select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .wizard-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  
+  .wizard-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .wizard-btn--primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  
+  .wizard-btn--secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .wizard-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .step-indicator {
+    font-weight: 500;
+    color: #6c757d;
+  }
+  
+  .wizard-tips {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #856404;
+  }
