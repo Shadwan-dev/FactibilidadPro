@@ -1,0 +1,260 @@
+/* src/styles/components/OptimizationModal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+    backdrop-filter: blur(5px);
+  }
+  
+  .optimization-modal {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+  }
+  
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  .modal-header {
+    padding: 2rem 2rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+  
+  .recommendations-list {
+    padding: 0 2rem;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  
+  .recommendation-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+  }
+  
+  .recommendation-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-left-color: #764ba2;
+  }
+  
+  .rec-area {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .recommendation-card h4 {
+    margin: 0 0 0.8rem 0;
+    color: #2d3748;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .recommendation-card p {
+    margin: 0 0 1rem 0;
+    color: #4a5568;
+    line-height: 1.5;
+  }
+  
+  .rec-impact {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background: #e6fffa;
+    border: 1px solid #b2f5ea;
+    border-radius: 8px;
+    color: #234e52;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .rec-impact::before {
+    content: '📈';
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  /* Indicadores de severidad */
+  .recommendation-card[data-severity="high"] {
+    border-left-color: #e53e3e;
+    background: #fff5f5;
+  }
+  
+  .recommendation-card[data-severity="high"] .rec-area {
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  }
+  
+  .recommendation-card[data-severity="medium"] {
+    border-left-color: #ed8936;
+    background: #fffaf0;
+  }
+  
+  .recommendation-card[data-severity="medium"] .rec-area {
+    background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+  }
+  
+  .modal-actions {
+    padding: 1.5rem 2rem 2rem;
+    background: #f7fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+  }
+  
+  .btn-secondary {
+    background: #718096;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #4a5568;
+    transform: translateY(-2px);
+  }
+  
+  /* Scrollbar personalizado */
+  .recommendations-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .recommendations-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  
+  .recommendations-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+  }
+  
+  .recommendations-list::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .optimization-modal {
+      width: 95%;
+      margin: 1rem;
+    }
+    
+    .modal-header {
+      padding: 1.5rem 1.5rem 1rem;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.3rem;
+    }
+    
+    .recommendations-list {
+      padding: 0 1.5rem;
+      max-height: 40vh;
+    }
+    
+    .recommendation-card {
+      padding: 1.2rem;
+    }
+    
+    .modal-actions {
+      padding: 1.5rem;
+      flex-direction: column;
+    }
+    
+    .btn-primary, .btn-secondary {
+      width: 100%;
+    }
+  }
+  
+  /* Efectos de foco para accesibilidad */
+  .btn-primary:focus, 
+  .btn-secondary:focus,
+  .close-btn:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+  }

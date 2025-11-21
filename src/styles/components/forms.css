@@ -1,0 +1,125 @@
+/* src/styles/components/forms.css */
+/* Contenedor base de formularios */
+.form-container {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  }
+  
+  .form-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+  }
+  
+  /* Header de formularios */
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .form-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  /* Grid de inputs */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+  
+  /* Grupos de input unificados */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--space-md);
+  }
+  
+  .input-label {
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    order: 1;
+  }
+  
+  .input-field {
+    padding: var(--space-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--background-color);
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
+    transition: all 0.3s ease;
+    order: 2;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  
+  .input-help {
+    margin-top: var(--space-sm);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    order: 3;
+  }
+  
+  /* Selects mejorados */
+  .input-field[type="select"] {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+  }
+  
+  /* Estados de validación */
+  .input-field:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--danger-color);
+  }
+  
+  .input-field:valid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--success-color);
+  }
+  
+  /* Placeholders */
+  .input-field::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+  
+  /* Específicos para Financial Form */
+  .financial-form .input-group:nth-child(1) .form-title::before { content: '💰'; }
+  .technical-form .form-title::before { content: '🔧'; }
+  .market-form .form-title::before { content: '📈'; }
+  .legal-form .form-title::before { content: '⚖️'; }

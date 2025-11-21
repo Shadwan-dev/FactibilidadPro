@@ -1,0 +1,630 @@
+/* src/styles/pages/dashboard.css */
+.dashboard {
+    min-height: 100vh;
+    background: var(--background-color);
+  }
+  
+  .dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+  }
+  
+  /* Header del Dashboard */
+  .dashboard-header {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg); /* Reducido para más compacto */
+    border: 1px solid var(--border-color);
+    text-align: center;
+  }
+  .dashboard-header.compact {
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+}  
+  .welcome-section {
+    margin-bottom: var(--space-md);
+  }
+  
+  .dashboard-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  
+  .user-name {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .master-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+  }
+  
+  .dashboard-subtitle {
+    color: var(--text-secondary);
+    font-size: var(--font-size-md);
+    line-height: 1.4;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .header-save-status {
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-sm);
+}
+  
+  /* Layout Principal */
+  .main-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+/* Forms Column - MODIFICADO */
+.forms-column {
+    position: static;
+    max-height: none;
+    height: auto;
+}
+
+  
+  .results-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  /* Secciones */
+  .forms-section {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg); /* Reducido de xl a lg */
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--space-lg);
+}
+  .results-section {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    border: 1px solid var(--border-color);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg); /* Reducido de xl a lg */
+    padding-bottom: var(--space-md); /* Reducido de lg a md */
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+  
+  .section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  
+  /* Botones de Acción */
+  .action-buttons {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+  
+  /* Estados de Guardado */
+  .save-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-left: var(--space-md);
+  }
+  
+  .save-status--error {
+    color: var(--danger-color);
+  }
+  
+  /* Badges de Estado */
+  .status-badge {
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .status-badge--success {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  
+  .last-updated {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+  
+  /* Paneles de Admin */
+  .details-panel,
+  .validation-panel {
+    background: var(--background-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    border: 1px solid var(--border-color);
+  }
+  
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .panel-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  
+  /* Estado de Espera */  
+.waiting-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px; /* Reducido de 400px */
+    margin-top: var(--space-xl);
+    order: 2; /* Para asegurar que vaya al final */
+}
+
+.waiting-card {  
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl); /* Reducido de 2xl a xl */
+    text-align: center;
+    border: 1px solid var(--border-color);
+    max-width: 500px;
+    width: 100%;
+
+}
+
+.waiting-icon {
+  font-size: 3rem; /* Reducido de 4rem */
+  margin-bottom: var(--space-md); /* Reducido de lg a md */
+}
+
+.waiting-title {
+  font-size: var(--font-size-xl) !important;
+  font-weight: 600 !important;
+  margin-bottom: var(--space-md) !important;
+  color: var(--text-primary) !important;
+}
+
+.waiting-description,
+.waiting-info {
+  color: var(--text-secondary) !important;
+  margin-bottom: var(--space-md) !important;
+  line-height: 1.5 !important;
+}
+
+.progress-container {
+  margin: var(--space-xl) 0 !important;
+}
+
+.progress-bar {
+  width: 100% !important;
+  height: 8px !important;
+  background: var(--border-color) !important;
+  border-radius: var(--radius-sm) !important;
+  margin-bottom: var(--space-md) !important;
+  overflow: hidden !important;
+}
+
+.progress-fill {
+  width: 60% !important;
+  height: 100% !important;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color)) !important;
+  border-radius: var(--radius-sm) !important;
+  animation: pulse 2s infinite !important;
+}
+
+.progress-status {
+  color: var(--text-secondary) !important;
+  font-size: var(--font-size-sm) !important;
+}
+
+.waiting-note {
+  margin-top: var(--space-lg) !important;
+  padding-top: var(--space-lg) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.waiting-note p {
+  color: var(--text-secondary) !important;
+  font-size: var(--font-size-sm) !important;
+  margin: 0 !important;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+  
+  /* Estado Vacío */
+  .empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    text-align: center;
+  }
+  
+  .empty-content {
+    max-width: 500px;
+  }
+  
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .empty-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+  }
+  
+  .empty-description {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+    line-height: 1.5;
+  }
+  
+  .projects-count {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+  
+  .project-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  
+  /* Loading */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    gap: var(--space-lg);
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Error */
+  .error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--space-xl);
+  }
+  
+  .error-content {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .error-content h2 {
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+  }
+  
+  .error-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+  }
+  
+  /* Animaciones */
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Scrollbar personalizado */
+  .forms-column::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .forms-column::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 3px;
+  }
+  
+  .forms-column::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+  }
+  
+  .forms-column::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+  }
+  
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .main-layout {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    
+    .forms-column {
+      position: static;
+      max-height: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-container {
+      padding: var(--space-md);
+    }
+    
+    .dashboard-header {
+      flex-direction: column;
+      text-align: center;
+      padding: var(--space-lg);
+    }
+    
+    .dashboard-title {
+      font-size: var(--font-size-2xl);
+      justify-content: center;
+    }
+    
+    .section-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-md);
+    }
+    
+    .action-buttons {
+      justify-content: center;
+    }
+    
+    .forms-section,
+    .results-section {
+      padding: var(--space-lg);
+    }
+    
+    .waiting-card {
+      padding: var(--space-xl);
+      margin: var(--space-md);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dashboard-title {
+      font-size: var(--font-size-xl);
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn--sm {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  /* Sección de Project Manager separada */
+.project-manager-section {
+  background: var(--surface-color);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  border: 1px solid var(--border-color);
+  margin-bottom: var(--space-xl);
+}
+
+.project-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.project-manager-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Responsive mejorado */
+@media (max-width: 768px) {
+  .dashboard-header {
+      padding: var(--space-lg);
+      text-align: left;
+  }
+  
+  .dashboard-title {
+      justify-content: flex-start;
+      font-size: var(--font-size-xl);
+  }
+  
+  .project-manager-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-md);
+  }
+}
+/* Info del proyecto actual */
+.current-project-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.project-name {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Badges de estado mejorados */
+.status-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge--draft {
+  background: rgba(107, 114, 128, 0.2);
+  color: #6b7280;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.status-badge--pending {
+  background: rgba(245, 158, 11, 0.2);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge--analyzed {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--success-color);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+/* Cuando el proyecto está analizado, la columna de resultados ocupa todo el ancho */
+.results-column.full-width {
+  grid-column: 1 / -1; /* Ocupa todas las columnas */
+}
+
+/* Mensaje de análisis completado */
+.analysis-complete-message {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.analysis-complete-message .completion-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+.analysis-complete-message h4 {
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
+.analysis-complete-message p {
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Ajustes para el layout cuando solo hay una columna */
+.main-layout:has(.results-column.full-width) {
+  grid-template-columns: 1fr;
+}
+
+/* Estilos para cuando no hay formularios */
+.forms-column:empty {
+  display: none;
+}
+/* Agrega esto a tu Dashboard.css */
+
+/* Mensaje de vista previa para admin */
+.admin-preview-message {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-preview-message .preview-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+.admin-preview-message h4 {
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
+.admin-preview-message p {
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Badge para vista admin */
+.status-badge--pending {
+  background: rgba(245, 158, 11, 0.2);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Asegurar que WaitingForAnalysis ocupe el espacio completo cuando es el único componente */
+.main-layout:has(.waiting-container) {
+  grid-template-columns: 1fr;
+}
+
+.waiting-container {
+  grid-column: 1 / -1;
+}

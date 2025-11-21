@@ -1,12 +1,12 @@
-// src/components/auth/Register.jsx (ACTUALIZADO CON FIREBASE)
+// src/components/auth/Register.jsx (ACTUALIZADO CON useAuth)
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-
-const auth = getAuth();
-const db = getFirestore();
+import { useAuth } from '../../hooks/useAuth'; // ✅ NUEVO
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 
 export function Register({ onSwitchToLogin }) {
+  const { signup, error: authError, clearError, loading: authLoading } = useAuth(); // ✅ USAR useAuth
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -14,61 +14,54 @@ export function Register({ onSwitchToLogin }) {
     displayName: '',
     company: ''
   });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [localError, setLocalError] = useState('');
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
+    setLocalError('');
+    clearError();
 
-    // Validaciones
+    // ✅ MANTENER TUS VALIDACIONES
     if (formData.password !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden');
-      setIsLoading(false);
+      setLocalError('Las contraseñas no coinciden');
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
-      setIsLoading(false);
+      setLocalError('La contraseña debe tener al menos 6 caracteres');
       return;
     }
 
     try {
-      // Crear usuario en Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        formData.email, 
-        formData.password
-      );
+      // ✅ USAR EL SIGNUP DEL HOOK useAuth
+      const result = await signup(formData.email, formData.password, formData.displayName);
       
-      const user = userCredential.user;
+      if (result.success) {
+        console.log('✅ Registro exitoso via useAuth');
+        
+        // ✅ MANTENER TU LÓGICA DE FIRESTORE
+        const userData = {
+          uid: result.user.uid,
+          email: formData.email,
+          displayName: formData.displayName,
+          company: formData.company,
+          requiresVerification: true,
+          verified: false,
+          createdAt: new Date(),
+          role: 'user'
+        };
 
-      // Guardar datos adicionales en Firestore
-      const userData = {
-        uid: user.uid,
-        email: formData.email,
-        displayName: formData.displayName,
-        company: formData.company,
-        requiresVerification: true,
-        verified: false,
-        createdAt: new Date(),
-        role: 'user'
-      };
-
-      await setDoc(doc(db, 'users', user.uid), userData);
-
-      setSuccess(true);
-      
-      // La función de Firebase se ejecutará automáticamente y enviará el código a Yurkel
+        await setDoc(doc(db, 'users', result.user.uid), userData);
+        setSuccess(true);
+        
+      } else {
+        setLocalError(result.error);
+      }
 
     } catch (error) {
       console.error('Error en registro:', error);
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+      setLocalError(error.message);
     }
   };
 
@@ -78,8 +71,15 @@ export function Register({ onSwitchToLogin }) {
       ...prev,
       [name]: value
     }));
-    if (error) setError('');
+    
+    if (localError || authError) {
+      setLocalError('');
+      clearError();
+    }
   };
+
+  // ✅ MOSTRAR ERRORES TANTO LOCALES COMO DEL HOOK
+  const displayError = localError || authError;
 
   if (success) {
     return (
@@ -98,7 +98,7 @@ export function Register({ onSwitchToLogin }) {
           
           <button 
             onClick={onSwitchToLogin}
-            className="btn btn-primary btn-full"
+            className="btn btn--primary btn--full"
           >
             Volver al Login
           </button>
@@ -116,9 +116,9 @@ export function Register({ onSwitchToLogin }) {
         </div>
         
         <form onSubmit={handleSubmit} className="login-form">
-          {error && (
+          {displayError && (
             <div className="error-message">
-              ❌ {error}
+              ❌ {displayError}
             </div>
           )}
           
@@ -131,6 +131,7 @@ export function Register({ onSwitchToLogin }) {
               onChange={handleChange}
               placeholder="Tu nombre completo"
               required
+              disabled={authLoading}
             />
           </div>
           
@@ -143,6 +144,7 @@ export function Register({ onSwitchToLogin }) {
               onChange={handleChange}
               placeholder="Nombre de tu empresa"
               required
+              disabled={authLoading}
             />
           </div>
           
@@ -155,6 +157,7 @@ export function Register({ onSwitchToLogin }) {
               onChange={handleChange}
               placeholder="tu@empresa.com"
               required
+              disabled={authLoading}
             />
           </div>
           
@@ -167,6 +170,7 @@ export function Register({ onSwitchToLogin }) {
               onChange={handleChange}
               placeholder="Mínimo 6 caracteres"
               required
+              disabled={authLoading}
             />
           </div>
           
@@ -179,15 +183,16 @@ export function Register({ onSwitchToLogin }) {
               onChange={handleChange}
               placeholder="Repite tu contraseña"
               required
+              disabled={authLoading}
             />
           </div>
           
           <button 
             type="submit" 
-            className="btn btn-primary btn-full"
-            disabled={isLoading}
+            className="btn btn--primary btn--full"
+            disabled={authLoading}
           >
-            {isLoading ? '⏳ Registrando...' : '📝 Crear Cuenta'}
+            {authLoading ? '⏳ Registrando...' : '📝 Crear Cuenta'}
           </button>
         </form>
         
@@ -198,6 +203,7 @@ export function Register({ onSwitchToLogin }) {
               type="button"
               onClick={onSwitchToLogin}
               className="link-button"
+              disabled={authLoading}
             >
               Iniciar Sesión
             </button>

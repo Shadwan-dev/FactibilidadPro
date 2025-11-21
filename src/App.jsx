@@ -1,149 +1,58 @@
-// src/App.jsx (VERSIÓN CORREGIDA)
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // ✅ Solo una importación
+// src/App.jsx (VERSIÓN CORREGIDA Y COMPLETA)
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './hooks/useAuth'; // ✅ CORREGIDO: Cambiar la ruta
+import { ProjectProvider } from './context/ProjectContext'; // ✅ NUEVO: Agregar ProjectProvider
 import { Home } from './pages/Home';
 import { LoginPage } from './pages/LoginPage';
 import { Dashboard } from './pages/Dashboard';
-import { FeasibilityProvider } from './context/FeasibilityContext';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { db, auth } from './firebase/config';
-import ErrorBoundary from './components/error/ErrorBoundary'; // ✅ Asegúrate de que este archivo existe
-import './styles/App.css';
+import ErrorBoundary from './components/error/ErrorBoundary';
+import './styles/main.css';
 
-export function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [needsVerification, setNeedsVerification] = useState(false);
+// Componente para rutas protegidas
+const ProtectedRoute = ({ children }) => {
+  const { currentUser, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Cargando FactibilidadPro...</p>
+      </div>
+    );
+  }
+  
+  return currentUser ? children : <Navigate to="/login" />;
+};
 
-  // Verificar autenticación al cargar
-  useEffect(() => {
-    const checkAuth = async () => {
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          try {
-            // Obtener datos adicionales del usuario desde Firestore
-            const userDoc = await getDoc(doc(db, 'users', user.uid));
-            
-            if (userDoc.exists()) {
-              const userData = userDoc.data();
-              const fullUserData = {
-                uid: user.uid,
-                email: user.email,
-                ...userData
-              };
-              
-              setCurrentUser(fullUserData);
-              
-              // Verificar si necesita verificación
-              if (userData.requiresVerification && !userData.verified) {
-                setNeedsVerification(true);
-                setIsAuthenticated(false);
-              } else {
-                setIsAuthenticated(true);
-                setNeedsVerification(false);
-              }
-            } else {
-              // Usuario no existe en Firestore - cerrar sesión
-              await auth.signOut();
-              setCurrentUser(null);
-              setIsAuthenticated(false);
-            }
-          } catch (error) {
-            console.error('Error verificando usuario:', error);
-            await auth.signOut();
-            setCurrentUser(null);
-            setIsAuthenticated(false);
-          }
-        } else {
-          // No hay usuario autenticado
-          setCurrentUser(null);
-          setIsAuthenticated(false);
-          setNeedsVerification(false);
-        }
-        setLoading(false);
-      });
-    };
+// Componente para rutas públicas (solo para no autenticados)
+const PublicRoute = ({ children }) => {
+  const { currentUser, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Cargando FactibilidadPro...</p>
+      </div>
+    );
+  }
+  
+  return !currentUser ? children : <Navigate to="/dashboard" />;
+};
 
-    checkAuth();
-  }, []);
+// Componente principal de la aplicación
+function AppContent() {
+  const { currentUser, logout, loading } = useAuth();
 
-  // Manejar cuando usuario requiere verificación
-  const handleNeedsVerification = (userData) => {
-    console.log('🔐 Usuario requiere verificación:', userData);
-    setCurrentUser(userData);
-    setNeedsVerification(true);
-    setIsAuthenticated(false);
+  // Obtener projectId de la URL o usar uno por defecto
+  const getProjectId = () => {
+    // Puedes mejorar esto obteniendo de la URL o localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('projectId') || 'proyecto-principal';
   };
 
-  const handleLogin = async (userData) => {
-    try {
-      console.log('✅ Usuario logueado:', userData);
-      
-      // Para usuarios master (del MasterLogin)
-      if (userData.isMaster) {
-        setCurrentUser(userData);
-        setIsAuthenticated(true);
-        setNeedsVerification(false);
-        await setDoc(doc(db, 'users', userData.uid), userData, { merge: true });
-        return;
-      }
-
-      // Para usuarios normales (del Login con Firebase)
-      setCurrentUser(userData);
-      
-      if (userData.requiresVerification && !userData.verified) {
-        setNeedsVerification(true);
-        setIsAuthenticated(false);
-      } else {
-        setIsAuthenticated(true);
-        setNeedsVerification(false);
-      }
-      
-    } catch (error) {
-      console.error('Error en handleLogin:', error);
-    }
-  };
-
-  const handleVerification = async (verificationCode) => {
-    try {
-      console.log('📞 Verificando código:', verificationCode);
-      
-      // Simulación temporal
-      if (verificationCode.length === 5) {
-        // Actualizar usuario en Firestore
-        await setDoc(doc(db, 'users', currentUser.uid), {
-          verified: true,
-          requiresVerification: false,
-          verifiedAt: new Date()
-        }, { merge: true });
-        
-        // Actualizar estado local
-        setNeedsVerification(false);
-        setIsAuthenticated(true);
-        setCurrentUser(prev => ({
-          ...prev,
-          verified: true,
-          requiresVerification: false
-        }));
-        
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error('Error en verificación:', error);
-      return false;
-    }
-  };
-
-  const handleLogout = async () => {
-    await auth.signOut();
-    setIsAuthenticated(false);
-    setCurrentUser(null);
-    setNeedsVerification(false);
-  };
-
+  // Pantalla de carga global
   if (loading) {
     return (
       <div className="loading-screen">
@@ -155,37 +64,68 @@ export function App() {
 
   return (
     <ErrorBoundary>
-      <FeasibilityProvider>
+      {/* ✅ ENVOLVER CON PROJECTPROVIDER - REEMPLAZA FeasibilityProvider */}
+      <ProjectProvider initialProjectId={getProjectId()}>
         <Router>
           <div className="app">
             <Routes>
-              <Route path="/" element={<Home />} />
+              {/* Ruta pública - Home */}
+              <Route 
+                path="/" 
+                element={
+                  <PublicRoute>
+                    <Home />
+                  </PublicRoute>
+                } 
+              />
+              
+              {/* Ruta pública - Login */}
               <Route 
                 path="/login" 
                 element={
-                  isAuthenticated ? 
-                    <Navigate to="/dashboard" /> : 
-                    <LoginPage 
-                      onLogin={handleLogin} 
-                      needsVerification={needsVerification}
-                      onVerification={handleVerification}
-                      currentUser={currentUser}
-                      onNeedsVerification={handleNeedsVerification}
-                    />
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
                 } 
               />
+              
+              {/* Ruta protegida - Dashboard */}
               <Route 
                 path="/dashboard" 
                 element={
-                  isAuthenticated ? 
-                    <Dashboard user={currentUser} onLogout={handleLogout} /> : 
-                    <Navigate to="/login" />
+                  <ProtectedRoute>
+                    <Dashboard onLogout={logout} />
+                  </ProtectedRoute>
                 } 
               />
+              
+              {/* Ruta protegida - Dashboard con parámetros */}
+              <Route 
+                path="/dashboard/:projectId" 
+                element={
+                  <ProtectedRoute>
+                    <Dashboard onLogout={logout} />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Redirección por defecto */}
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
         </Router>
-      </FeasibilityProvider>
+      </ProjectProvider>
     </ErrorBoundary>
   );
 }
+
+// Componente raíz que envuelve todo con el AuthProvider
+export function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+export default App;

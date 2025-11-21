@@ -1,5 +1,6 @@
 // src/components/home/Features.jsx
 import React from 'react';
+import '../../styles/components/sections/features.css'; // ✅ Import del CSS específico
 
 export function Features() {
   const features = [

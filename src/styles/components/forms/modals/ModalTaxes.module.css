@@ -1,0 +1,358 @@
+/* src/styles/components/forms/modals/ModalTaxes.module.css */
+
+/* Contenedor principal del modal */
+.modalTaxesContent {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 900px;
+    max-width: 95vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Header del modal */
+  .modalTaxesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid #e8ecef;
+    background: linear-gradient(135deg, #434343 0%, #000000 100%);
+    color: #ffffff;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .modalTaxesHeader h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  
+  .modalTaxesCloseBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .modalTaxesCloseBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  /* Cuerpo del modal */
+  .modalTaxesBody {
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background: #ffffff;
+  }
+  
+  /* Secciones */
+  .modalTaxesSection {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .modalTaxesSection h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2d3748;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Grid de impuestos */
+  .modalTaxesGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  /* Items de impuestos */
+  .modalTaxesItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .modalTaxesItem:hover {
+    border-color: #434343;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modalTaxesItemMandatory {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-color: #dc3545;
+  }
+  
+  /* Checkbox de impuestos */
+  .modalTaxesCheckbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex: 1;
+    cursor: pointer;
+  }
+  
+  .modalTaxesCheckbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 0.25rem;
+    accent-color: #434343;
+  }
+  
+  .modalTaxesCheckbox input[type="checkbox"]:disabled {
+    accent-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  /* Información de impuestos */
+  .modalTaxesInfo {
+    flex: 1;
+  }
+  
+  .modalTaxesName {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+  }
+  
+  .modalTaxesDescription {
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.4;
+  }
+  
+  /* Tasa de impuesto */
+  .modalTaxesRate {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    color: #dc3545;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 2px solid #f8d7da;
+    border-radius: 6px;
+    min-width: 80px;
+    text-align: center;
+  }
+  
+  /* Acciones */
+  .modalTaxesActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  /* Formulario para impuestos personalizados */
+  .modalTaxesForm {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-top: 1rem;
+  }
+  
+  .modalTaxesFormGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr auto;
+    gap: 1rem;
+    align-items: end;
+  }
+  
+  .modalTaxesInput {
+    padding: 0.75rem 1rem;
+    border: 2px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    background: white;
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .modalTaxesInput:focus {
+    outline: none;
+    border-color: #434343;
+    box-shadow: 0 0 0 3px rgba(67, 67, 67, 0.2);
+    color: #2d3748;
+  }
+  
+  .modalTaxesInput::placeholder {
+    color: #6c757d;
+    font-weight: normal;
+  }
+  
+  .modalTaxesBtnPrimary {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .modalTaxesBtnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 67, 67, 0.4);
+  }
+  
+  /* Lista de impuestos personalizados */
+  .modalTaxesCustomList {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  /* Botón de eliminar */
+  .modalTaxesBtnDelete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .modalTaxesBtnDelete:hover {
+    background: #c82333;
+    transform: scale(1.1);
+  }
+  
+  /* Totales */
+  .modalTaxesTotals {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .modalTaxesTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #dee2e6;
+    color: #495057;
+    font-weight: 600;
+  }
+  
+  .modalTaxesTotalRow:last-child {
+    border-bottom: none;
+  }
+  
+  .modalTaxesTotalHighlight {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  
+  /* Nota informativa */
+  .modalTaxesNote {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 1rem;
+    font-style: italic;
+    text-align: center;
+    padding: 0.5rem;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    color: #856404;
+  }
+  
+  /* Footer del modal */
+  .modalTaxesFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid #e8ecef;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .modalTaxesBtnSecondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modalTaxesBtnSecondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+  }
+  
+  /* Estados vacíos */
+  .modalTaxesEmptyState {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    background: white;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+  }
+  
+  .modalTaxesEmptyState p {
+    margin: 0.5rem 0;
+    font-weight: 500;
+  }
+  
+  /* Badge para impuestos obligatorios */
+  .modalTaxesMandatoryBadge {
+    background: #dc3545;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+  }

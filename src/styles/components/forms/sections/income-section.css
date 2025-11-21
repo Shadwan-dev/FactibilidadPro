@@ -1,0 +1,214 @@
+/* src/styles/components/forms/sections/income-section.css */
+
+/* CONTENEDOR DE SECCIÓN */
+.income-section-container {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 25px;
+  }
+  
+  .income-section-title {
+    color: #2d3748;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+  }
+  
+  /* GRID DE TARJETAS */
+  .income-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+  
+  /* TARJETAS INDIVIDUALES */
+  .income-input-card {
+    background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+    border: 2px solid #90cdf4;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .income-input-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3182ce, #2c5aa0);
+  }
+  
+  .income-input-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(49, 130, 206, 0.2);
+    border-color: #63b3ed;
+  }
+  
+  .income-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .income-card-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c5282;
+    margin-bottom: 5px;
+  }
+  
+  .income-card-description {
+    color: #4a5568;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .income-btn-modal {
+    background: linear-gradient(135deg, #3182ce, #2c5aa0);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+  
+  .income-btn-modal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+  }
+  
+  .income-card-total {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2c5282;
+    text-align: center;
+    margin: 15px 0;
+    padding: 12px;
+    background: rgba(49, 130, 206, 0.1);
+    border-radius: 8px;
+    border: 2px solid #90cdf4;
+  }
+  
+  /* ITEMS DENTRO DE LAS TARJETAS */
+  .income-card-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .income-card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #bee3f8;
+    transition: all 0.2s ease;
+  }
+  
+  .income-card-item:hover {
+    background: #ebf8ff;
+    transform: translateX(5px);
+  }
+  
+  .income-item-name {
+    color: #2d3748;
+    font-weight: 500;
+    flex: 1;
+  }
+  
+  .income-item-amount {
+    color: #2c5282;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  
+  .income-card-more {
+    text-align: center;
+    color: #718096;
+    font-style: italic;
+    padding: 10px;
+    background: #ebf8ff;
+    border-radius: 6px;
+    border: 1px dashed #90cdf4;
+  }
+  
+  .income-card-empty {
+    text-align: center;
+    color: #a0aec0;
+    font-style: italic;
+    padding: 25px;
+    background: #ebf8ff;
+    border-radius: 8px;
+    border: 2px dashed #90cdf4;
+  }
+  
+  /* TOTAL DE LA SECCIÓN */
+  .income-section-total {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .income-total-card {
+    background: linear-gradient(135deg, #3182ce, #2c5aa0);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 250px;
+    box-shadow: 0 8px 25px rgba(49, 130, 206, 0.3);
+  }
+  
+  .income-total-card h5 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+  
+  .income-total-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .income-cards-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .income-card-header {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .income-btn-modal {
+      align-self: flex-start;
+    }
+    
+    .income-total-card {
+      min-width: 200px;
+      padding: 15px 20px;
+    }
+  }

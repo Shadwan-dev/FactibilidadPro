@@ -1,6 +1,7 @@
 // src/components/home/Banner.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../styles/components/sections/banner.css'; // ✅ Import del CSS específico
 
 export function Banner() {
   const bannerItems = [
@@ -40,8 +41,8 @@ export function Banner() {
           ))}
         </div>
         <div className="banner-cta">
-          <h3 className="banner-cta-title" >¿Listo para tomar mejores decisiones?</h3>
-          <Link to="/login" className="btn btn-large">
+          <h3 className="banner-cta-title">¿Listo para tomar mejores decisiones?</h3>
+          <Link to="/login" className="btn btn--primary btn--lg">
             Comenzar Evaluación Gratis
           </Link>
         </div>

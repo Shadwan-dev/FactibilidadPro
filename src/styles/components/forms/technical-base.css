@@ -1,0 +1,53 @@
+/* src/styles/components/forms/technical-base.css */
+/* ESTILOS BASE EXCLUSIVOS PARA COMPONENTES TÉCNICOS */
+
+.technical-form {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.technical-form .form-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.technical-form .form-title {
+  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.technical-form .form-subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.technical-form .form-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.technical-form .section-title-technical-form {
+  color: #1e293b;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.technical-form .section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}

@@ -1,14 +1,9 @@
-// src/pages/Dashboard.jsx (VERSIÓN COMPLETA ACTUALIZADA)
+// src/pages/Dashboard.jsx (VERSIÓN CORREGIDA)
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { FinancialDataForm } from '../components/forms/FinancialDataForm';
 import { TechnicalDataForm } from '../components/forms/TechnicalDataForm';
 import { MarketDataForm } from '../components/forms/MarketDataForm';
 import { LegalDataForm } from '../components/forms/LegalDataForm';
-import { FinancialResults } from '../components/results/FinancialResults';
-import { TechnicalResults } from '../components/results/TechnicalResults';
-import { MarketResults } from '../components/results/MarketResults';
-import { LegalResults } from '../components/results/LegalResults';
-import { OverallResults } from '../components/results/OverallResults';
 import { Header } from '../components/layout/Header';
 import { ProjectManager } from '../components/projects/ProjectManager';
 import { useFeasibilityCalculations } from '../hooks/useFeasibilityCalculations';
@@ -18,7 +13,8 @@ import { useProjects } from '../hooks/useProjects';
 import { Charts } from '../components/results/Charts';
 import { ProjectDetails } from '../utils/ProjectDetails';
 import { ValidationPanel } from '../utils/ValidationPanel';
-import '../styles/App.css';
+import { useAuth } from '../hooks/useAuth';
+import '../styles/pages/Dashboard.css';
 
 // Estado inicial organizado
 const initialFormData = {
@@ -80,51 +76,84 @@ const FormSections = React.memo(({ formData, onChange, calculations }) => (
   </div>
 ));
 
-// Componente de Resultados para mejor performance
-const ResultSections = React.memo(({ calculations, formData }) => (
-  <div className="results-container">
-    <Charts calculations={calculations} formData={formData} />
-    <OverallResults calculations={calculations} />
-    <FinancialResults calculations={calculations} />
-    <TechnicalResults calculations={calculations} />
-    <MarketResults calculations={calculations} />
-    <LegalResults calculations={calculations} />
-  </div>
-));
-
 // Componente para mostrar cuando se espera análisis
 const WaitingForAnalysis = ({ projectName }) => (
-  <div className="results-column">
-    <div className="results-section">
-      <div className="waiting-for-analysis">
-        <div className="analysis-icon">⏳</div>
-        <h3>Esperando Análisis del Administrador</h3>
-        <p>Tu proyecto "<strong>{projectName}</strong>" está en revisión.</p>
-        <p>Recibirás una notificación cuando el análisis esté completo.</p>
-        <div className="analysis-progress">
-          <div className="progress-bar">
-            <div className="progress-fill"></div>
-          </div>
-          <p>Estado: Pendiente de revisión</p>
+  <div className="waiting-container">
+    <div className="waiting-card">
+      <div className="waiting-icon">⏳</div>
+      <h3 className="waiting-title">Esperando Análisis del Administrador</h3>
+      <p className="waiting-description">
+        Tu proyecto "<strong>{projectName}</strong>" está en revisión.
+      </p>
+      <p className="waiting-info">
+        Recibirás una notificación cuando el análisis esté completo.
+      </p>
+      <div className="progress-container">
+        <div className="progress-bar">
+          <div className="progress-fill"></div>
         </div>
-        <div className="analysis-info">
-          <p><small>El administrador revisará tu proyecto y te notificará cuando esté listo.</small></p>
-        </div>
+        <p className="progress-status">Estado: Pendiente de revisión</p>
+      </div>
+      <div className="waiting-note">
+        <p><small>El administrador revisará tu proyecto y te notificará cuando esté listo.</small></p>
       </div>
     </div>
   </div>
 );
 
-export function Dashboard({ user, onLogout }) {
+// Componente de Estado de Guardado
+const SaveStatus = ({ isSaving, saveStatus }) => {
+  if (!saveStatus && !isSaving) return null;
+  
+  return (
+    <div className={`save-status ${saveStatus.includes('error') ? 'save-status--error' : ''}`}>
+      {isSaving ? '💾 Guardando...' : saveStatus}
+    </div>
+  );
+};
+
+// Componente de Botones de Acción para Admin
+const AdminActionButtons = ({ 
+  showProjectDetails, 
+  showValidationPanel, 
+  onToggleDetails, 
+  onToggleValidation, 
+  onShowMasterView 
+}) => (
+  <div className="action-buttons">
+    <button
+      onClick={onToggleDetails}
+      className="btn btn--secondary btn--sm"
+    >
+      {showProjectDetails ? "👁️ Ocultar" : "📊 Ver"} Detalles
+    </button>
+
+    <button
+      onClick={onToggleValidation}
+      className="btn btn--secondary btn--sm"
+    >
+      {showValidationPanel ? "❌ Ocultar" : "✅ Mostrar"} Validación
+    </button>
+
+    <button
+      onClick={onShowMasterView}
+      className="btn btn--primary btn--sm"
+    >
+      👑 Vista Master
+    </button>
+  </div>
+);
+
+// ✅ CORREGIDO: Función handleFormChange movida a la posición correcta
+export function Dashboard({ onLogout }) {
+  const { currentUser, logout, isAdmin: authIsAdmin } = useAuth();
   const [currentProject, setCurrentProject] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState('');
 
-  const isAdmin = user?.role === 'master' || user?.uid?.includes('master-');
-
+  const isAdmin = authIsAdmin || currentUser?.role === 'master' || currentUser?.uid?.includes('master-');
   const [isFinancialDetailedMode, setIsFinancialDetailedMode] = useState(false);
-
   const [showValidationPanel, setShowValidationPanel] = useState(false);
   const [showProjectDetails, setShowProjectDetails] = useState(false);
 
@@ -132,14 +161,21 @@ export function Dashboard({ user, onLogout }) {
   const saveTimeoutRef = useRef(null);
   const previousFormDataRef = useRef(initialFormData);
 
-  const { projects, createProject, saveFeasibilityData, updateProject, loading: projectsLoading, analyzeProject, sendExplicitNotification } = useProjects(user?.uid);
+  const { projects, createProject, saveFeasibilityData, updateProject, loading: projectsLoading, sendExplicitNotification } = useProjects(currentUser?.uid);
   const calculations = useFeasibilityCalculations(formData);
+
+  // ✅ CORREGIDO: handleFormChange declarada una sola vez en el lugar correcto
+  const handleFormChange = useCallback((section, data) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: data
+    }));
+  }, []);
 
   // Función para sanear datos del proyecto
   const sanitizeProjectData = useCallback((project) => {
     if (!project) return null;
     
-    // Asegurar que formData tenga la estructura correcta
     const safeFormData = {
       financial: project.formData?.financial || initialFormData.financial,
       technical: project.formData?.technical || initialFormData.technical,
@@ -171,35 +207,27 @@ export function Dashboard({ user, onLogout }) {
   const hasFormDataChanged = useCallback((oldData, newData) => {
     return JSON.stringify(oldData) !== JSON.stringify(newData);
   }, []);
-  // ✅ NUEVO ESTADO: Para rastrear si estamos en modo detallado
-  const [isDetailedMode, setIsDetailedMode] = useState({
-    financial: false,
-    technical: false,
-    market: false,
-    legal: false
-  });
-  // ✅ FUNCIÓN DE GUARDADO CORREGIDA - PASA EL USER ID
+
+  // Función de guardado optimizada
   const debouncedSave = useCallback((projectId, formData, calculations) => {
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
 
     saveTimeoutRef.current = setTimeout(async () => {
-      // Verificar si realmente hay cambios antes de guardar
       if (!hasFormDataChanged(previousFormDataRef.current, formData)) {
-        return; // No guardar si no hay cambios reales
+        return;
       }
 
       setIsSaving(true);
       setSaveStatus('guardando...');
       
       try {
-        // ✅ Pasar el userId actual como parámetro adicional
         const success = await saveFeasibilityData(
           projectId, 
           formData, 
           calculations, 
-          user?.uid // 👈 Esto es importante para las notificaciones
+          currentUser?.uid
         );
         
         if (success) {
@@ -216,11 +244,11 @@ export function Dashboard({ user, onLogout }) {
         setIsSaving(false);
       }
     }, 2000);
-  }, [saveFeasibilityData, hasFormDataChanged, user?.uid]);
+  }, [saveFeasibilityData, hasFormDataChanged, currentUser?.uid]);
 
+  // Effect para guardado automático
   useEffect(() => {
-    // ✅ NO guardar si estamos en modo detallado financiero
-    if (currentProject && user && Object.keys(formData.financial).length > 0 && !isFinancialDetailedMode) {
+    if (currentProject && currentUser && Object.keys(formData.financial).length > 0 && !isFinancialDetailedMode) {
       debouncedSave(currentProject.id, formData, calculations);
     }
   
@@ -229,25 +257,10 @@ export function Dashboard({ user, onLogout }) {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [formData, currentProject, user, calculations, debouncedSave, isFinancialDetailedMode]);
-
-  const handleFormChange = useCallback((section, data, isDetailed = false) => {
-    setFormData(prev => ({
-      ...prev,
-      [section]: data
-    }));
-    
-    // ✅ ACTUALIZAR el estado del modo
-    if (isDetailed) {
-      setIsDetailedMode(prev => ({
-        ...prev,
-        [section]: true
-      }));
-    }
-  }, []);
+  }, [formData, currentProject, currentUser, calculations, debouncedSave, isFinancialDetailedMode]);
 
   const handleCreateProject = async (projectName) => {
-    if (!user?.uid) {
+    if (!currentUser?.uid) {
       console.error('Usuario no autenticado');
       return;
     }
@@ -256,17 +269,17 @@ export function Dashboard({ user, onLogout }) {
       const projectId = await createProject({
         name: projectName,
         description: 'Nuevo proyecto de factibilidad'
-      }, user.uid);
+      }, currentUser.uid);
   
       if (projectId) {
         const newProject = {
           id: projectId,
           name: projectName,
-          userId: user.uid,
+          userId: currentUser.uid,
           formData: initialFormData,
           calculations: {},
-          status: 'draft', // ✅ CAMBIAR de 'pending' a 'draft' (estado inicial)
-          notificationSent: false, // ✅ Añadir esta propiedad
+          status: 'draft',
+          notificationSent: false,
           createdAt: new Date(),
           updatedAt: new Date()
         };
@@ -283,7 +296,6 @@ export function Dashboard({ user, onLogout }) {
     const sanitizedProject = sanitizeProjectData(project);
     setCurrentProject(sanitizedProject);
     
-    // Mostrar paneles de validación si es admin
     if (isAdmin) {
       setShowValidationPanel(true);
       setShowProjectDetails(true);
@@ -299,11 +311,10 @@ export function Dashboard({ user, onLogout }) {
     }
   };
 
-  // ✅ FUNCIÓN PARA ENVÍO EXPLÍCITO (usuarios normales)
+  // Función para envío explícito
   const handleExplicitSubmit = async () => {
     if (!currentProject) return;
     
-    // Verificar si ya se envió notificación
     if (currentProject.notificationSent) {
       setSaveStatus('⚠️ Ya notificaste al administrador');
       setTimeout(() => setSaveStatus(''), 3000);
@@ -319,18 +330,16 @@ export function Dashboard({ user, onLogout }) {
     setSaveStatus('enviando notificación...');
     
     try {
-      // Usar la nueva función de envío único
       const result = await sendExplicitNotification(
         currentProject.id, 
         formData, 
         calculations, 
-        user?.uid
+        currentUser?.uid
       );
       
       if (result === 'success') {
         setSaveStatus('✅ Notificación enviada');
         
-        // Actualizar estado local del proyecto
         setCurrentProject(prev => ({
           ...prev,
           status: 'pending',
@@ -352,15 +361,14 @@ export function Dashboard({ user, onLogout }) {
     }
   };
 
-
-  // Si no hay usuario, mostrar error
-  if (!user) {
+  // Verificar autenticación
+  if (!currentUser) {
     return (
       <div className="error-container">
-        <div className="error-message">
+        <div className="error-content">
           <h2>Error de Autenticación</h2>
           <p>No se pudo cargar la información del usuario.</p>
-          <button onClick={onLogout} className="btn btn-primary">
+          <button onClick={logout} className="btn btn--primary">
             Volver al Login
           </button>
         </div>
@@ -370,50 +378,44 @@ export function Dashboard({ user, onLogout }) {
 
   return (
     <div className="dashboard">
-      <Header username={user.displayName || user.email} onLogout={onLogout} />
+      <Header username={currentUser.displayName || currentUser.email} onLogout={logout} />
+
       <div className="dashboard-container">
-        {/* Header Personalizado del Dashboard */}
-        <div className="dashboard-header">
+        {/* Header compacto */}
+        <div className="dashboard-header compact">
           <div className="welcome-section">
             <h1 className="dashboard-title">
               ¡Hola,{" "}
               <span className="user-name">
-                {user.displayName || user.email}
+                {currentUser.displayName || currentUser.email}
               </span>
               ! 👋
               {isAdmin && <span className="master-badge">👑 MASTER</span>}
             </h1>
             <p className="dashboard-subtitle">
               {isAdmin
-                ? "Tienes acceso completo a todos los proyectos"
-                : "Completa los formularios para analizar tu proyecto"}
-              {currentProject && saveStatus && (
-                <span
-                  className={`save-status ${
-                    saveStatus.includes("error") ? "error" : ""
-                  }`}
-                >
-                  • {saveStatus}
-                </span>
-              )}
+                ? "Tienes acceso completo a todos los proyectos y análisis del sistema"
+                : "Gestiona tus proyectos y completa los formularios para analizar su factibilidad"}
             </p>
+            <SaveStatus isSaving={isSaving} saveStatus={saveStatus} />
           </div>
+        </div>
 
+        {/* Sección de Project Manager */}
+        <div className="project-manager-section">
           <ProjectManager
             projects={projects}
             currentProject={currentProject}
             onCreateProject={handleCreateProject}
             onSelectProject={handleSelectProject}
             onUpdateProject={handleProjectUpdate}
-            user={user}
+            user={currentUser}
             loading={projectsLoading}
           />
         </div>
 
-        {/* ✅ NOTIFICACIONES DE ADMIN - ARRIBA DE TODO */}
-        {isAdmin && (
-          <AdminNotifications isAdmin={isAdmin} currentUser={user} />
-        )}
+        {/* Notificaciones de Admin */}
+        {isAdmin && <AdminNotifications isAdmin={isAdmin} currentUser={currentUser} />}
 
         {projectsLoading ? (
           <div className="loading-container">
@@ -422,117 +424,111 @@ export function Dashboard({ user, onLogout }) {
           </div>
         ) : currentProject ? (
           <div className="main-layout">
-            {/* Columna Izquierda: Formularios - SIEMPRE VISIBLE */}
-            <div className="forms-column">
-              <div className="forms-section">
-                <div className="section-header">
-                  <h3>
-                    {isAdmin
-                      ? "📊 Datos del Proyecto"
-                      : "📝 Completa tu Información"}
-                  </h3>
-                  {isSaving && (
-                    <span className="saving-indicator">💾 {saveStatus}</span>
-                  )}
+            {/* Mostrar formularios SOLO si el proyecto NO está analizado */}
+            {(isAdmin || currentProject?.status !== "analyzed") && (
+              <div className="forms-column">
+                <div className="forms-section">
+                  <div className="section-header">
+                    <h3 className="section-title">
+                      {isAdmin
+                        ? "📊 Datos del Proyecto"
+                        : "📝 Completa tu Información"}
+                    </h3>
 
-                  {/* BOTONES DE ACCIÓN */}
-                  <div
-                    className="action-buttons"
-                    style={{ display: "flex", gap: "10px", marginTop: "10px" }}
-                  >
+                    {/* Botones de acción para admin */}
                     {isAdmin && (
-                      <>
-                        <button
-                          onClick={() =>
-                            setShowProjectDetails(!showProjectDetails)
-                          }
-                          className="btn btn-info btn-sm"
-                        >
-                          {showProjectDetails ? "👁️ Ocultar" : "📊 Ver"}{" "}
-                          Detalles
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setShowValidationPanel(!showValidationPanel)
-                          }
-                          className="btn btn-warning btn-sm"
-                        >
-                          {showValidationPanel ? "❌ Ocultar" : "✅ Mostrar"}{" "}
-                          Validación
-                        </button>
-
-                        <button
-                          onClick={() => {
-                            setShowValidationPanel(true);
-                            setShowProjectDetails(true);
-                          }}
-                          className="btn btn-primary btn-sm"
-                        >
-                          👑 Vista Master
-                        </button>
-                      </>
+                      <AdminActionButtons
+                        showProjectDetails={showProjectDetails}
+                        showValidationPanel={showValidationPanel}
+                        onToggleDetails={() =>
+                          setShowProjectDetails(!showProjectDetails)
+                        }
+                        onToggleValidation={() =>
+                          setShowValidationPanel(!showValidationPanel)
+                        }
+                        onShowMasterView={() => {
+                          setShowValidationPanel(true);
+                          setShowProjectDetails(true);
+                        }}
+                      />
                     )}
                   </div>
+
+                  {isAdmin ? (
+                    <FormSections
+                      formData={formData}
+                      onChange={handleFormChange}
+                      calculations={calculations}
+                    />
+                  ) : (
+                    <UserDashboard
+                      formData={formData}
+                      onChange={handleFormChange}
+                      currentProject={currentProject}
+                      onExplicitSubmit={handleExplicitSubmit}
+                    />
+                  )}
                 </div>
-
-                {isAdmin ? (
-                  <FormSections
-                    formData={formData}
-                    onChange={handleFormChange}
-                    calculations={calculations}
-                  />
-                ) : (
-                  <UserDashboard
-                    formData={formData}
-                    onChange={handleFormChange}
-                    currentProject={currentProject}
-                    onExplicitSubmit={handleExplicitSubmit}
-                  />
-                )}
               </div>
-            </div>
+            )}
 
-            {/* Columna Derecha: Resultados - CONDICIONAL */}
-            {/* ✅ MOSTRAR GRÁFICOS SOLO SI ES ADMIN O PROYECTO ANALIZADO */}
-            {(isAdmin || currentProject?.status === 'analyzed') ? (
-              <div className="results-column">
+            {/* ANÁLISIS: Solo si el proyecto ESTÁ analizado O es admin */}
+            {(isAdmin || currentProject?.status === "analyzed") && (
+              <div className={`results-column ${currentProject?.status === "analyzed" ? 'full-width' : ''}`}>
                 <div className="results-section">
                   <div className="section-header">
-                    <h3>📊 Resultados y Análisis</h3>
-                    {currentProject?.status === 'analyzed' && !isAdmin && (
-                      <span className="analysis-badge">✅ Analizado</span>
+                    <h3 className="section-title">
+                      {currentProject?.status === "analyzed" 
+                        ? "📊 Resultados del Análisis" 
+                        : "📊 Vista Previa (Admin)"
+                      }
+                    </h3>
+                    {currentProject?.status === "analyzed" && (
+                      <span className="status-badge status-badge--success">
+                        ✅ Analizado
+                      </span>
                     )}
-                    <span className="last-updated">
-                      {currentProject.updatedAt &&
-                        `Actualizado: ${new Date(
-                          currentProject.updatedAt
-                        ).toLocaleString()}`}
-                    </span>
+                    {isAdmin && currentProject?.status !== "analyzed" && (
+                      <span className="status-badge status-badge--pending">
+                        👁️ Vista Admin
+                      </span>
+                    )}
                   </div>
 
-                  {/* MOSTRAR PROJECT DETAILS SI ESTÁ ACTIVO */}
+                  {/* Mensaje informativo cuando el proyecto está analizado */}
+                  {currentProject?.status === "analyzed" && !isAdmin && (
+                    <div className="analysis-complete-message">
+                      <div className="completion-icon">🎉</div>
+                      <h4>¡Análisis Completado!</h4>
+                      <p>
+                        Tu proyecto <strong>"{currentProject.name}"</strong> ha sido analizado. 
+                        Aquí tienes los resultados y recomendaciones.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Mensaje para admin cuando el proyecto no está analizado */}
+                  {isAdmin && currentProject?.status !== "analyzed" && (
+                    <div className="admin-preview-message">
+                      <div className="preview-icon">👑</div>
+                      <h4>Vista de Administrador</h4>
+                      <p>
+                        Estás viendo una vista previa del proyecto. 
+                        Los resultados se mostrarán al usuario cuando cambies el estado a "Analizado".
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Project Details para Admin */}
                   {showProjectDetails && isAdmin && (
-                    <div
-                      style={{
-                        marginBottom: "2rem",
-                        border: "1px solid #ddd",
-                        borderRadius: "8px",
-                        padding: "1rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginBottom: "1rem",
-                        }}
-                      >
-                        <h4>📋 Detalles del Proyecto</h4>
+                    <div className="details-panel">
+                      <div className="panel-header">
+                        <h4 className="panel-title">
+                          📋 Detalles del Proyecto
+                        </h4>
                         <button
                           onClick={() => setShowProjectDetails(false)}
-                          className="btn btn-sm btn-outline-secondary"
+                          className="btn btn--sm btn--secondary"
                         >
                           ✕
                         </button>
@@ -550,9 +546,9 @@ export function Dashboard({ user, onLogout }) {
                     </div>
                   )}
 
-                  {/* MOSTRAR VALIDATION PANEL SI ESTÁ ACTIVO */}
+                  {/* Validation Panel para Admin */}
                   {showValidationPanel && isAdmin && (
-                    <div style={{ marginBottom: "2rem" }}>
+                    <div className="validation-panel">
                       <ValidationPanel
                         project={{
                           ...currentProject,
@@ -570,71 +566,28 @@ export function Dashboard({ user, onLogout }) {
                     </div>
                   )}
 
-                  {/* COMPONENTES DE RESULTADOS */}
-                  <ResultSections
-                    calculations={calculations}
-                    formData={formData}
-                  />
+                  {/* Gráficos y Resultados */}
+                  <div className="results-content">
+                    <Charts calculations={calculations} formData={formData} />
+                  </div>
                 </div>
               </div>
-            ) : (
-              // ✅ MOSTRAR MENSAJE DE ESPERA PARA USUARIOS NORMALES
-              <WaitingForAnalysis projectName={currentProject.name} />
             )}
           </div>
         ) : (
-          <div className="no-project-selected">
-            <div className="empty-state">
+          <div className="empty-state">
+            <div className="empty-content">
               <div className="empty-icon">🎯</div>
-              <h3>Bienvenido al Gestor de Proyectos</h3>
-              <p>
+              <h3 className="empty-title">Bienvenido al Gestor de Proyectos</h3>
+              <p className="empty-description">
                 {isAdmin
                   ? "Selecciona un proyecto existente o crea uno nuevo para comenzar el análisis."
                   : "Crea un nuevo proyecto para comenzar tu análisis de factibilidad."}
-              </p>
-
-              {projects.length > 0 ? (
-                <div className="project-actions">
-                  <p>Tienes {projects.length} proyecto(s) guardado(s)</p>
-                  <button
-                    onClick={() =>
-                      handleCreateProject("Mi Proyecto de Factibilidad")
-                    }
-                    className="btn btn-primary btn-large"
-                  >
-                    ➕ Crear Nuevo Proyecto
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => handleCreateProject("Mi Primer Proyecto")}
-                  className="btn btn-primary btn-large"
-                >
-                  🚀 Crear Mi Primer Proyecto
-                </button>
-              )}
+              </p>              
             </div>
           </div>
         )}
       </div>
-
-      {/* COMPONENTE OCULTO PARA PDF */}
-      {currentProject && isAdmin && (
-        <div style={{ display: "none" }}>
-          <ProjectDetails
-            project={{
-              ...currentProject,
-              calculations: calculations,
-              financial: formData.financial,
-              technical: formData.technical,
-              market: formData.market,
-              legal: formData.legal,
-              name: currentProject.name,
-              creationDate: currentProject.createdAt,
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 }

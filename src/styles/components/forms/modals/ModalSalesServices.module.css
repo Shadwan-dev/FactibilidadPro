@@ -1,0 +1,363 @@
+/* src/styles/components/forms/modals/ModalSalesServices.module.css */
+
+/* Contenedor principal del modal */
+.modalSalesServicesContent {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 1000px;
+    max-width: 95vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Header del modal */
+  .modalSalesServicesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid #e8ecef;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .modalSalesServicesHeader h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  
+  .modalSalesServicesCloseBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .modalSalesServicesCloseBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  /* Cuerpo del modal */
+  .modalSalesServicesBody {
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background: #ffffff;
+  }
+  
+  /* Formulario */
+  .modalSalesServicesForm {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .modalSalesServicesFormGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+  }
+  
+  .modalSalesServicesInput {
+    padding: 0.75rem 1rem;
+    border: 2px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    background: white;
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .modalSalesServicesInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    color: #2d3748;
+  }
+  
+  .modalSalesServicesInput::placeholder {
+    color: #6c757d;
+    font-weight: normal;
+  }
+  
+  .modalSalesServicesSelect {
+    padding: 0.75rem 1rem;
+    border: 2px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: white;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+  
+  .modalSalesServicesSelect:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    color: #2d3748;
+  }
+  
+  .modalSalesServicesBtnPrimary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .modalSalesServicesBtnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  /* Lista de items */
+  .modalSalesServicesItemsList {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .modalSalesServicesListHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    font-weight: 700;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .modalSalesServicesItemRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    align-items: center;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.2s ease;
+    color: #495057;
+  }
+  
+  .modalSalesServicesItemRow:hover {
+    background: #f8f9fa;
+  }
+  
+  .modalSalesServicesItemName {
+    font-weight: 600;
+    color: #2d3748;
+  }
+  
+  .modalSalesServicesItemAmount {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    color: #28a745;
+    font-size: 0.9rem;
+  }
+  
+  .modalSalesServicesItemRate {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #007bff;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .modalSalesServicesBtnDelete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .modalSalesServicesBtnDelete:hover {
+    background: #c82333;
+    transform: scale(1.1);
+  }
+  
+  /* Totales */
+  .modalSalesServicesTotals {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .modalSalesServicesTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #dee2e6;
+    color: #495057;
+    font-weight: 600;
+  }
+  
+  .modalSalesServicesTotalRow:last-child {
+    border-bottom: none;
+  }
+  
+  .modalSalesServicesTotalHighlight {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  
+  /* Footer del modal */
+  .modalSalesServicesFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid #e8ecef;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .modalSalesServicesBtnSecondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modalSalesServicesBtnSecondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+  }
+  
+  /* Estados vacíos */
+  .modalSalesServicesEmptyState {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6c757d;
+    background: white;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+  }
+  
+  .modalSalesServicesEmptyStateIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+  
+  .modalSalesServicesEmptyState p {
+    margin: 0.5rem 0;
+    font-weight: 500;
+  }
+  
+  /* Información de crecimiento */
+  .modalSalesServicesGrowthInfo {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+    font-style: italic;
+  }
+  
+  /* Badge para crecimiento */
+  .modalSalesServicesGrowthBadge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .modalSalesServicesGrowthPositive {
+    background: #e8f5e8;
+    color: #2d5a2d;
+    border: 1px solid #c8e6c9;
+  }
+  
+  .modalSalesServicesGrowthNeutral {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+  }
+  
+  .modalSalesServicesGrowthNegative {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+  }
+  
+  /* Proyección por años */
+  .modalSalesServicesProjection {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #667eea;
+  }
+  
+  .modalSalesServicesProjectionTitle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.25rem;
+  }
+  
+  .modalSalesServicesProjectionYears {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .modalSalesServicesProjectionYear {
+    font-size: 0.7rem;
+    color: #6c757d;
+    font-family: 'Courier New', monospace;
+  }

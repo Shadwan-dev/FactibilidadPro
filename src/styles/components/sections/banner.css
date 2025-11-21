@@ -1,0 +1,183 @@
+/* src/styles/components/sections/banner.css */
+/* Sección Banner principal */
+.banner {
+    padding: var(--space-2xl) var(--space-xl);
+    background: var(--surface-color);
+  }
+  
+  .banner .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Título de sección */
+  .section-title {
+    text-align: center;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-2xl);
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+  
+  /* Grid de tarjetas del banner */
+  .banner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+  }
+  
+  /* Tarjetas individuales del banner */
+  .banner-card {
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--background-color);
+    border-radius: var(--radius-xl);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .banner-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Icono del banner */
+  .banner-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-lg);
+    transition: transform 0.3s ease;
+  }
+  
+  .banner-card:hover .banner-icon {
+    transform: scale(1.1);
+  }
+  
+  /* Título de la tarjeta */
+  .banner-card-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+  }
+  
+  /* Descripción de la tarjeta */
+  .banner-card-description {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+  }
+  
+  /* CTA del banner */
+  .banner-cta {
+    text-align: center;
+    background: linear-gradient(135deg, var(--surface-color), var(--background-color));
+    padding: var(--space-2xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    margin-top: var(--space-xl);
+  }
+  
+  .banner-cta-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+  }
+  
+  .banner-cta .btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    text-decoration: none;
+    padding: var(--space-lg) var(--space-2xl);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .banner-cta .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+    text-decoration: none;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .banner-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .banner {
+      padding: var(--space-xl) var(--space-lg);
+    }
+    
+    .section-title {
+      font-size: var(--font-size-2xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .banner-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    
+    .banner-card {
+      padding: var(--space-lg);
+    }
+    
+    .banner-cta {
+      padding: var(--space-xl);
+    }
+    
+    .banner-cta-title {
+      font-size: var(--font-size-xl);
+    }
+    
+    .banner-icon {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .banner {
+      padding: var(--space-lg) var(--space-md);
+    }
+    
+    .section-title {
+      font-size: var(--font-size-xl);
+    }
+    
+    .banner-card {
+      padding: var(--space-lg) var(--space-md);
+    }
+    
+    .banner-card-title {
+      font-size: var(--font-size-lg);
+    }
+    
+    .banner-cta {
+      padding: var(--space-lg);
+    }
+    
+    .banner-cta-title {
+      font-size: var(--font-size-lg);
+    }
+    
+    .banner-cta .btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }

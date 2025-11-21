@@ -1,0 +1,479 @@
+/* src/styles/components/forms/financial-feasibility-analysis.css */
+/* ESTILOS PARA ANÁLISIS COMPLETO DE FACTIBILIDAD FINANCIERA */
+
+.financial-feasibility-analysis {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-top: 2rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .analysis-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f1f5f9;
+  }
+  
+  .analysis-header h4 {
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .analysis-header p {
+    color: #64748b;
+    margin: 0;
+  }
+  
+  .analysis-section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .analysis-section h5 {
+    color: #1e293b;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .analysis-section h6 {
+    color: #374151;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  /* Resumen Ejecutivo */
+  .executive-summary .executive-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .executive-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .executive-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .executive-card.viable {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  }
+  
+  .executive-card.not-viable {
+    border-color: #ef4444;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  }
+  
+  .executive-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  
+  .executive-content h6 {
+    color: #374151;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+  }
+  
+  .executive-content p {
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .executive-content small {
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+  
+  /* Grids de Análisis */
+  .profitability-grid,
+  .liquidity-grid,
+  .leverage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Tarjetas de Ratio */
+  .ratio-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid;
+    transition: all 0.3s ease;
+  }
+  
+  .ratio-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ratio-card--good {
+    border-left-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  }
+  
+  .ratio-card--warning {
+    border-left-color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+  }
+  
+  .ratio-card--neutral {
+    border-left-color: #3b82f6;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  }
+  
+  .ratio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  
+  .ratio-label {
+    color: #374151;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .ratio-badge {
+    font-size: 1.2rem;
+  }
+  
+  .ratio-value {
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ratio-benchmark {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ratio-description {
+    color: #6b7280;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  /* Punto de Equilibrio */
+  .breakeven-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .breakeven-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  
+  .breakeven-label {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .breakeven-value {
+    color: #1e293b;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .breakeven-help {
+    color: #6b7280;
+    font-size: 0.8rem;
+  }
+  
+  /* Análisis de Sensibilidad */
+  .sensitivity-scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .scenario {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .scenario h6 {
+    margin: 0 0 0.75rem 0;
+    color: #374151;
+    font-size: 1rem;
+  }
+  
+  .scenario-result {
+    color: #1e293b;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    background: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  /* Análisis de Riesgo */
+  .risk-indicators {
+    margin-bottom: 1.5rem;
+  }
+  
+  .risk-indicator {
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid;
+  }
+  
+  .risk-indicator.bajo {
+    background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+    border-color: #10b981;
+  }
+  
+  .risk-indicator.medio {
+    background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+    border-color: #f59e0b;
+  }
+  
+  .risk-indicator.alto {
+    background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+    border-color: #ef4444;
+  }
+  
+  .risk-level {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .risk-description {
+    color: #64748b;
+    font-size: 1rem;
+  }
+  
+  .risk-factors ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  
+  .risk-factors li {
+    color: #475569;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  
+  /* Conclusiones */
+  .conclusions-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+  
+  .conclusion-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid #3b82f6;
+  }
+  
+  .conclusion-card h6 {
+    color: #1e40af;
+    margin: 0 0 1rem 0;
+  }
+  
+  .conclusion-card p {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  .key-metrics {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .metrics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 6px;
+  }
+  
+  .metric-label {
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  .metric-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  
+  .metric-value.positive {
+    color: #10b981;
+  }
+  
+  .metric-value.negative {
+    color: #ef4444;
+  }
+  
+  /* Alertas y Advertencias */
+  .warning, .recommendation {
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .warning.critical, .recommendation.critical {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  
+  .warning, .recommendation.warning {
+    background: #fffbeb;
+    border: 1px solid #fed7aa;
+    color: #92400e;
+  }
+  
+  .recommendation {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+  }
+  
+  /* Insights y Listas */
+  .profitability-insights ul,
+  .risk-factors ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  
+  .profitability-insights li,
+  .risk-factors li {
+    color: #475569;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    font-size: 0.95rem;
+  }
+  
+  /* Estado de Placeholder */
+  .analysis-placeholder {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #64748b;
+  }
+  
+  .analysis-placeholder h4 {
+    color: #374151;
+    margin-bottom: 1rem;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .conclusions-content {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .financial-feasibility-analysis {
+      padding: 1.5rem;
+    }
+    
+    .executive-cards {
+      grid-template-columns: 1fr;
+    }
+    
+    .profitability-grid,
+    .liquidity-grid,
+    .leverage-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .breakeven-cards {
+      grid-template-columns: 1fr;
+    }
+    
+    .analysis-section {
+      padding: 1rem;
+    }
+    
+    .executive-card {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .financial-feasibility-analysis {
+      padding: 1rem;
+    }
+    
+    .analysis-header h4 {
+      font-size: 1.3rem;
+    }
+    
+    .ratio-value {
+      font-size: 1.3rem;
+    }
+    
+    .sensitivity-scenarios {
+      gap: 0.75rem;
+    }
+    
+    .scenario {
+      padding: 1rem;
+    }
+  }

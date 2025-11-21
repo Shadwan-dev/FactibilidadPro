@@ -1,6 +1,7 @@
 // src/components/layout/Footer.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../styles/components/layout/footer.css'; // Import específico
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>📊 CUM FactibilidadPro</h3>
+            <h3>📊 RutaPro</h3>
             <p>Tu herramienta confiable para análisis de factibilidad de proyectos.</p>
           </div>
           <div className="footer-section">
@@ -31,7 +32,7 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2025 CUM FactibilidadPro. Todos los derechos reservados.</p>
+          <p>&copy; 2025 RutaPro. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

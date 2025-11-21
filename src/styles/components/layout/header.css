@@ -1,0 +1,226 @@
+/* src/styles/components/layout/header.css */
+.header {
+  background: rgba(30, 41, 59, 0.8); /* ✅ Translúcido */
+  backdrop-filter: blur(12px); /* ✅ Efecto glass */
+  -webkit-backdrop-filter: blur(12px); /* ✅ Soporte Safari */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100; /* ✅ Por encima de casi todo */
+  transition: all 0.3s ease;
+}
+
+/* ✅ Efecto de profundidad cuando se hace scroll */
+.header.scrolled {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo con efecto glass mejorado */
+.logo h2 {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Navegación con efectos translúcidos */
+.navigation {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+/* Botones con efecto glass */
+.nav-link.login-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-link.login-btn:hover {
+  background: linear-gradient(135deg, var(--primary-dark), #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+/* Menú de usuario con efecto glass */
+.user-menu-container {
+  position: relative;
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.user-avatar:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* Menú desplegable con efecto glass */
+.user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  min-width: 220px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 1000; /* ✅ Por encima del header */
+  margin-top: var(--space-sm);
+  animation: fadeInDown 0.2s ease-out;
+}
+
+.user-info {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--space-sm);
+}
+
+.user-info strong {
+  display: block;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  font-size: var(--font-size-md);
+}
+
+.user-info span {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: var(--space-sm) 0;
+}
+
+.menu-item {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background 0.3s ease;
+  font-size: var(--font-size-sm);
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-container {
+    padding: var(--space-md);
+    flex-wrap: wrap;
+  }
+  
+  .navigation {
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: var(--space-md);
+  }
+  
+  .user-welcome {
+    display: none;
+  }
+  
+  .nav-link {
+    padding: var(--space-md);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .user-menu {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    min-width: auto;
+    z-index: 1001; /* ✅ Más alto en móviles */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .navigation {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}

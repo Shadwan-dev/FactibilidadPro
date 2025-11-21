@@ -1,301 +1,473 @@
-// src/components/forms/TechnicalDataForm.jsx (ACTUALIZADO)
-import React, { useState, useCallback } from 'react';
+// TechnicalDataForm.jsx - CON BOTÓN PARA IR A FINANZAS
+import React from "react";
+import { useTechnicalForm } from "../../hooks/useTechnicalForm";
+import { TechnicalResults } from "./TechnicalResults";
+import { TechnicalModalManager } from "./modals/TechnicalModalManager";
+import '../../styles/components/forms/technical-base.css';
+import '../../styles/components/forms/technical-cards.css';
+import '../../styles/components/forms/technical-buttons.css';
 
-export const TechnicalDataForm = React.memo(({ data, onChange, calculations }) => {
-  const [localData, setLocalData] = useState(data);
-  const [showResults, setShowResults] = useState(false);
-
-  const handleInputChange = useCallback((field, value) => {
-    const finalValue = typeof value === 'boolean' ? value : 
-                      value === '' ? '' : isNaN(value) ? value : parseFloat(value) || 0;
-    
-    const newData = { 
-      ...localData, 
-      [field]: finalValue 
-    };
-    setLocalData(newData);
-    onChange('technical', newData);
-  }, [localData, onChange]);
-
-  const handleSelectChange = useCallback((field, value) => {
-    const newData = { 
-      ...localData, 
-      [field]: value === 'true' 
-    };
-    setLocalData(newData);
-    onChange('technical', newData);
-  }, [localData, onChange]);
-
-  // Sincronizar cuando los props cambian externamente
+export const TechnicalDataForm = React.memo(({ 
+  data, 
+  onChange, 
+  onBack, 
+  onNavigateToFinancial 
+}) => {  
+  const {
+    formData,
+    activeModal,
+    modalData,
+    lastSaved,
+    saving,
+    openModal,
+    closeModal,
+    saveFieldEvaluation,
+    saveAllFormData
+  } = useTechnicalForm(data);
+  
+  // Sincronización optimizada con el componente padre
+  const previousDataRef = React.useRef();
+  
   React.useEffect(() => {
-    setLocalData(data);
-  }, [data]);
-
-  // Verificar si hay datos suficientes para mostrar resultados
-  const hasValidData = localData.teamCapacity !== undefined && localData.infrastructure !== undefined;
-
-  // Calcular métricas técnicas adicionales
-  const calculateTechnicalMetrics = () => {
-    const technicalReadiness = ((localData.teamCapacity || 0) + (localData.infrastructure || 0)) / 2;
-    const implementationRisk = (localData.complexity || 0) * (localData.implementationTime || 0) / 10;
-    const resourceAdequacy = (localData.requiredStaff || 0) > 0 ? 'Definido' : 'Por definir';
+    if (previousDataRef.current === undefined) {
+      previousDataRef.current = formData;
+      return;
+    }
     
-    return {
-      technicalReadiness,
-      implementationRisk,
-      resourceAdequacy
-    };
+    if (JSON.stringify(previousDataRef.current) !== JSON.stringify(formData)) {
+      onChange("technical", formData);
+      previousDataRef.current = formData;
+    }
+  }, [formData, onChange]);
+
+  const handleSaveAll = () => {
+    const allData = saveAllFormData();
+    
+    // Feedback visual
+    alert('✅ Todos los datos técnicos han sido guardados exitosamente');
   };
 
-  const technicalMetrics = calculateTechnicalMetrics();
+  // Contar campos completados
+  const completedFields = Object.keys(formData).filter(key => {
+    if (key.includes('Rating')) {
+      return formData[key] && formData[key] !== '';
+    }
+    if (key.includes('Details') || key.includes('Factors')) {
+      return formData[key] && formData[key].length > 0;
+    }
+    return false;
+  }).length;
+
+  const totalFields = 20;
 
   return (
-    <div className="form-section technical-form">
-      <div className="technical-form__header">
-        <h3>🔧 Factibilidad Técnica</h3>
-        {hasValidData && (
-          <button 
-            onClick={() => setShowResults(!showResults)}
-            className="technical-form__toggle-btn"
-          >
-            {showResults ? '📊 Ocultar Evaluación' : '⚙️ Ver Evaluación'}
-          </button>
-        )}
-      </div>
-      
-      <div className="technical-form__inputs">
-        <div className="technical-form__input-group">
-          <label>Capacidad Técnica del Equipo (1-10):</label>
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={localData.teamCapacity || ''}
-            onChange={(e) => handleInputChange('teamCapacity', e.target.value)}
-            placeholder="1-10"
-          />
-          <small>1 = Baja capacidad, 10 = Alta capacidad</small>
+    <div className="technical-form">
+      {/* Header con navegación */}
+      <div className="form-header">
+        <div className="technical-header-content">
+          <div>
+            <h3 className="form-title">🔧 Análisis Técnico</h3>
+            <p className="form-subtitle">
+              Evaluación cualitativa de los aspectos técnicos del proyecto
+            </p>
+          </div>
+          <div className="technical-header-actions">
+            {lastSaved && (
+              <div className="technical-last-saved">
+                Último guardado:{" "}
+                {lastSaved.field === "all"
+                  ? "Formulario completo"
+                  : lastSaved.field}
+                a las {lastSaved.timestamp}
+              </div>
+            )}
+
+            {/* Botón para ir a Finanzas */}
+            <button
+              onClick={onNavigateToFinancial}
+              className="technical-navigate-btn technical-navigate-btn--financial"
+            >
+              💰 Ir a Análisis Financiero
+            </button>
+
+            <button
+              onClick={handleSaveAll}
+              className="technical-save-all-btn"
+              disabled={completedFields === 0}
+            >
+              💾 Guardar Todo el Formulario
+            </button>
+          </div>
         </div>
 
-        <div className="technical-form__input-group">
-          <label>Infraestructura Disponible (1-10):</label>
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={localData.infrastructure || ''}
-            onChange={(e) => handleInputChange('infrastructure', e.target.value)}
-            placeholder="1-10"
-          />
-          <small>1 = Insuficiente, 10 = Excelente</small>
-        </div>
-
-        <div className="technical-form__input-group">
-          <label>Tecnología Requerida:</label>
-          <select 
-            value={localData.technologyAvailable || ''}
-            onChange={(e) => handleSelectChange('technologyAvailable', e.target.value)}
-          >
-            <option value="">Seleccionar</option>
-            <option value="true">Disponible</option>
-            <option value="false">No Disponible</option>
-          </select>
-          <small>Disponibilidad de tecnología necesaria</small>
-        </div>
-
-        <div className="technical-form__input-group">
-          <label>Tiempo de Implementación (meses):</label>
-          <input
-            type="number"
-            value={localData.implementationTime || ''}
-            onChange={(e) => handleInputChange('implementationTime', e.target.value)}
-            placeholder="Ej: 6"
-          />
-          <small>Tiempo estimado para implementación</small>
-        </div>
-
-        <div className="technical-form__input-group">
-          <label>Complejidad Técnica (1-10):</label>
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={localData.complexity || ''}
-            onChange={(e) => handleInputChange('complexity', e.target.value)}
-            placeholder="1-10"
-          />
-          <small>1 = Simple, 10 = Muy complejo</small>
-        </div>
-
-        <div className="technical-form__input-group">
-          <label>Recursos Humanos Necesarios:</label>
-          <input
-            type="number"
-            value={localData.requiredStaff || ''}
-            onChange={(e) => handleInputChange('requiredStaff', e.target.value)}
-            placeholder="Ej: 5"
-          />
-          <small>Número de personas requeridas</small>
+        {/* Progress bar de completado */}
+        <div
+          className={`technical-completion-progress ${
+            completedFields === totalFields ? "completed" : ""
+          }`}
+        >
+          <div className="technical-progress-info">
+            <span>
+              Progreso: {completedFields}/{totalFields} campos
+            </span>
+            <span>
+              {Math.round((completedFields / totalFields) * 100)}% completado
+            </span>
+          </div>
+          <div className="technical-progress-bar">
+            <div
+              className="technical-progress-fill"
+              style={{ width: `${(completedFields / totalFields) * 100}%` }}
+            ></div>
+          </div>
         </div>
       </div>
 
-      {/* Resultados en Tiempo Real */}
-      {showResults && calculations && (
-        <div className="technical-form__results">
-          <h4>⚙️ Evaluación Técnica</h4>
-          
-          {/* Puntuación General */}
-          <div className="technical-form__score-section">
-            <div className="technical-form__score-card">
-              <div className="technical-form__score-header">
-                <span>Puntuación Técnica</span>
-                <span className={`technical-form__score-badge ${calculations.technical?.viable ? 'technical-form__score-viable' : 'technical-form__score-not-viable'}`}>
-                  {calculations.technical?.viable ? 'VIABLE' : 'NO VIABLE'}
-                </span>
-              </div>
-              <div className="technical-form__score-value">
-                {calculations.technical?.score || 0}/100
-              </div>
-              <div className="technical-form__score-level">
-                Nivel: {calculations.technical?.level || 'Bajo'}
-              </div>
+      {/* Sección de alerta si hay campos críticos pendientes */}
+      {completedFields < 5 && (
+        <div className="technical-alert technical-alert--warning">
+          <div className="technical-alert-icon">⚠️</div>
+          <div className="technical-alert-content">
+            <h4>Revisión Recomendada</h4>
+            <p>
+              Tienes{" "}
+              <strong>
+                {completedFields} de {totalFields} campos completados
+              </strong>
+              . Te recomendamos completar los campos críticos antes de
+              continuar:
+            </p>
+            <ul className="technical-critical-fields">
+              <li>📍 Localización del Proyecto</li>
+              <li>📊 Tamaño y Capacidad</li>
+              <li>⚙️ Ingeniería del Proyecto</li>
+            </ul>
+            <div className="technical-alert-actions">
+              <button
+                onClick={() => {
+                  // Scroll a la primera sección
+                  document.querySelector(".form-section")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+                className="technical-alert-btn technical-alert-btn--primary"
+              >
+                🔧 Completar Campos Críticos
+              </button>
             </div>
           </div>
+        </div>
+      )}
 
-          {/* Métricas Técnicas */}
-          <div className="technical-form__metrics">
-            <h5>📊 Métricas Técnicas</h5>
-            <div className="technical-form__metrics-grid">
-              <div className="technical-form__metric-item">
-                <span className="technical-form__metric-label">Preparación Técnica:</span>
-                <span className={`technical-form__metric-value ${technicalMetrics.technicalReadiness >= 7 ? 'technical-form__metric-positive' : technicalMetrics.technicalReadiness >= 5 ? 'technical-form__metric-warning' : 'technical-form__metric-danger'}`}>
-                  {technicalMetrics.technicalReadiness.toFixed(1)}/10
-                </span>
-                <small>Capacidad + Infraestructura</small>
-              </div>
+      {/* Sección 1: Localización */}
+      <div className="form-section">
+        <h4 className="section-title-technical-form">
+          📍 Localización del Proyecto
+        </h4>
+        <div className="section-grid">
+          <TechnicalCard
+            title="Macrolocalización"
+            description="Región, ciudad, zona"
+            rating={formData.macrolocationRating}
+            items={formData.macrolocationDetails}
+            onOpenModal={() =>
+              openModal("macrolocation", formData.macrolocationDetails)
+            }
+          />
+          <TechnicalCard
+            title="Microlocalización"
+            description="Ubicación específica, terreno"
+            rating={formData.microlocationRating}
+            items={formData.microlocationDetails}
+            onOpenModal={() =>
+              openModal("microlocation", formData.microlocationDetails)
+            }
+          />
+          <TechnicalCard
+            title="Factores de Localización"
+            description="Acceso a recursos, mercado, transporte"
+            rating={formData.locationFactorsRating}
+            items={formData.locationFactors}
+            onOpenModal={() =>
+              openModal("locationFactors", formData.locationFactors)
+            }
+          />
+        </div>
+      </div>
 
-              <div className="technical-form__metric-item">
-                <span className="technical-form__metric-label">Riesgo de Implementación:</span>
-                <span className={`technical-form__metric-value ${technicalMetrics.implementationRisk <= 3 ? 'technical-form__metric-positive' : technicalMetrics.implementationRisk <= 6 ? 'technical-form__metric-warning' : 'technical-form__metric-danger'}`}>
-                  {technicalMetrics.implementationRisk.toFixed(1)}/10
-                </span>
-                <small>Complejidad × Tiempo</small>
-              </div>
+      {/* Sección 2: Tamaño y Capacidad */}
+      <div className="form-section">
+        <h4 className="section-title-technical-form">📊 Tamaño y Capacidad</h4>
+        <div className="section-grid">
+          <TechnicalCard
+            title="Capacidad Instalada"
+            description="Capacidad máxima de producción"
+            rating={formData.capacityRating}
+            items={formData.capacityDetails}
+            onOpenModal={() => openModal("capacity", formData.capacityDetails)}
+          />
+          <TechnicalCard
+            title="Volumen de Producción"
+            description="Niveles de producción proyectados"
+            rating={formData.productionRating}
+            items={formData.productionDetails}
+            onOpenModal={() =>
+              openModal("production", formData.productionDetails)
+            }
+          />
+          <TechnicalCard
+            title="Factores Limitantes"
+            description="Restricciones de capacidad"
+            rating={formData.limitingFactorsRating}
+            items={formData.limitingFactors}
+            onOpenModal={() =>
+              openModal("limitingFactors", formData.limitingFactors)
+            }
+          />
+        </div>
+      </div>
 
-              <div className="technical-form__metric-item">
-                <span className="technical-form__metric-label">Recursos Humanos:</span>
-                <span className={`technical-form__metric-value ${technicalMetrics.resourceAdequacy === 'Definido' ? 'technical-form__metric-positive' : 'technical-form__metric-warning'}`}>
-                  {technicalMetrics.resourceAdequacy}
-                </span>
-                <small>Definición de equipo</small>
-              </div>
+      {/* Sección 3: Ingeniería del Proyecto */}
+      <div className="form-section">
+        <h4 className="section-title-technical-form">
+          ⚙️ Ingeniería del Proyecto
+        </h4>
+        <div className="section-grid">
+          <TechnicalCard
+            title="Descripción del Producto/Servicio"
+            description="Características técnicas principales"
+            rating={formData.productDescriptionRating}
+            items={formData.productDescription}
+            onOpenModal={() =>
+              openModal("productDescription", formData.productDescription)
+            }
+          />
+          <TechnicalCard
+            title="Proceso Productivo"
+            description="Diagrama de flujo y etapas"
+            rating={formData.productionProcessRating}
+            items={formData.productionProcess}
+            onOpenModal={() =>
+              openModal("productionProcess", formData.productionProcess)
+            }
+          />
+          <TechnicalCard
+            title="Tecnología y Maquinaria"
+            description="Equipos y tecnología requerida"
+            rating={formData.technologyRating}
+            items={formData.technologyDetails}
+            onOpenModal={() =>
+              openModal("technology", formData.technologyDetails)
+            }
+          />
+          <TechnicalCard
+            title="Distribución de Planta"
+            description="Layout y organización física"
+            rating={formData.layoutRating}
+            items={formData.layoutDetails}
+            onOpenModal={() => openModal("layout", formData.layoutDetails)}
+          />
+        </div>
+      </div>
 
-              <div className="technical-form__metric-item">
-                <span className="technical-form__metric-label">Disponibilidad Tecnológica:</span>
-                <span className={`technical-form__metric-value ${localData.technologyAvailable ? 'technical-form__metric-positive' : 'technical-form__metric-danger'}`}>
-                  {localData.technologyAvailable ? '✅ Disponible' : '❌ No disponible'}
-                </span>
-                <small>Tecnología requerida</small>
-              </div>
-            </div>
-          </div>
+      {/* Sección 4: Recursos Necesarios */}
+      <div className="form-section">
+        <h4 className="section-title-technical-form">🛠️ Recursos Necesarios</h4>
+        <div className="section-grid">
+          <TechnicalCard
+            title="Materias Primas e Insumos"
+            description="Materiales requeridos"
+            rating={formData.rawMaterialsRating}
+            items={formData.rawMaterials}
+            onOpenModal={() => openModal("rawMaterials", formData.rawMaterials)}
+          />
+          <TechnicalCard
+            title="Mano de Obra"
+            description="Personal y calificaciones"
+            rating={formData.laborRating}
+            items={formData.laborDetails}
+            onOpenModal={() => openModal("labor", formData.laborDetails)}
+          />
+          <TechnicalCard
+            title="Servicios Básicos"
+            description="Agua, electricidad, gas, etc."
+            rating={formData.servicesRating}
+            items={formData.servicesDetails}
+            onOpenModal={() => openModal("services", formData.servicesDetails)}
+          />
+        </div>
+      </div>
 
-          {/* Análisis de Capacidades */}
-          <div className="technical-form__capabilities">
-            <h5>🔍 Análisis de Capacidades</h5>
-            <div className="technical-form__capabilities-grid">
-              <div className="technical-form__capability-item">
-                <span>Capacidad del Equipo:</span>
-                <strong className={localData.teamCapacity >= 7 ? 'technical-form__status-good' : localData.teamCapacity >= 5 ? 'technical-form__status-fair' : 'technical-form__status-poor'}>
-                  {localData.teamCapacity || 0}/10
-                </strong>
-              </div>
-              
-              <div className="technical-form__capability-item">
-                <span>Infraestructura:</span>
-                <strong className={localData.infrastructure >= 7 ? 'technical-form__status-good' : localData.infrastructure >= 5 ? 'technical-form__status-fair' : 'technical-form__status-poor'}>
-                  {localData.infrastructure || 0}/10
-                </strong>
-              </div>
-              
-              <div className="technical-form__capability-item">
-                <span>Complejidad:</span>
-                <strong className={localData.complexity <= 3 ? 'technical-form__status-good' : localData.complexity <= 6 ? 'technical-form__status-fair' : 'technical-form__status-poor'}>
-                  {localData.complexity || 0}/10
-                </strong>
-              </div>
-              
-              <div className="technical-form__capability-item">
-                <span>Tiempo Implementación:</span>
-                <strong className={localData.implementationTime <= 6 ? 'technical-form__status-good' : localData.implementationTime <= 12 ? 'technical-form__status-fair' : 'technical-form__status-poor'}>
-                  {localData.implementationTime || 0} meses
-                </strong>
-              </div>
-            </div>
-          </div>
+      {/* Sección 5: Infraestructura Física */}
+      <div className="form-section">
+        <h4 className="section-title-technical-form">
+          🏗️ Infraestructura Física
+        </h4>
+        <div className="section-grid">
+          <TechnicalCard
+            title="Edificaciones y Construcciones"
+            description="Estructuras físicas requeridas"
+            rating={formData.buildingsRating}
+            items={formData.buildingsDetails}
+            onOpenModal={() =>
+              openModal("buildings", formData.buildingsDetails)
+            }
+          />
+          <TechnicalCard
+            title="Equipos y Maquinaria"
+            description="Equipamiento técnico"
+            rating={formData.equipmentRating}
+            items={formData.equipmentDetails}
+            onOpenModal={() =>
+              openModal("equipment", formData.equipmentDetails)
+            }
+          />
+          <TechnicalCard
+            title="Mobiliario e Instalaciones"
+            description="Mobiliario y acabados"
+            rating={formData.furnitureRating}
+            items={formData.furnitureDetails}
+            onOpenModal={() =>
+              openModal("furniture", formData.furnitureDetails)
+            }
+          />
+        </div>
+      </div>
 
-          {/* Recomendaciones */}
-          {calculations.suggestions && calculations.suggestions.filter(s => s.campo === 'technical').length > 0 && (
-            <div className="technical-form__recommendations">
-              <h5>💡 Recomendaciones Técnicas</h5>
-              {calculations.suggestions
-                .filter(suggestion => suggestion.campo === 'technical')
-                .map((suggestion, index) => (
-                  <div key={index} className="technical-form__recommendation">
-                    <p className="technical-form__recommendation-title">{suggestion.mensaje}</p>
-                    <ul className="technical-form__recommendation-list">
-                      {suggestion.sugerencias.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))
-              }
-            </div>
+      {/* Sección 6: Cronograma de Implementación */}
+      <div className="form-section">
+        <h4 className="section-title-technical-form">
+          📅 Cronograma de Implementación
+        </h4>
+        <div className="section-grid">
+          <TechnicalCard
+            title="Fases del Proyecto"
+            description="Etapas de implementación"
+            rating={formData.phasesRating}
+            items={formData.projectPhases}
+            onOpenModal={() => openModal("phases", formData.projectPhases)}
+          />
+          <TechnicalCard
+            title="Tiempos de Ejecución"
+            description="Duración estimada por fase"
+            rating={formData.timelineRating}
+            items={formData.timelineDetails}
+            onOpenModal={() => openModal("timeline", formData.timelineDetails)}
+          />
+        </div>
+      </div>
+
+      {/* Resultados Técnicos */}
+      <TechnicalResults formData={formData} />
+      {/* Footer con navegación */}
+      <div className="technical-form-footer">
+        <div className="technical-footer-actions">
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="technical-navigate-btn technical-navigate-btn--back"
+            >
+              ← Volver
+            </button>
           )}
 
-          {/* Evaluación de Riesgos Técnicos */}
-          <div className="technical-form__risk-assessment">
-            <h5>⚠️ Evaluación de Riesgos Técnicos</h5>
-            <div className="technical-form__risk-indicators">
-              <div className="technical-form__risk-item">
-                <span>Riesgo de Capacidad:</span>
-                <div className={localData.teamCapacity >= 7 ? 'technical-form__risk-low' : localData.teamCapacity >= 5 ? 'technical-form__risk-medium' : 'technical-form__risk-high'}>
-                  {localData.teamCapacity >= 7 ? 'Bajo' : localData.teamCapacity >= 5 ? 'Medio' : 'Alto'}
-                </div>
-              </div>
-              
-              <div className="technical-form__risk-item">
-                <span>Riesgo Tecnológico:</span>
-                <div className={localData.technologyAvailable ? 'technical-form__risk-low' : 'technical-form__risk-high'}>
-                  {localData.technologyAvailable ? 'Bajo' : 'Alto'}
-                </div>
-              </div>
-              
-              <div className="technical-form__risk-item">
-                <span>Riesgo de Complejidad:</span>
-                <div className={localData.complexity <= 4 ? 'technical-form__risk-low' : localData.complexity <= 7 ? 'technical-form__risk-medium' : 'technical-form__risk-high'}>
-                  {localData.complexity <= 4 ? 'Bajo' : localData.complexity <= 7 ? 'Medio' : 'Alto'}
-                </div>
-              </div>
-              
-              <div className="technical-form__risk-item">
-                <span>Riesgo de Tiempo:</span>
-                <div className={localData.implementationTime <= 6 ? 'technical-form__risk-low' : localData.implementationTime <= 12 ? 'technical-form__risk-medium' : 'technical-form__risk-high'}>
-                  {localData.implementationTime <= 6 ? 'Bajo' : localData.implementationTime <= 12 ? 'Medio' : 'Alto'}
-                </div>
-              </div>
-            </div>
+          <button
+            onClick={onNavigateToFinancial}
+            className="technical-navigate-btn technical-navigate-btn--financial technical-navigate-btn--large"
+          >
+            💰 Ir a Análisis Financiero →
+          </button>
+        </div>
+
+        <div className="technical-save-footer">
+          <button
+            onClick={saveAllFormData}
+            className="technical-save-all-btn technical-save-all-btn--large"
+            disabled={saving || completedFields === 0}
+          >
+            {saving ? "💾 Guardando..." : "💾 Guardar Todo el Análisis Técnico"}
+          </button>
+          <div className="technical-save-hint">
+            {saving
+              ? "Guardando en la base de datos..."
+              : completedFields === 0
+              ? "Completa al menos un campo para poder guardar"
+              : `✅ ${completedFields} campos listos para guardar`}
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Indicador de Estado */}
-      {!hasValidData && (
-        <div className="technical-form__data-required">
-          <p>🔧 Completa los datos técnicos para ver la evaluación</p>
-        </div>
-      )}
+      {/* Gestor de Modales */}
+      <TechnicalModalManager
+        activeModal={activeModal}
+        modalData={modalData}
+        onClose={closeModal}
+        onSave={saveFieldEvaluation}
+      />
     </div>
   );
 });
+
+
+// Componente de Tarjeta Técnica - ACTUALIZADO
+const TechnicalCard = ({ title, description, rating, items, onOpenModal }) => {
+  const getRatingText = (rating) => {
+    switch(rating) {
+      case 'excellent': return 'Excelente';
+      case 'good': return 'Buena';
+      case 'regular': return 'Regular';
+      case 'poor': return 'Mala';
+      default: return 'No evaluado';
+    }
+  };
+
+  const getRatingColor = (rating) => {
+    switch(rating) {
+      case 'excellent': return '#10b981';
+      case 'good': return '#3b82f6';
+      case 'regular': return '#f59e0b';
+      case 'poor': return '#ef4444';
+      default: return '#6b7280';
+    }
+  };
+
+  return (
+    <div className="technical-card">
+      <div className="card-header">
+        <div>
+          <label className="card-label">{title}</label>
+          <div className="card-description">{description}</div>
+        </div>
+        <button 
+          className="btn-modal"
+          onClick={onOpenModal}
+        >
+          {items?.length ? '✏️ Editar' : '➕ Agregar'}
+        </button>
+      </div>
+      
+      <div className="card-rating">
+        <span 
+          className="rating-badge"
+          style={{ backgroundColor: getRatingColor(rating) }}
+        >
+          {getRatingText(rating)}
+        </span>
+      </div>
+      
+      <div className="card-items">
+        {items?.slice(0, 3).map((item, index) => (
+          <div key={index} className="card-item">
+            <span className="item-name">{item.description || item.name}</span>
+          </div>
+        ))}
+        {items?.length > 3 && (
+          <div className="card-more">+{items.length - 3} elementos más</div>
+        )}
+        {(!items || items.length === 0) && (
+          <div className="card-empty">No hay información agregada</div>
+        )}
+      </div>
+    </div>
+  );
+};

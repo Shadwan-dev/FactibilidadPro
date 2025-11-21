@@ -1,0 +1,177 @@
+/* src/styles/components/sections/features.css */
+/* Sección Features principal */
+.features {
+    padding: var(--space-2xl) var(--space-xl);
+    background: var(--background-color);
+  }
+  
+  .features .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Título de sección - ya definido en banner.css, pero lo mantenemos por si acaso */
+  .features .section-title {
+    text-align: center;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-2xl);
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+  
+  /* Grid de características */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-xl);
+  }
+  
+  /* Tarjetas de características */
+  .feature-card {
+    background: var(--surface-color);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Icono de características */
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-lg);
+    transition: transform 0.3s ease;
+  }
+  
+  .feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+  
+  /* Título de la característica */
+  .feature-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+  
+  /* Descripción de la característica */
+  .feature-description {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+  }
+  
+  /* Efectos de borde decorativos */
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .features {
+      padding: var(--space-xl) var(--space-lg);
+    }
+    
+    .features .section-title {
+      font-size: var(--font-size-2xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    
+    .feature-card {
+      padding: var(--space-lg);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+    }
+    
+    .feature-title {
+      font-size: var(--font-size-lg);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .features {
+      padding: var(--space-lg) var(--space-md);
+    }
+    
+    .features .section-title {
+      font-size: var(--font-size-xl);
+    }
+    
+    .feature-card {
+      padding: var(--space-lg) var(--space-md);
+    }
+    
+    .feature-title {
+      font-size: var(--font-size-md);
+    }
+    
+    .feature-description {
+      font-size: var(--font-size-sm);
+    }
+  }
+  
+  /* Animaciones de entrada */
+  .feature-card {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .feature-card:nth-child(1) { animation-delay: 0.1s; }
+  .feature-card:nth-child(2) { animation-delay: 0.2s; }
+  .feature-card:nth-child(3) { animation-delay: 0.3s; }
+  .feature-card:nth-child(4) { animation-delay: 0.4s; }
+  .feature-card:nth-child(5) { animation-delay: 0.5s; }
+  .feature-card:nth-child(6) { animation-delay: 0.6s; }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

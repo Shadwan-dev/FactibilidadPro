@@ -1,0 +1,553 @@
+/* src/styles/components/dashboard/user-dashboard.css */
+/* Contenedor principal del dashboard de usuario */
+.user-dashboard {
+    padding: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Pestañas de navegación */
+  .dashboard-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: var(--space-sm);
+  }
+  
+  .tab-button {
+    background: none;
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .tab-button:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .tab-button.active {
+    color: var(--primary-color);
+  }
+  
+  .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+  }
+  
+  .tab-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Header de perfil de usuario */
+  .user-profile-header {
+    background: linear-gradient(135deg, var(--surface-color), var(--background-color));
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--space-xl);
+    text-align: center;
+  }
+  
+  .user-profile-header h2 {
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    font-size: var(--font-size-2xl);
+  }
+  
+  .user-profile-header p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Selector de modo */
+  .mode-selector {
+    background: var(--surface-color);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--space-xl);
+    text-align: center;
+  }
+  
+  .mode-selector h3 {
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+  }
+  
+  .mode-buttons {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+  }
+  
+  .btn-guided, .btn-advanced {
+    padding: var(--space-lg) var(--space-xl);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 250px;
+  }
+  
+  .btn-guided {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-color: var(--primary-color);
+  }
+  
+  .btn-guided:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+  }
+  
+  .btn-advanced {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  }
+  
+  .btn-advanced:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mode-hint {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin: 0;
+    font-style: italic;
+  }
+  
+  /* Mensaje de completado */
+  .completion-message {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-xl);
+    text-align: center;
+  }
+  
+  .completion-message h4 {
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-lg);
+  }
+  
+  .completion-message p {
+    margin: 0;
+    opacity: 0.9;
+  }
+  
+  /* Secciones de formularios explicados */
+  .forms-explained {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+  
+  .form-section-explained {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .form-section-explained:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .form-header {
+    padding: var(--space-xl);
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, var(--background-color), var(--surface-color));
+  }
+  
+  .form-header h2 {
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  .form-description {
+    background: var(--background-color);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary-color);
+  }
+  
+  .form-description p {
+    margin: var(--space-sm) 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  
+  .form-description p:first-child {
+    margin-top: 0;
+  }
+  
+  .form-description p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .form-description strong {
+    color: var(--text-primary);
+  }
+  
+  /* Información de envío automático */
+  .user-submission-info {
+    background: linear-gradient(135deg, #dbeafe, #d1edf1);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    border: 2px dashed #3b82f6;
+    text-align: center;
+    margin: var(--space-xl) 0;
+  }
+  
+  .user-submission-info h3 {
+    margin-bottom: var(--space-md);
+    color: #1e40af;
+    font-size: var(--font-size-xl);
+  }
+  
+  .user-submission-info p {
+    color: #374151;
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+  }
+  
+  /* Estados de notificación */
+  .notification-status {
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    margin: var(--space-lg) 0;
+    text-align: center;
+  }
+  
+  .notification-status.pending {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #92400e;
+  }
+  
+  .notification-status.analyzed {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #065f46;
+  }
+  
+  /* Badge de viabilidad */
+  .viability-badge {
+    background: white;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    margin-top: var(--space-md);
+    border: 2px solid;
+    font-weight: 600;
+  }
+  
+  .viability-badge strong {
+    font-size: var(--font-size-lg);
+  }
+  
+  .viability-badge small {
+    color: var(--text-secondary);
+    font-weight: normal;
+  }
+  
+  /* Sección de envío */
+  .submit-section {
+    background: var(--surface-color);
+    padding: var(--space-2xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    margin-top: var(--space-xl);
+    text-align: center;
+  }
+  
+  .submit-info h3 {
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+  }
+  
+  .submit-info p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: 1.5;
+  }
+  
+  .notification-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-lg);
+  }
+  
+  .notification-warning small {
+    color: #92400e;
+    line-height: 1.4;
+  }
+  
+  /* Pestaña de análisis */
+  .analysis-tab {
+    background: var(--surface-color);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    padding: var(--space-xl);
+    min-height: 400px;
+  }
+  
+  /* Estados de botones */
+  .btn-success {
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    color: white;
+  }
+  
+  .btn-success:hover:not(:disabled) {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-2px);
+  }
+  
+  .btn-secondary {
+    background: var(--secondary-color);
+    color: white;
+  }
+  
+  .btn-secondary:hover:not(:disabled) {
+    background: #475569;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .user-dashboard {
+      padding: var(--space-md);
+    }
+    
+    .dashboard-tabs {
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .tab-button {
+      text-align: center;
+      border-radius: var(--radius-md);
+    }
+    
+    .tab-button.active::after {
+      display: none;
+    }
+    
+    .mode-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .btn-guided, .btn-advanced {
+      min-width: auto;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .form-header {
+      padding: var(--space-lg);
+    }
+    
+    .user-profile-header,
+    .mode-selector,
+    .submit-section {
+      padding: var(--space-lg);
+    }
+    
+    .user-submission-info {
+      margin: var(--space-lg) 0;
+      padding: var(--space-lg);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user-dashboard {
+      padding: var(--space-sm);
+    }
+    
+    .form-header h2 {
+      font-size: var(--font-size-lg);
+    }
+    
+    .form-description {
+      padding: var(--space-md);
+    }
+    
+    .user-profile-header h2 {
+      font-size: var(--font-size-xl);
+    }
+    
+    .mode-selector h3 {
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  /* Estilos para el formulario financiero directo */
+/* En tu user-dashboard.css */
+.financial-form-direct {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #e1e5e9;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
+}
+
+.direct-form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.direct-form-header h3 {
+  color: #1a202c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.direct-form-header p {
+  color: #4a5568;
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.btn-back-to-guided {
+  background: linear-gradient(135deg, #6c757d, #5a6268);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back-to-guided:hover {
+  background: linear-gradient(135deg, #5a6268, #495057);
+  transform: translateX(-5px);
+}
+
+/* Pestañas del dashboard - GARROTE APLICADO */
+.dashboard-tabs {
+  display: flex;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #000000 !important; /* ¡GARROTE! Negro puro */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); /* Sombra blanca para contraste extra */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Estados de los botones - CONTRASTE MÁXIMO */
+.tab-button:not(.active):not(:disabled):hover {
+  background: #e2e8f0 !important;
+  color: #000000 !important; /* Negro siempre */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tab-button.active {
+  background: #1e40af !important; /* Azul intenso */
+  color: #ffffff !important; /* Blanco para contraste máximo */
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Sombra negra en activo */
+}
+
+.tab-button:disabled {
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important; /* Gris para deshabilitado */
+  cursor: not-allowed;
+  opacity: 0.6;
+  text-shadow: none;
+}
+
+/* Efectos visuales extras para GARROTE VISUAL */
+.tab-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.tab-button:hover::before {
+  left: 100%;
+}
+
+/* Estados específicos para mejor legibilidad */
+.tab-button.active:hover {
+  background: #1e3a8a !important; /* Azul más oscuro al hover */
+  color: #ffffff !important;
+}
+
+/* Garantizar que los emojis también tengan buen contraste */
+.tab-button span {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+/* Responsive - GARROTE TAMBIÉN EN MÓVIL */
+@media (max-width: 768px) {
+  .dashboard-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tab-button {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+}

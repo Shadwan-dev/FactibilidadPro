@@ -1,0 +1,109 @@
+/* src/styles/components/forms/technical-cards.css */
+/* ESTILOS EXCLUSIVOS PARA TARJETAS TÉCNICAS */
+
+.technical-card {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .technical-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .technical-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  
+  .technical-card .card-label {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  
+  .technical-card .card-description {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .technical-card .btn-modal {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .technical-card .btn-modal:hover {
+    background: #2563eb;
+    transform: scale(1.05);
+  }
+  
+  .technical-card .card-rating {
+    margin-bottom: 1rem;
+  }
+  
+  .technical-card .rating-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .technical-card .card-items {
+    min-height: 60px;
+  }
+  
+  .technical-card .card-item {
+    background: #f8fafc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid #3b82f6;
+  }
+  
+  .technical-card .item-name {
+    color: #475569;
+    font-size: 0.9rem;
+  }
+  
+  .technical-card .card-more {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 0.5rem;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+  
+  .technical-card .card-empty {
+    background: #f8fafc;
+    color: #94a3b8;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.9rem;
+    border: 1px dashed #cbd5e1;
+  }

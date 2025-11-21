@@ -1,18 +1,30 @@
-// src/components/layout/Header.jsx
-import React, { useState } from 'react';
+// src/components/layout/Header.jsx - VERSIÓN MEJORADA
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import '../../styles/components/layout/header.css';
 
 export function Header({ username, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Determinar si estamos en el dashboard
   const isDashboard = location.pathname === '/dashboard';
+
+  // ✅ Efecto para detectar scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = () => {
     if (onLogout) {
-      onLogout(); // Llamar a la función de logout del App.jsx
+      onLogout();
     }
     navigate('/');
   };
@@ -24,7 +36,7 @@ export function Header({ username, onLogout }) {
   };
 
   return (
-    <header className="header">
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         <div className="logo">
           <h2>📊 RutaPro</h2>
@@ -41,6 +53,7 @@ export function Header({ username, onLogout }) {
                 <button 
                   className="user-avatar"
                   onClick={() => setShowUserMenu(!showUserMenu)}
+                  aria-label="Menú de usuario"
                 >
                   {user.avatar}
                 </button>
@@ -67,7 +80,9 @@ export function Header({ username, onLogout }) {
             <>
               <Link to="/" className="nav-link">Inicio</Link>
               <Link to="/#features" className="nav-link">Características</Link>
-              <Link to="/login" className="nav-link login-btn">Iniciar Sesión</Link>
+              <Link to="/login" className="nav-link login-btn">
+                Iniciar Sesión
+              </Link>
             </>
           )}
         </nav>

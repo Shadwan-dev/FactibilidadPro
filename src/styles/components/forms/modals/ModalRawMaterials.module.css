@@ -1,0 +1,434 @@
+/* src/components/forms/modals/ModalRawMaterials.module.css */
+
+/* Contenedor principal del modal */
+.modalRawMaterialsContent {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0;
+  width: 95vw;
+  max-width: 1400px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Header del modal - Fijo */
+.modalRawMaterialsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid #e8ecef;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #1a202c;
+  border-radius: 12px 12px 0 0;
+  flex-shrink: 0;
+}
+
+.modalRawMaterialsHeader h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.modalRawMaterialsCloseBtn {
+  background: rgba(26, 32, 44, 0.15);
+  border: none;
+  color: #1a202c;
+  font-size: 1.4rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+.modalRawMaterialsCloseBtn:hover {
+  background: rgba(26, 32, 44, 0.25);
+  transform: scale(1.1);
+}
+
+/* Cuerpo del modal - Con scroll INTERNO */
+.modalRawMaterialsBody {
+  padding: 1.5rem;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #f8f9fa;
+  min-height: 0;
+  position: relative;
+}
+
+/* Scrollbar personalizada */
+.modalRawMaterialsBody::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modalRawMaterialsBody::-webkit-scrollbar-track {
+  background: #e9ecef;
+  border-radius: 5px;
+}
+
+.modalRawMaterialsBody::-webkit-scrollbar-thumb {
+  background: #43e97b;
+  border-radius: 5px;
+}
+
+.modalRawMaterialsBody::-webkit-scrollbar-thumb:hover {
+  background: #38f9d7;
+}
+
+/* Formulario - Layout en columnas */
+.modalRawMaterialsForm {
+  background: #ffffff;
+  padding: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.modalRawMaterialsFormGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Labels para inputs */
+.modalRawMaterialsFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.modalRawMaterialsFormLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.modalRawMaterialsInput {
+  padding: 0.7rem 0.9rem;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  background: white;
+  color: #212529;
+  font-weight: 500;
+  width: 100%;
+}
+
+.modalRawMaterialsInput:focus {
+  outline: none;
+  border-color: #43e97b;
+  box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.15);
+  color: #1a202c;
+}
+
+.modalRawMaterialsInput::placeholder {
+  color: #6c757d;
+  font-weight: normal;
+}
+
+.modalRawMaterialsSelect {
+  padding: 0.7rem 0.9rem;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+  color: #212529;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  width: 100%;
+}
+
+.modalRawMaterialsSelect:focus {
+  outline: none;
+  border-color: #43e97b;
+  box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.15);
+  color: #1a202c;
+}
+
+/* Botón agregar - Siempre visible */
+.modalRawMaterialsFormActions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.modalRawMaterialsBtnPrimary {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #1a202c;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border: 1px solid rgba(26, 32, 44, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modalRawMaterialsBtnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(67, 233, 123, 0.4);
+  color: #000000;
+}
+
+.modalRawMaterialsBtnPrimary:active {
+  transform: translateY(0);
+}
+
+/* Lista de items */
+.modalRawMaterialsItemsList {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.modalRawMaterialsListHeader {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1.2fr 80px;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  background: #2d3748;
+  font-weight: 700;
+  color: #ffffff;
+  border-bottom: 2px solid #1a202c;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+/* Contenedor scrollable de items */
+.modalRawMaterialsItemsContainer {
+  overflow-y: auto;
+  max-height: 300px;
+  min-height: 150px;
+}
+
+.modalRawMaterialsItemsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalRawMaterialsItemsContainer::-webkit-scrollbar-track {
+  background: #f1f3f4;
+}
+
+.modalRawMaterialsItemsContainer::-webkit-scrollbar-thumb {
+  background: #43e97b;
+  border-radius: 4px;
+}
+
+.modalRawMaterialsItemRow {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1.2fr 80px;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  align-items: center;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+  color: #212529;
+}
+
+.modalRawMaterialsItemRow:hover {
+  background: #f8f9fa;
+}
+
+.modalRawMaterialsItemName {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modalRawMaterialsItemQuantity {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #212529;
+  font-size: 0.85rem;
+}
+
+.modalRawMaterialsItemAmount {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  color: #28a745;
+  font-size: 0.85rem;
+}
+
+.modalRawMaterialsItemFrequency {
+  text-transform: capitalize;
+  color: #495057;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.modalRawMaterialsBtnDelete {
+  background: #dc3545;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  font-weight: bold;
+  justify-self: center;
+}
+
+.modalRawMaterialsBtnDelete:hover {
+  background: #c82333;
+  transform: scale(1.1);
+}
+
+/* Totales */
+.modalRawMaterialsTotals {
+  background: #ffffff;
+  padding: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.modalRawMaterialsTotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e9ecef;
+  color: #212529;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.modalRawMaterialsTotalRow:last-child {
+  border-bottom: none;
+}
+
+.modalRawMaterialsTotalHighlight {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #1a202c;
+  padding: 0.9rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: 1px solid rgba(26, 32, 44, 0.1);
+}
+
+/* Footer del modal - Fijo */
+.modalRawMaterialsFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 2px solid #e8ecef;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+  flex-shrink: 0;
+}
+
+.modalRawMaterialsBtnSecondary {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalRawMaterialsBtnSecondary:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Estados vacíos */
+.modalRawMaterialsEmptyState {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  color: #6c757d;
+  background: white;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.modalRawMaterialsEmptyStateIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.modalRawMaterialsEmptyState p {
+  margin: 0.5rem 0;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .modalRawMaterialsFormGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .modalRawMaterialsListHeader,
+  .modalRawMaterialsItemRow {
+    grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 1fr 70px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .modalRawMaterialsContent {
+    width: 98vw;
+    height: 95vh;
+  }
+  
+  .modalRawMaterialsFormGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modalRawMaterialsListHeader,
+  .modalRawMaterialsItemRow {
+    grid-template-columns: 1.5fr 0.7fr 0.7fr 0.7fr 0.8fr 60px;
+    gap: 0.5rem;
+    padding: 0.7rem 0.8rem;
+  }
+}

@@ -1,0 +1,258 @@
+/* src/styles/components/forms/financial-recommendations.css */
+/* ESTILOS PARA RECOMENDACIONES FINANCIERAS */
+
+.financial-recommendations {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-top: 2rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .recommendations-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f1f5f9;
+  }
+  
+  .recommendations-header h4 {
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .recommendations-header p {
+    color: #64748b;
+    margin: 0;
+  }
+  
+  /* Grid de Recomendaciones */
+  .recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Tarjetas de Recomendación */
+  .recommendation-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid;
+    transition: all 0.3s ease;
+  }
+  
+  .recommendation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recommendation-card--critical {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left-color: #dc2626;
+  }
+  
+  .recommendation-card--warning {
+    background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+    border-left-color: #f59e0b;
+  }
+  
+  .recommendation-card--success {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left-color: #16a34a;
+  }
+  
+  .recommendation-card--info {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left-color: #0ea5e9;
+  }
+  
+  .recommendation-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .recommendation-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  .recommendation-title h5 {
+    margin: 0 0 0.5rem 0;
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .recommendation-priority {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .priority-critical,
+  .priority-medium,
+  .priority-low {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .priority-critical {
+    background: #dc2626;
+    color: white;
+  }
+  
+  .priority-medium {
+    background: #f59e0b;
+    color: white;
+  }
+  
+  .priority-low {
+    background: #64748b;
+    color: white;
+  }
+  
+  .recommendation-message {
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .recommendation-suggestions h6 {
+    color: #374151;
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .recommendation-suggestions ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  
+  .recommendation-suggestions li {
+    color: #475569;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    font-size: 0.9rem;
+  }
+  
+  .recommendation-suggestions li:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Indicadores Óptimos */
+  .optimal-indicators {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .optimal-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f0fdf4;
+    border-radius: 8px;
+    border: 1px solid #bbf7d0;
+  }
+  
+  .optimal-indicator .indicator-icon {
+    font-size: 1.25rem;
+  }
+  
+  .optimal-indicator .indicator-text {
+    color: #15803d;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  /* Resumen de Acciones Prioritarias */
+  .recommendations-summary {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .recommendations-summary h5 {
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .priority-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .priority-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .priority-badge {
+    background: #dc2626;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .financial-recommendations {
+      padding: 1.5rem;
+    }
+    
+    .recommendations-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .optimal-indicators {
+      grid-template-columns: 1fr;
+    }
+    
+    .recommendation-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .priority-action {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .financial-recommendations {
+      padding: 1rem;
+    }
+    
+    .recommendations-header h4 {
+      font-size: 1.3rem;
+    }
+  }

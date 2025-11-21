@@ -1,0 +1,111 @@
+/* src/styles/components/buttons.css */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--font-size-md);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px; /* Tamaño táctil mínimo */
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn:hover::before {
+    left: 100%;
+  }
+  
+  /* Variantes de botones */
+  .btn--primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+  }
+  
+  .btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+  }
+  
+  .btn--secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+  }
+  
+  .btn--secondary:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+  }
+  
+  .btn--success {
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    color: white;
+  }
+  
+  .btn--danger {
+    background: linear-gradient(135deg, var(--danger-color), #dc2626);
+    color: white;
+  }
+  
+  .btn--accent {
+    background: linear-gradient(135deg, var(--accent-color), #d97706);
+    color: white;
+  }
+  
+  /* Tamaños */
+  .btn--sm {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    min-height: 36px;
+  }
+  
+  .btn--lg {
+    padding: var(--space-lg) var(--space-xl);
+    font-size: var(--font-size-lg);
+    min-height: 52px;
+  }
+  
+  .btn--full {
+    width: 100%;
+  }
+  
+  /* Estados */
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  .btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Botones de formulario específicos */
+  .form-submit-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    width: 100%;
+    margin-top: var(--space-lg);
+  }
+  
+  .form-submit-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #059669, #047857);
+  }

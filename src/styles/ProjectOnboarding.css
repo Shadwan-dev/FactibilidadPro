@@ -612,3 +612,232 @@
     text-align: center;
   }
 }
+/* AGREGAR ESTOS ESTILOS AL FINAL DE TU ProjectOnboarding.css */
+
+/* 1. Botón Volver mejorado */
+.onboarding-details__back-btn {
+  position: absolute;
+  left: -1rem; /* ✅ Más hacia la izquierda */
+  top: 0;
+  background: linear-gradient(135deg, #6c757d, #5a6268); /* ✅ Gradiente */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem; /* ✅ Un poco más grande */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.onboarding-details__back-btn:hover {
+  background: linear-gradient(135deg, #5a6268, #495057); /* ✅ Gradiente hover */
+  transform: translateX(-5px); /* ✅ Efecto de movimiento */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 2. Mejorar contraste en las pestañas del primer frame */
+.onboarding-profile {
+  display: flex;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background: white;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.onboarding-profile__content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #1a202c; /* ✅ Color más oscuro para mejor contraste */
+  font-size: 1.3rem;
+  font-weight: 700; /* ✅ Más grueso */
+}
+
+.onboarding-profile__content p {
+  margin: 0 0 1rem 0;
+  color: #4a5568; /* ✅ Color más oscuro para mejor contraste */
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* 3. Mejoras para el paso 2 (vista de detalles) */
+.onboarding-details {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); /* ✅ Fondo sutil */
+  border-radius: 16px;
+  min-height: 80vh;
+}
+
+.onboarding-details__header {
+  text-align: center;
+  margin-bottom: 2.5rem; /* ✅ Más espacio */
+  position: relative;
+  padding-top: 3rem; /* ✅ Espacio para el botón volver */
+}
+
+.onboarding-details__header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748; /* ✅ Color más oscuro */
+  font-size: 2rem; /* ✅ Un poco más grande */
+  font-weight: 800; /* ✅ Más impacto */
+}
+
+.onboarding-details__header p {
+  margin: 0;
+  color: #4a5568; /* ✅ Mejor contraste */
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.onboarding-details__profile-card {
+  background: white;
+  padding: 2rem; /* ✅ Más padding */
+  border-radius: 16px; /* ✅ Bordes más redondeados */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); /* ✅ Sombra más suave */
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.onboarding-details__profile-header h3 {
+  margin: 0 0 0.25rem 0;
+  color: #2d3748; /* ✅ Color más oscuro */
+  font-size: 1.5rem; /* ✅ Un poco más grande */
+  font-weight: 700;
+}
+
+.onboarding-details__profile-header p {
+  margin: 0;
+  color: #4a5568; /* ✅ Mejor contraste */
+  font-weight: 500;
+}
+
+.onboarding-details__meta {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e2e8f0; /* ✅ Línea más definida */
+}
+
+.onboarding-details__meta-item span {
+  font-size: 0.9rem;
+  color: #718096; /* ✅ Color consistente */
+  font-weight: 600;
+}
+
+.onboarding-details__meta-item strong {
+  color: #2d3748; /* ✅ Color más oscuro */
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.onboarding-details__benefits {
+  background: linear-gradient(135deg, #f0fff4, #e6fffa); /* ✅ Gradiente suave */
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #c6f6d5;
+  margin-bottom: 1.5rem;
+}
+
+.onboarding-details__benefits h4 {
+  margin: 0 0 1rem 0;
+  color: #22543d; /* ✅ Verde más oscuro */
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.onboarding-details__benefits li {
+  margin-bottom: 0.5rem;
+  color: #22543d; /* ✅ Verde más oscuro */
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.onboarding-details__recommendation {
+  background: linear-gradient(135deg, #ebf8ff, #e6fffe); /* ✅ Gradiente azul suave */
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #90cdf4;
+  margin-bottom: 1.5rem;
+}
+
+.onboarding-details__recommendation h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1a365d; /* ✅ Azul más oscuro */
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.onboarding-details__recommendation p {
+  margin: 0;
+  color: #1a365d; /* ✅ Azul más oscuro */
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.onboarding-details__recommendation strong {
+  color: #2b6cb0; /* ✅ Azul destacado */
+}
+
+/* 4. Mejoras en los botones del paso 2 */
+.onboarding-details__confirm-btn {
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); /* ✅ Verde más vibrante */
+  color: white;
+  border: none;
+  border-radius: 12px; /* ✅ Bordes más redondeados */
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 300px;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+.onboarding-details__confirm-btn:hover {
+  transform: translateY(-3px); /* ✅ Efecto más pronunciado */
+  box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+}
+
+.onboarding-details__skip-btn {
+  padding: 1rem 2rem;
+  background: transparent;
+  color: #718096;
+  border: 2px solid #e2e8f0; /* ✅ Borde más definido */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.onboarding-details__skip-btn:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+  color: #4a5568;
+}
+
+/* 5. Ajustes responsive para las mejoras */
+@media (max-width: 768px) {
+  .onboarding-details__back-btn {
+    position: relative;
+    left: 0;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+  }
+  
+  .onboarding-details__header {
+    padding-top: 0;
+  }
+  
+  .onboarding-details__confirm-btn {
+    min-width: auto;
+    width: 100%;
+  }
+}

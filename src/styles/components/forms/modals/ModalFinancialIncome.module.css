@@ -1,0 +1,307 @@
+/* src/components/forms/modals/ModalFinancialIncome.module.css */
+
+/* Contenedor principal del modal */
+.modalFinancialIncomeContent {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 1100px;
+    max-width: 95vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Header del modal */
+  .modalFinancialIncomeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid #e8ecef;
+    background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .modalFinancialIncomeHeader h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .modalFinancialIncomeCloseBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .modalFinancialIncomeCloseBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  /* Cuerpo del modal */
+  .modalFinancialIncomeBody {
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  /* Formulario */
+  .modalFinancialIncomeForm {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+  }
+  
+  .modalFinancialIncomeFormGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+  }
+  
+  .modalFinancialIncomeInput {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    background: white;
+  }
+  
+  .modalFinancialIncomeInput:focus {
+    outline: none;
+    border-color: #00b4db;
+    box-shadow: 0 0 0 3px rgba(0, 180, 219, 0.1);
+  }
+  
+  .modalFinancialIncomeSelect {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modalFinancialIncomeSelect:focus {
+    outline: none;
+    border-color: #00b4db;
+    box-shadow: 0 0 0 3px rgba(0, 180, 219, 0.1);
+  }
+  
+  .modalFinancialIncomeBtnPrimary {
+    background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .modalFinancialIncomeBtnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
+  }
+  
+  /* Lista de items */
+  .modalFinancialIncomeItemsList {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .modalFinancialIncomeListHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .modalFinancialIncomeItemRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    align-items: center;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.2s ease;
+  }
+  
+  .modalFinancialIncomeItemRow:hover {
+    background: #f8f9fa;
+  }
+  
+  .modalFinancialIncomeItemName {
+    font-weight: 500;
+    color: #212529;
+  }
+  
+  .modalFinancialIncomeItemType {
+    text-transform: capitalize;
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+  
+  .modalFinancialIncomeItemAmount {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #28a745;
+    font-size: 0.9rem;
+  }
+  
+  /* Badges de riesgo */
+  .modalFinancialIncomeRiskBadge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  
+  .modalFinancialIncomeRiskLow {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .modalFinancialIncomeRiskMedium {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+  }
+  
+  .modalFinancialIncomeRiskHigh {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .modalFinancialIncomeBtnDelete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+  }
+  
+  .modalFinancialIncomeBtnDelete:hover {
+    background: #c82333;
+    transform: scale(1.1);
+  }
+  
+  /* Totales */
+  .modalFinancialIncomeTotals {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .modalFinancialIncomeTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .modalFinancialIncomeTotalRow:last-child {
+    border-bottom: none;
+  }
+  
+  .modalFinancialIncomeTotalHighlight {
+    background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  /* Footer del modal */
+  .modalFinancialIncomeFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid #e8ecef;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .modalFinancialIncomeBtnSecondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modalFinancialIncomeBtnSecondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+  }
+  
+  /* Estados vacíos */
+  .modalFinancialIncomeEmptyState {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6c757d;
+  }
+  
+  .modalFinancialIncomeEmptyStateIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  /* Indicadores de frecuencia */
+  .modalFinancialIncomeFrequency {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+  }

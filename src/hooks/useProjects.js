@@ -1,4 +1,4 @@
-// src/hooks/useProjects.js (VERSIÓN ACTUALIZADA)
+// src/hooks/useProjects.js - VERSIÓN CORREGIDA
 import { useFirestore } from './useFirestore';
 import { db } from '../firebase/config';
 import { 
@@ -36,8 +36,8 @@ export const useProjects = (userId = null) => {
       userId: userId,
       name: projectData.name || 'Nuevo Proyecto',
       description: projectData.description || '',
-      status: 'draft', // ✅ Estado inicial: borrador
-      notificationSent: false, // ✅ Nueva propiedad para controlar notificaciones
+      status: 'draft',
+      notificationSent: false,
       formData: {},
       calculations: {},
       isMasterProject: userId.includes('master-'),
@@ -48,6 +48,62 @@ export const useProjects = (userId = null) => {
     return await addDocument(project);
   };
 
+  // ✅ FUNCIÓN CORREGIDA: saveSection con mejor búsqueda
+  const saveSection = async (section, sectionData, userId, projectId = null, options = {}) => {
+    try {
+      console.log('💾 Guardando sección:', section, 'para usuario:', userId, 'proyecto:', projectId);
+      
+      if (!userId) {
+        throw new Error('Usuario no autenticado');
+      }
+
+      let targetProject;
+
+      // Si se proporciona projectId, usar ese proyecto
+      if (projectId) {
+        targetProject = documents.find(p => p.id === projectId);
+      } else {
+        // Si no, buscar el proyecto más reciente del usuario
+        targetProject = userProjects
+          .filter(p => p.userId === userId)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+      }
+
+      if (!targetProject) {
+        console.error('❌ No se encontró proyecto para el usuario:', userId);
+        console.log('📋 Proyectos disponibles:', userProjects.map(p => ({ id: p.id, userId: p.userId })));
+        return { success: false, error: 'Proyecto no encontrado. Crea un proyecto primero.' };
+      }
+
+      console.log('🎯 Proyecto encontrado:', targetProject.id, targetProject.name);
+
+      // Actualizar la sección específica en formData
+      const updateData = {
+        [`formData.${section}`]: sectionData,
+        updatedAt: serverTimestamp(),
+        lastUpdatedSection: section
+      };
+
+      // Si options.saveToHistory es true, guardar en historial
+      if (options.saveToHistory) {
+        updateData.lastSavedAt = serverTimestamp();
+        updateData.lastSaveDescription = options.description || `Guardado de ${section}`;
+      }
+
+      const success = await updateDocument(targetProject.id, updateData);
+      
+      if (success) {
+        console.log(`✅ Sección ${section} guardada correctamente en proyecto:`, targetProject.id);
+        return { success: true, projectId: targetProject.id };
+      } else {
+        return { success: false, error: 'Error al guardar en Firestore' };
+      }
+    } catch (error) {
+      console.error(`❌ Error guardando sección ${section}:`, error);
+      return { success: false, error: error.message };
+    }
+  };
+  
   // ✅ FUNCIÓN MEJORADA: Verificar si ya existe notificación para este proyecto
   const checkExistingNotification = async (projectId) => {
     try {
@@ -57,7 +113,7 @@ export const useProjects = (userId = null) => {
         where('status', '==', 'unread')
       );
       const snapshot = await getDocs(q);
-      return !snapshot.empty; // Retorna true si ya existe notificación
+      return !snapshot.empty;
     } catch (error) {
       console.error('Error verificando notificación:', error);
       return false;
@@ -133,6 +189,7 @@ export const useProjects = (userId = null) => {
       return 'error';
     }
   };
+
   const markAdminNotificationAsRead = async (notificationId) => {
     try {
       await updateDoc(doc(db, 'adminNotifications', notificationId), {
@@ -146,6 +203,7 @@ export const useProjects = (userId = null) => {
       return false;
     }
   };
+
   const createAdminNotification = async (projectId, formData, calculations, currentUserId) => {
     try {
       const project = documents.find(p => p.id === projectId);
@@ -181,7 +239,6 @@ export const useProjects = (userId = null) => {
     }
   };
 
-  // ... (resto de las funciones se mantienen igual)
   const analyzeProject = async (projectId, adminId, notificationId = null) => {
     try {
       // 1. Actualizar estado del proyecto
@@ -248,8 +305,8 @@ export const useProjects = (userId = null) => {
       ...originalProject,
       name: `${originalProject.name} (Copia)`,
       userId: userId,
-      status: 'draft', // ✅ Nueva copia empieza como borrador
-      notificationSent: false, // ✅ Resetear notificación
+      status: 'draft',
+      notificationSent: false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
@@ -264,13 +321,14 @@ export const useProjects = (userId = null) => {
     error,
     loading,
     createProject,
+    saveSection, // ✅ AGREGAR ESTA FUNCIÓN AL RETURN
     saveFeasibilityData,
     updateProject: updateDocument,
     deleteProject: deleteDocument,
     duplicateProject,
     analyzeProject,
     getAdminNotifications,
-    sendExplicitNotification,// ✅ Nueva función exportada
+    sendExplicitNotification,
     markAdminNotificationAsRead
   };
 };

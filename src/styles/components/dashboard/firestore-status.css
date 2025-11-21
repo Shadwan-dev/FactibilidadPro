@@ -1,0 +1,78 @@
+/* src/styles/components/dashboard/firestore-status.css */
+.firestore-status-bar {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .status-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .save-status .saving {
+    color: #f59e0b;
+    font-weight: 600;
+  }
+  
+  .save-status .saved {
+    color: #10b981;
+    font-weight: 600;
+  }
+  
+  .save-status .ready {
+    color: #64748b;
+  }
+  
+  .error-alert {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .retry-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .retry-btn:hover {
+    background: #b91c1c;
+  }
+  
+  .project-info {
+    display: flex;
+    gap: 1rem;
+    color: #64748b;
+  }
+  
+  .project-info small {
+    font-size: 0.75rem;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .status-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .project-info {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }

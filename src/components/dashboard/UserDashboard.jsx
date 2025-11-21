@@ -1,73 +1,321 @@
-// src/components/dashboard/UserDashboard.jsx
-import React, { useState } from 'react';
-import { TechnicalFormSelector } from '../forms/TechnicalFormSelector';
-import { MarketFormSelector } from '../forms/MarketFormSelector';
-import { LegalFormSelector } from '../forms/LegalFormSelector';
-import { FinancialFormSelector } from '../forms/FinancialFormSelector';
+// UserDashboard.jsx - VERSIÓN COMPLETA CORREGIDA
+import React, { useState, useEffect, useCallback, useRef } from 'react'; 
+import { AnalysisDashboard } from '../analysis/AnalysisDashboard';
 import { useFeasibilityCalculations } from '../../hooks/useFeasibilityCalculations';
 import { useAssistant } from '../../hooks/useAssistant';
 import { AssistantPanel } from '../assistant/AssistantPanel';
 import { StepByStepWizard } from '../step-by-step/StepByStepWizard';
 import { ProjectOnboarding } from '../onboarding/ProjectOnboarding';
+import { OptimizeButton } from '../actions/OptimizeButton'; 
+import { OptimizationModal } from '../actions/OptimizationModal';
+import { OptimizationService } from '../services/OptimizationService';
+import { BusinessTypeModal } from '../onboarding/BusinessTypeModal';
+import { FinancialDataForm } from '../forms/FinancialDataForm';
+import { TechnicalDataForm } from '../forms/TechnicalDataForm';
+import '../../styles/components/dashboard/user-dashboard.css';
+import { useProjects } from '../../hooks/useProjects';
+import { useAuth } from '../../hooks/useAuth';
 
 function UserDashboard({ 
-  formData, 
+  formData: externalFormData,
   onChange, 
-  currentProject,
+  currentProject: propCurrentProject,
   onExplicitSubmit 
 }) {
-  const calculations = useFeasibilityCalculations(formData);
+  // ✅ HOOKS AL PRINCIPIO - ORDEN CORRECTO
+  const { currentUser } = useAuth();
+  const calculations = useFeasibilityCalculations(externalFormData);
+  const { 
+    currentProject: firebaseProject, 
+    isSaving, 
+    lastSave, 
+    saveError,
+    saveSection,
+    createProject 
+  } = useProjects(propCurrentProject?.id);
+  const lastSavedDataRef = useRef(externalFormData);
+  const saveTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
   
-  // Estados para modos detallados
-  const [isFinancialDetailedMode, setIsFinancialDetailedMode] = useState(false);
-  const [isTechnicalDetailedMode, setIsTechnicalDetailedMode] = useState(false);
-  const [isMarketDetailedMode, setIsMarketDetailedMode] = useState(false);
-  const [isLegalDetailedMode, setIsLegalDetailedMode] = useState(false);
+  // Estados
   
-  // ✅ Estados para el flujo integrado
-  const [showOnboarding, setShowOnboarding] = useState(!currentProject?.onboardingCompleted);
+  const [showOptimization, setShowOptimization] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const [optimizedData, setOptimizedData] = useState(null);
+  const [showOnboarding, setShowOnboarding] = useState(!propCurrentProject?.onboardingCompleted);
   const [userProfile, setUserProfile] = useState(null);
-  const [isStepByStepMode, setIsStepByStepMode] = useState(
-    userProfile?.selectedMode === 'guided' // ✅ Usar el modo seleccionado en el onboarding
+  const [activeTab, setActiveTab] = useState('forms');
+  const [showBusinessTypeModal, setShowBusinessTypeModal] = useState(false);
+  const [showFinancialFormDirectly, setShowFinancialFormDirectly] = useState(false);
+  const [isStepByStepMode, setIsStepByStepMode] = useState(false);
+  const [currentForm, setCurrentForm] = useState('financial');
+  const [hasCompletedGuidedMode, setHasCompletedGuidedMode] = useState(
+    propCurrentProject?.hasCompletedGuidedMode || false
   );
 
-  // Hook del asistente
+  // Debug esencial
+  useEffect(() => {
+    console.log('📊 Formulario actual:', currentForm);
+    console.log('👤 Usuario actual:', currentUser);
+  }, [currentForm, currentUser]);
+
+  // ✅ HANDLER PRINCIPAL DE FORMULARIOS
+  const handleFormChange = useCallback((formType, data) => {
+    console.log('📝 Actualizando formulario:', formType, data);
+    
+    // Actualizar estado local inmediatamente
+    onChange({
+      ...externalFormData,
+      [formType]: data
+    });
+  }, [externalFormData, onChange]);
+
+  // ✅ EFFECT PARA CLEANUP
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // ✅ FUNCIÓN MEJORADA PARA COMPARAR DATOS
+  const hasDataChanged = useCallback((oldData, newData) => {
+    return JSON.stringify(oldData) !== JSON.stringify(newData);
+  }, []);
+
+  // ✅ HANDLERS DE NAVEGACIÓN CORREGIDOS
+  const handleNextToTechnical = useCallback(async () => {
+    console.log('➡️ Navegando a técnico, usuario:', currentUser);
+    
+    if (propCurrentProject?.id && currentUser && externalFormData.financial) {
+      try {
+        // Bloquear navegación mientras guarda
+        const result = await saveSection(
+          'financial', 
+          externalFormData.financial, 
+          currentUser.uid, 
+          propCurrentProject.id,
+          {
+            description: 'Guardado final antes de análisis técnico',
+            saveToHistory: true
+          }
+        );
+
+        if (result?.success) {
+          // Actualizar referencia y navegar
+          lastSavedDataRef.current = externalFormData;
+          setShowFinancialFormDirectly(false);
+          setCurrentForm('technical');
+        } else {
+          alert('❌ Error al guardar. Revisa tu conexión.');
+        }
+      } catch (error) {
+        console.error('Error en navegación:', error);
+        alert('❌ Error al guardar los datos.');
+      }
+    } else {
+      setShowFinancialFormDirectly(false);
+      setCurrentForm('technical');
+    }
+  }, [propCurrentProject?.id, currentUser, externalFormData.financial, saveSection]);
+
+  const handleBackToFinancial = useCallback(async () => {
+    console.log('⬅️ Volviendo a financiero, usuario:', currentUser);
+    
+    if (propCurrentProject?.id && currentUser && externalFormData.technical) {
+      try {
+        await saveSection('technical', externalFormData.technical, currentUser.uid, {
+          description: 'Guardado antes de volver a finanzas',
+          saveToHistory: false
+        });
+      } catch (error) {
+        console.error('Error guardando técnico:', error);
+      }
+    }
+    setCurrentForm('financial');
+  }, [propCurrentProject?.id, currentUser, externalFormData.technical, saveSection]);
+
+  // ✅ HANDLERS DE OPTIMIZACIÓN
+  const handleOptimize = useCallback(() => {
+    if (!calculations) {
+      console.warn('No hay cálculos disponibles para optimizar');
+      return;
+    }
+    
+    try {
+      const { optimizedData: newData, recommendations: recs } = 
+        OptimizationService.optimizeProject(externalFormData, calculations);
+      
+      setOptimizedData(newData);
+      setRecommendations(recs);
+      setShowOptimization(true);
+    } catch (error) {
+      console.error('Error en optimización:', error);
+    }
+  }, [calculations, externalFormData]);
+
+  const applyOptimizations = useCallback(() => {
+    if (optimizedData) {
+      onChange(optimizedData);
+      setShowOptimization(false);
+      setOptimizedData(null);
+      setRecommendations([]);
+    }
+  }, [optimizedData, onChange]);
+
+  // ✅ HOOK DEL ASISTENTE
   const {
-    suggestions,
+    suggestions: assistantSuggestions,
     showAssistant,
     toggleAssistant,
     dismissSuggestion,
     hasSuggestions
-  } = useAssistant(formData, calculations);
+  } = useAssistant(externalFormData, calculations);
 
-  // ✅ Manejar selección de perfil en el onboarding
-  const handleProfileSelect = (profile) => {
+  // ✅ HANDLERS DE ONBOARDING
+  const handleProfileSelect = useCallback((profile) => {
     setUserProfile(profile);
     setShowOnboarding(false);
     
-    // Auto-activar modo paso a paso para emprendedores nuevos
     if (profile.id === 'first-time') {
       setIsStepByStepMode(true);
     }
-  };
+  }, []);
 
-  const handleSkipOnboarding = () => {
+  const handleSkipOnboarding = useCallback(() => {
     setShowOnboarding(false);
     setUserProfile({ id: 'skipped', title: 'Usuario Avanzado' });
-  };
+  }, []);
 
-  // ✅ Si es la primera vez, mostrar onboarding
-  if (showOnboarding) {
-    return (
-      <ProjectOnboarding 
-        onProfileSelect={handleProfileSelect}
-        onSkip={handleSkipOnboarding}
-      />
-    );
-  }
+  const handleBusinessTypeSelect = useCallback((typeId) => {
+    if (typeId === 'enterprise') {
+      setShowFinancialFormDirectly(true);
+      setIsStepByStepMode(false);
+      setHasCompletedGuidedMode(true);
+    } else if (typeId === 'small-business') {
+      setIsStepByStepMode(true);
+      setHasCompletedGuidedMode(true);
+    }
+  }, []);
 
-  const getButtonState = () => {
-    if (currentProject?.status === 'analyzed') {
+  // ✅ HANDLERS DE MODO GUIADO
+  const handleCompleteGuidedMode = useCallback(() => {
+    setHasCompletedGuidedMode(true);
+    setIsStepByStepMode(false);
+  }, []);
+
+  const handleStartGuidedMode = useCallback(() => {
+    setIsStepByStepMode(true);
+    setHasCompletedGuidedMode(true);
+  }, []);
+
+  // ✅ HANDLER PARA CREAR PROYECTO
+  const handleCreateProject = useCallback(async (projectData) => {
+    if (!propCurrentProject?.id && currentUser) {
+      try {
+        const newProjectId = await createProject(projectData, currentUser.uid);
+        if (newProjectId) {
+          console.log('🎉 Nuevo proyecto creado:', newProjectId);
+        }
+      } catch (error) {
+        console.error('Error creando proyecto:', error);
+      }
+    }
+  }, [propCurrentProject?.id, currentUser, createProject]);
+
+  // ✅ EFFECTS
+  useEffect(() => {
+    if (firebaseProject && firebaseProject.sections) {
+      console.log('🔄 Sincronizando datos de Firestore:', firebaseProject.sections);
+      
+      const firebaseData = {
+        financial: firebaseProject.sections.financial || {},
+        technical: firebaseProject.sections.technical || {},
+        market: firebaseProject.sections.market || {}
+      };
+      
+      if (JSON.stringify(firebaseData) !== JSON.stringify(externalFormData)) {
+        onChange(firebaseData);
+      }
+    }
+  }, [firebaseProject, externalFormData, onChange]);
+
+  // ✅ EFFECT DE GUARDADO AUTOMÁTICO CORREGIDO
+  useEffect(() => {
+    if (!propCurrentProject?.id || !currentUser || isSaving) return;
+    if (!hasDataChanged(lastSavedDataRef.current, externalFormData)) {
+      return; // No guardar si no hay cambios reales
+    }
+
+    // Limpiar timeout anterior
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Nuevo timeout con debounce más largo
+    saveTimeoutRef.current = setTimeout(async () => {
+      if (!isMountedRef.current) return;
+
+      try {
+        let updatedSection = null;
+        let sectionData = null;
+
+        // Determinar qué sección cambiar
+        if (externalFormData.financial && hasDataChanged(lastSavedDataRef.current.financial, externalFormData.financial)) {
+          updatedSection = 'financial';
+          sectionData = externalFormData.financial;
+        } else if (externalFormData.technical && hasDataChanged(lastSavedDataRef.current.technical, externalFormData.technical)) {
+          updatedSection = 'technical';
+          sectionData = externalFormData.technical;
+        } else if (externalFormData.market && hasDataChanged(lastSavedDataRef.current.market, externalFormData.market)) {
+          updatedSection = 'market';
+          sectionData = externalFormData.market;
+        }
+
+        if (updatedSection && sectionData) {
+          console.log(`🔄 Guardando automáticamente: ${updatedSection}`);
+          const result = await saveSection(
+            updatedSection, 
+            sectionData, 
+            currentUser.uid, 
+            propCurrentProject.id,
+            {
+              description: `Guardado automático de ${updatedSection}`,
+              saveToHistory: false
+            }
+          );
+
+          if (result?.success) {
+            // Actualizar referencia solo si el guardado fue exitoso
+            lastSavedDataRef.current = {
+              ...lastSavedDataRef.current,
+              [updatedSection]: sectionData
+            };
+            console.log(`✅ Guardado automático exitoso: ${updatedSection}`);
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error en guardado automático:', error);
+      }
+    }, 5000); // ✅ Aumentar debounce a 5 segundos
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [externalFormData, propCurrentProject?.id, currentUser, isSaving, saveSection, hasDataChanged]);
+
+   // ✅ ACTUALIZAR LA REFERENCIA CUANDO CAMBIA EL PROYECTO
+   useEffect(() => {
+    lastSavedDataRef.current = externalFormData;
+  }, [propCurrentProject?.id]); // Solo cuando cambia el proyecto
+
+  // ✅ ESTADO DEL BOTÓN DE NOTIFICACIÓN
+  const getButtonState = useCallback(() => {
+    if (propCurrentProject?.status === 'analyzed') {
       return {
         disabled: true,
         text: '✅ Proyecto Analizado',
@@ -75,7 +323,7 @@ function UserDashboard({
       };
     }
     
-    if (currentProject?.notificationSent || currentProject?.status === 'pending') {
+    if (propCurrentProject?.notificationSent || propCurrentProject?.status === 'pending') {
       return {
         disabled: true,
         text: '⏳ Notificación Enviada',
@@ -88,292 +336,391 @@ function UserDashboard({
       text: '📤 Notificar al Administrador',
       className: 'btn-success'
     };
-  };
+  }, [propCurrentProject]);
 
   const buttonState = getButtonState();
 
+  // ✅ RENDERIZADO DE CONTENIDO DE FORMULARIOS
+  const renderFormsContent = useCallback(() => {
+    if (showFinancialFormDirectly) {
+      return (
+        <FinancialDataForm
+          data={externalFormData.financial || {}}
+          onChange={(data) => handleFormChange('financial', data)}
+          onNext={handleNextToTechnical}
+        />
+      );
+    }
+  
+    if (isStepByStepMode) {
+      return (
+        <StepByStepWizard
+          formData={externalFormData}
+          onChange={onChange}
+          onComplete={handleCompleteGuidedMode}
+          onBackToAdvanced={() => setIsStepByStepMode(false)}
+        />
+      );
+    }
+  
+    if (currentForm === 'financial') {
+      return (
+        <FinancialDataForm 
+          data={externalFormData.financial || {}}
+          onChange={(data) => handleFormChange('financial', data)}
+          onNext={handleNextToTechnical}
+        />
+      );
+    } else {
+      return (
+        <TechnicalDataForm 
+          data={externalFormData.technical || {}}
+          onChange={(data) => handleFormChange('technical', data)}
+          onBack={handleBackToFinancial}
+          onNavigateToFinancial={handleBackToFinancial}
+        />
+      );
+    }
+  }, [
+    showFinancialFormDirectly, 
+    isStepByStepMode, 
+    currentForm, 
+    externalFormData, 
+    handleFormChange, 
+    handleNextToTechnical, 
+    onChange, 
+    handleCompleteGuidedMode,
+    handleBackToFinancial
+  ]);
+
+  // ✅ RENDERIZADO DE SECCIONES ADICIONALES
+  const renderAdditionalSections = useCallback(() => {
+    if (currentForm !== 'financial' || showFinancialFormDirectly || isStepByStepMode) {
+      return null;
+    }
+
+    return (
+      <>
+        {/* Mensaje de bienvenida */}
+        <div className="completion-message success">
+          <h4>🎉 ¡Excelente! Completaste la guía inicial</h4>
+          <p>
+            Ahora puedes usar los formularios avanzados para ajustar los
+            detalles específicos de tu proyecto.
+          </p>
+        </div>
+
+        {/* Barra de progreso */}
+        <div className="form-progress">
+          <div className={`progress-step ${currentForm === 'financial' ? 'active' : 'completed'}`}>
+            <span className="step-number">1</span>
+            <span className="step-label">Análisis Financiero</span>
+          </div>
+          <div className="progress-connector"></div>
+          <div className={`progress-step ${currentForm === 'technical' ? 'active' : ''}`}>
+            <span className="step-number">2</span>
+            <span className="step-label">Análisis Técnico</span>
+          </div>
+        </div>
+
+        {/* Sección de optimización */}
+        <div className="user-submission-info">
+          <h3>✅ Información Guardada Automáticamente</h3>
+          <p>
+            Tu información se guarda automáticamente mientras completas los formularios.
+          </p>
+
+          {propCurrentProject?.status === "pending" && (
+            <div className="notification-status pending">
+              <p>
+                <strong>⏳ Estado:</strong> Esperando análisis del administrador
+              </p>
+              <p>
+                <small>Recibirás los resultados por email en 48 horas.</small>
+              </p>
+            </div>
+          )}
+
+          {propCurrentProject?.status === "analyzed" && calculations && (
+            <div className="notification-status analyzed">
+              <OptimizeButton
+                onOptimize={handleOptimize}
+                calculations={calculations}
+                formData={externalFormData}
+              />
+
+              <OptimizationModal
+                isOpen={showOptimization}
+                onClose={() => setShowOptimization(false)}
+                recommendations={recommendations}
+                onApply={applyOptimizations}
+              />
+
+              <p>
+                <strong>✅ Estado:</strong> Proyecto analizado
+              </p>
+              <p>
+                <small>Ya puedes ver los resultados y gráficos completos.</small>
+              </p>
+
+              {calculations.overall && (
+                <div className="viability-badge">
+                  <strong>
+                    {calculations.overall.viable
+                      ? "✅ PROYECTO VIABLE"
+                      : "❌ PROYECTO NO VIABLE"}
+                  </strong>
+                  <br />
+                  <small>Puntuación general: {calculations.overall.score.toFixed(1)}%</small>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Sección de envío */}
+        <div className="submit-section">
+          <div className="submit-info">
+            <h3>📤 Notificar al Administrador</h3>
+            <p>
+              {buttonState.disabled
+                ? "Ya notificaste al administrador sobre este proyecto."
+                : "Cuando termines de completar los formularios, notifica al administrador para que revise tu proyecto."}
+            </p>
+
+            <button
+              onClick={onExplicitSubmit}
+              disabled={buttonState.disabled}
+              className={`btn btn-large ${buttonState.className}`}
+            >
+              {buttonState.text}
+            </button>
+
+            {!buttonState.disabled && (
+              <div className="notification-warning">
+                <small>
+                  ⚠️ <strong>Solo puedes enviar una notificación por proyecto.</strong>
+                  <br />
+                  Asegúrate de haber completado toda la información antes de notificar.
+                </small>
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  }, [
+    currentForm, 
+    showFinancialFormDirectly, 
+    isStepByStepMode, 
+    propCurrentProject, 
+    calculations, 
+    handleOptimize, 
+    externalFormData, 
+    showOptimization, 
+    recommendations, 
+    applyOptimizations, 
+    buttonState, 
+    onExplicitSubmit
+  ]);
+
+  // ✅ RENDERIZADO CONDICIONAL
+
+  // Si es la primera vez, mostrar onboarding
+  if (showOnboarding) {
+    return (
+      <ProjectOnboarding 
+        onProfileSelect={handleProfileSelect}
+        onSkip={handleSkipOnboarding}
+      />
+    );
+  }
+
+  // Si NO ha completado el modo guiado, mostrar selección obligatoria
+  if (!hasCompletedGuidedMode && !isStepByStepMode && !showFinancialFormDirectly) {
+    return (
+      <div className="guided-mode-required">
+        <div className="guided-mode-container">
+          <div className="guided-mode-header">
+            <h1>🎯 Bienvenido al Análisis de Factibilidad</h1>
+            <p>Te guiaremos paso a paso para evaluar la viabilidad de tu proyecto</p>
+          </div>
+
+          <div className="guided-mode-content">
+            <div className="guided-features">
+              <h3>📋 Lo que incluye nuestro modo guiado:</h3>
+              <div className="features-grid">
+                <div className="feature-card">
+                  <div className="feature-icon">💰</div>
+                  <h4>Análisis Financiero Completo</h4>
+                  <p>Evaluación de inversión, ingresos, costos y proyecciones</p>
+                </div>
+                <div className="feature-card">
+                  <div className="feature-icon">🔧</div>
+                  <h4>Análisis Técnico Detallado</h4>
+                  <p>Evaluación de localización, capacidad, tecnología y recursos</p>
+                </div>
+                <div className="feature-card">
+                  <div className="feature-icon">📊</div>
+                  <h4>Análisis de Mercado</h4>
+                  <p>Estudio de competencia, demanda y potencial de crecimiento</p>
+                </div>
+                <div className="feature-card">
+                  <div className="feature-icon">⚖️</div>
+                  <h4>Análisis Legal</h4>
+                  <p>Revisión de permisos, regulaciones y requisitos legales</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="guided-benefits">
+              <h3>🎓 Beneficios del Modo Guiado:</h3>
+              <ul className="benefits-list">
+                <li>✅ <strong>Explicaciones claras</strong> de cada concepto</li>
+                <li>✅ <strong>Ejemplos prácticos</strong> para entender mejor</li>
+                <li>✅ <strong>Recomendaciones personalizadas</strong> según tu proyecto</li>
+                <li>✅ <strong>Evita errores comunes</strong> en la evaluación</li>
+                <li>✅ <strong>Resultados más precisos</strong> y confiables</li>
+                <li>✅ <strong>Ahorro de tiempo</strong> en la planificación</li>
+              </ul>
+            </div>
+
+            <div className="guided-cta">
+              <h3>🚀 ¿Listo para comenzar?</h3>
+              <p>Elige cómo prefieres trabajar:</p>
+              
+              <div className="cta-buttons">
+                <button
+                  onClick={() => setShowBusinessTypeModal(true)}
+                  className="btn btn-guided btn-large"
+                >
+                  🎓 Empezar con Modo Guiado (Recomendado)
+                </button>
+                
+                <div className="alternative-option">
+                  <p>¿Eres un usuario avanzado?</p>
+                  <button
+                    onClick={handleStartGuidedMode}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    Saltar directamente a formularios
+                  </button>
+                  <small className="warning-text">
+                    ⚠️ Te recomendamos el modo guiado para mejores resultados
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <BusinessTypeModal
+            isOpen={showBusinessTypeModal}
+            onClose={() => setShowBusinessTypeModal(false)}
+            onBusinessTypeSelect={handleBusinessTypeSelect}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ RENDERIZADO PRINCIPAL
   return (
     <div className="user-dashboard">
-      {/* ✅ AssistantPanel siempre visible */}
+      {/* BARRA DE ESTADO DE FIRESTORE */}
+      <div className="firestore-status-bar">
+        <div className="status-content">
+          <div className="save-status">
+            {isSaving ? (
+              <span className="saving">⏳ Guardando en Firestore...</span>
+            ) : lastSave ? (
+              <span className="saved">✅ Guardado: {lastSave.toLocaleTimeString()}</span>
+            ) : (
+              <span className="ready">📝 Los cambios se guardan automáticamente</span>
+            )}
+          </div>
+          
+          {saveError && (
+            <div className="error-alert">
+              ⚠️ Error: {saveError}
+              <button onClick={() => window.location.reload()} className="retry-btn">
+                Reintentar
+              </button>
+            </div>
+          )}
+
+          {firebaseProject && (
+            <div className="project-info">
+              <small>Proyecto: {firebaseProject.id}</small>
+              {firebaseProject.updatedAt && (
+                <small>Última actualización: {firebaseProject.updatedAt.toDate().toLocaleString()}</small>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {hasCompletedGuidedMode && (
+        <div className="dashboard-tabs">
+          <button
+            className={`tab-button ${activeTab === "forms" ? "active" : ""}`}
+            onClick={() => setActiveTab("forms")}
+          >
+            📝 Formularios
+          </button>
+          <button
+            className={`tab-button ${activeTab === "analysis" ? "active" : ""}`}
+            onClick={() => setActiveTab("analysis")}
+            disabled={!calculations || Object.keys(calculations).length === 0}
+          >
+            📊 Análisis y Gráficos
+          </button>
+        </div>
+      )}
+
+      {/* AssistantPanel */}
       <AssistantPanel
-        suggestions={suggestions}
+        suggestions={assistantSuggestions}
         showAssistant={showAssistant}
         onToggle={toggleAssistant}
         onDismiss={dismissSuggestion}
       />
 
-      {/* ✅ Header informativo basado en el perfil */}
-      {userProfile && (
-        <div className="user-profile-header" style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          padding: '1.5rem',
-          borderRadius: '12px',
-          marginBottom: '2rem',
-          textAlign: 'center'
-        }}>
-          <h2>¡Hola, {userProfile.title}! 👋</h2>
-          <p>
-            {userProfile.id === 'first-time' && 'Te guiaremos paso a paso en tu primer análisis de factibilidad'}
-            {userProfile.id === 'existing-business' && 'Perfecto! Analicemos la expansión de tu negocio existente'}
-            {userProfile.id === 'technical-founder' && 'Enfoquémonos en los aspectos técnicos de tu proyecto'}
-            {userProfile.id === 'expert' && 'Accede a todas las herramientas avanzadas de análisis'}
-            {userProfile.id === 'skipped' && 'Usa los formularios avanzados para un análisis detallado'}
-          </p>
-        </div>
-      )}
+      {/* Contenido según pestaña activa */}
+      {activeTab === "forms" || !hasCompletedGuidedMode ? (
+        <div className="forms-tab">
+          {/* Header informativo */}
+          {userProfile && hasCompletedGuidedMode && (
+            <div className="user-profile-header">
+              <h2>¡Hola, {userProfile.title}! 👋</h2>
+              <p>
+                {userProfile.id === "first-time" && "Has completado la guía inicial. Ahora puedes revisar y ajustar los detalles."}
+                {userProfile.id === "existing-business" && "Perfecto! Ahora puedes revisar y ajustar los análisis específicos"}
+                {userProfile.id === "technical-founder" && "Guía completada. Enfócate en los aspectos técnicos de tu proyecto"}
+                {userProfile.id === "expert" && "Accede a todas las herramientas avanzadas de análisis"}
+                {userProfile.id === "skipped" && "Usa los formularios avanzados para un análisis detallado"}
+              </p>
+            </div>
+          )}
 
-      {/* ✅ Selector de modo (solo mostrar si no está en paso a paso) */}
-      {!isStepByStepMode && (
-        <div className="mode-selector" style={{
-          textAlign: 'center', 
-          marginBottom: '2rem',
-          padding: '1.5rem',
-          background: '#f8f9fa',
-          borderRadius: '12px',
-          border: '2px solid #e1e5e9'
-        }}>
-          <h3>🎯 ¿Cómo prefieres trabajar?</h3>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
-            <button 
-              onClick={() => setIsStepByStepMode(true)}
-              style={{
-                padding: '1rem 2rem',
-                background: 'linear-gradient(135deg, #4caf50 0%, #2e7d32 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                fontWeight: '500',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              🎓 Modo Guiado (Paso a Paso)
-            </button>
-            
-            <button 
-              onClick={() => setIsStepByStepMode(false)}
-              style={{
-                padding: '1rem 2rem',
-                background: 'linear-gradient(135deg, #2196f3 0%, #0d47a1 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                fontWeight: '500',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              ⚡ Modo Avanzado (Formularios)
-            </button>
-          </div>
-          <p style={{ marginTop: '1rem', color: '#6c757d', fontSize: '0.9rem' }}>
-            {userProfile?.id === 'first-time' 
-              ? 'Recomendado: Modo Guiado - Te acompañaremos en cada paso'
-              : 'Elige el modo que mejor se adapte a tu experiencia'
-            }
-          </p>
+          {/* Contenido de formularios */}
+          {renderFormsContent()}
+          
+          {/* Secciones adicionales */}
+          {renderAdditionalSections()}
         </div>
-      )}
-
-      {/* ✅ Contenido principal según el modo seleccionado */}
-      {isStepByStepMode ? (
-        <StepByStepWizard
-          formData={formData}
-          onChange={onChange}
-          onComplete={(data) => {
-            // Cuando termina el wizard, mostrar opción para ver análisis avanzado
-            setIsStepByStepMode(false);
-            onChange(data);
-          }}
-          onBackToAdvanced={() => setIsStepByStepMode(false)}
-        />
       ) : (
-        <div className="forms-explained">
-          {/* ✅ Mensaje especial para usuarios que completaron el paso a paso */}
-          {userProfile?.id === 'first-time' && (
-            <div style={{
-              background: '#e8f5e8',
-              border: '1px solid #c8e6c9',
-              borderRadius: '8px',
-              padding: '1rem',
-              marginBottom: '2rem',
-              textAlign: 'center'
-            }}>
-              <h4>🎉 ¡Excelente! Completaste la guía inicial</h4>
-              <p>Ahora puedes usar los formularios avanzados para ajustar los detalles específicos de tu proyecto.</p>
-            </div>
-          )}
-
-          <div className="form-section-explained">
-            <div className="form-header">
-              <h2>💰 Análisis Financiero</h2>
-              <div className="form-description">
-                <p>
-                  <strong>¿Qué evaluamos?</strong> Rentabilidad, flujo de caja y
-                  viabilidad económica.
-                </p>
-                <p>
-                  <strong>¿Cómo se calcula?</strong> Usamos VAN (Valor Actual
-                  Neto), TIR (Tasa Interna de Retorno) y período de recuperación.
-                </p>
-              </div>
-            </div>
-            <FinancialFormSelector
-              data={formData.financial}
-              onChange={onChange}
-              calculations={calculations}
-              onDetailedModeChange={setIsFinancialDetailedMode}
-            />
-          </div>
-
-          <div className="form-section-explained">
-            <div className="form-header">
-              <h2>⚙️ Análisis Técnico</h2>
-              <div className="form-description">
-                <p>
-                  <strong>¿Qué evaluamos?</strong> Capacidad operativa, recursos
-                  técnicos y viabilidad de implementación.
-                </p>
-                <p>
-                  <strong>¿Cómo se calcula?</strong> Analizamos capacidad vs
-                  demanda, complejidad técnica y tiempos de implementación.
-                </p>
-              </div>
-            </div>
-            <TechnicalFormSelector
-              data={formData.technical}
-              onChange={onChange}
-              calculations={calculations}
-              onDetailedModeChange={setIsTechnicalDetailedMode}
-            />
-          </div>
-
-          <div className="form-section-explained">
-            <div className="form-header">
-              <h2>📈 Análisis de Mercado</h2>
-              <div className="form-description">
-                <p>
-                  <strong>¿Qué evaluamos?</strong> Potencial de mercado,
-                  competencia y aceptación del producto/servicio.
-                </p>
-                <p>
-                  <strong>¿Cómo se calcula?</strong> Usamos análisis FODA,
-                  participación de mercado y proyecciones de crecimiento.
-                </p>
-              </div>
-            </div>
-            <MarketFormSelector
-              data={formData.market}
-              onChange={onChange}
-              calculations={calculations}
-              onDetailedModeChange={setIsMarketDetailedMode}
-            />
-          </div>
-
-          <div className="form-section-explained">
-            <div className="form-header">
-              <h2>⚖️ Análisis Legal</h2>
-              <div className="form-description">
-                <p>
-                  <strong>¿Qué evaluamos?</strong> Cumplimiento normativo,
-                  permisos requeridos y riesgos legales.
-                </p>
-                <p>
-                  <strong>¿Cómo se calcula?</strong> Evaluamos requisitos legales,
-                  tiempos de tramitación y riesgos regulatorios.
-                </p>
-              </div>
-            </div>
-            <LegalFormSelector
-              data={formData.legal}
-              onChange={onChange}
-              calculations={calculations}
-              onDetailedModeChange={setIsLegalDetailedMode}
-            />
-          </div>
-
-          <div className="user-submission-info">
-            <h3>✅ Información Guardada Automáticamente</h3>
-            <p>
-              Tu información se guarda automáticamente mientras completas los
-              formularios.
-            </p>
-
-            {currentProject?.status === "pending" && (
-              <div className="notification-status pending">
-                <p>
-                  <strong>⏳ Estado:</strong> Esperando análisis del administrador
-                </p>
-                <p>
-                  <small>Recibirás los resultados por email en 48 horas.</small>
-                </p>
-              </div>
-            )}
-
-            {currentProject?.status === "analyzed" && (
-              <div className="notification-status analyzed">
-                <p>
-                  <strong>✅ Estado:</strong> Proyecto analizado
-                </p>
-                <p>
-                  <small>
-                    Ya puedes ver los resultados y gráficos completos.
-                  </small>
-                </p>
-              </div>
-            )}
-          </div>
+        <div className="analysis-tab">
+          <AnalysisDashboard
+            calculations={calculations}
+            formData={externalFormData}
+            onOptimize={handleOptimize}
+            showOptimization={showOptimization}
+            recommendations={recommendations}
+            onCloseOptimization={() => setShowOptimization(false)}
+            onApplyOptimizations={applyOptimizations}
+          />
         </div>
       )}
-
-      {/* ✅ Sección de envío (siempre visible) */}
-      <div className="submit-section">
-        <div className="submit-info">
-          <h3>📤 Notificar al Administrador</h3>
-          <p>
-            {buttonState.disabled
-              ? "Ya notificaste al administrador sobre este proyecto."
-              : "Cuando termines de completar los formularios, notifica al administrador para que revise tu proyecto."}
-          </p>
-
-          <button
-            onClick={onExplicitSubmit}
-            disabled={buttonState.disabled}
-            className={`btn btn-large ${buttonState.className}`}
-          >
-            {buttonState.text}
-          </button>
-
-          {!buttonState.disabled && (
-            <p className="notification-warning">
-              <small>
-                ⚠️{" "}
-                <strong>
-                  Solo puedes enviar una notificación por proyecto.
-                </strong>
-                <br />
-                Asegúrate de haber completado toda la información antes de
-                notificar.
-              </small>
-            </p>
-          )}
-
-          {currentProject?.status === "pending" && (
-            <p className="waiting-message">
-              <strong>
-                Soporte revisará tu proyecto y te contactará pronto.
-              </strong>
-            </p>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

@@ -1,85 +1,68 @@
-// src/components/auth/Login.jsx (VERSION COMPLETA CON FIREBASE)
+// src/components/auth/Login.jsx (ACTUALIZADO CON useAuth)
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../../hooks/useAuth'; // ✅ NUEVO
 import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../firebase/config'; // Ajusta la ruta según tu estructura
+import { db } from '../../firebase/config';
+import '../../styles/pages/auth.css';
 
-export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVerification }) {
+export function Login({ onSwitchToRegister, onSwitchToMaster, onNeedsVerification }) {
+  const { login, error: authError, clearError, loading: authLoading } = useAuth(); // ✅ USAR useAuth
+  
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [localError, setLocalError] = useState(''); // ✅ ERROR LOCAL PARA COMPATIBILIDAD
 
   const handleSubmit = async (e) => {
-    console.log('🔧 Debug Firebase Config:', {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      // Verifica si son undefined
-    });
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
+    setLocalError('');
+    clearError();
 
     try {
-      // 1. AUTENTICACIÓN CON FIREBASE AUTH
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      console.log('🔧 Iniciando login con:', formData.email);
       
-      const user = userCredential.user;
-      console.log('✅ Usuario autenticado:', user.uid);
-
-      // 2. OBTENER DATOS ADICIONALES DE FIRESTORE
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      // ✅ USAR EL LOGIN DEL HOOK useAuth
+      const result = await login(formData.email, formData.password);
       
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        console.log('📄 Datos de usuario:', userData);
+      if (result.success) {
+        console.log('✅ Login exitoso via useAuth');
+        
+        // Obtener datos adicionales de Firestore (mantener tu lógica existente)
+        const userDoc = await getDoc(doc(db, 'users', result.user.uid));
+        
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          console.log('📄 Datos de usuario:', userData);
 
-        // 3. VERIFICAR SI EL USUARIO REQUIERE VERIFICACIÓN
-        if (userData.requiresVerification && !userData.verified) {
-          console.log('🔐 Usuario requiere verificación');
-          onNeedsVerification({
-            uid: user.uid,
-            email: user.email,
-            displayName: userData.displayName,
-            requiresVerification: true,
-            verified: false
-          });
-          return;
+          // ✅ MANTENER TU LÓGICA DE VERIFICACIÓN
+          if (userData.requiresVerification && !userData.verified) {
+            console.log('🔐 Usuario requiere verificación');
+            onNeedsVerification({
+              uid: result.user.uid,
+              email: result.user.email,
+              displayName: userData.displayName,
+              requiresVerification: true,
+              verified: false
+            });
+            return;
+          }
         }
-
-        // 4. LOGIN EXITOSO - PASAR DATOS AL COMPONENTE PADRE
-        onLogin({
-          uid: user.uid,
-          email: user.email,
-          displayName: userData.displayName || user.email.split('@')[0],
-          company: userData.company,
-          role: userData.role || 'user',
-          verified: userData.verified || false,
-          isMaster: userData.role === 'master'
-        });
-
+        
+        // Si llegamos aquí, el login fue exitoso y no requiere verificación
+        // La redirección la maneja automáticamente el Router
+        
       } else {
-        // Usuario no existe en Firestore (caso raro)
-        setError('Usuario no encontrado en la base de datos. Contacta al administrador.');
-        await auth.signOut(); // Cerrar sesión por seguridad
+        setLocalError(result.error);
       }
 
     } catch (error) {
       console.error('❌ Error en login:', error);
-      setError(getErrorMessage(error.code));
-    } finally {
-      setIsLoading(false);
+      setLocalError(getErrorMessage(error.code));
     }
   };
 
-  // FUNCIÓN PARA TRAducir códigos de error de Firebase
+  // ✅ MANTENER TU FUNCIÓN DE TRAduCCIÓN DE ERRORES
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
       case 'auth/user-not-found':
@@ -106,8 +89,14 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
       [name]: value
     }));
     
-    if (error) setError('');
+    if (localError || authError) {
+      setLocalError('');
+      clearError();
+    }
   };
+
+  // ✅ MOSTRAR ERRORES TANTO LOCALES COMO DEL HOOK
+  const displayError = localError || authError;
 
   return (
     <div className="login-container">
@@ -118,9 +107,9 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
         </div>
         
         <form onSubmit={handleSubmit} className="login-form">
-          {error && (
+          {displayError && (
             <div className="error-message">
-              {error}
+              {displayError}
             </div>
           )}
           
@@ -133,7 +122,7 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
               onChange={handleChange}
               placeholder="tu@email.com"
               required
-              disabled={isLoading}
+              disabled={authLoading}
             />
           </div>
           
@@ -146,16 +135,16 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
               onChange={handleChange}
               placeholder="Tu contraseña"
               required
-              disabled={isLoading}
+              disabled={authLoading}
             />
           </div>
           
           <button 
             type="submit" 
-            className="btn btn-primary btn-full"
-            disabled={isLoading}
+            className="btn btn--primary btn--full"
+            disabled={authLoading}
           >
-            {isLoading ? '⏳ Iniciando Sesión...' : '🔐 Iniciar Sesión'}
+            {authLoading ? '⏳ Iniciando Sesión...' : '🔐 Iniciar Sesión'}
           </button>
         </form>
         
@@ -167,7 +156,7 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
                 type="button"
                 onClick={onSwitchToMaster}
                 className="link-button"
-                disabled={isLoading}
+                disabled={authLoading}
               >
                 Acceder como Master
               </button>
@@ -178,7 +167,7 @@ export function Login({ onLogin, onSwitchToRegister, onSwitchToMaster, onNeedsVe
                 type="button"
                 onClick={onSwitchToRegister}
                 className="link-button"
-                disabled={isLoading}
+                disabled={authLoading}
               >
                 Solicitar acceso
               </button>

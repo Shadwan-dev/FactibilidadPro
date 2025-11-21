@@ -1,0 +1,291 @@
+/* src/components/forms/modals/ModalGeneric.module.css */
+
+/* Contenedor principal del modal */
+.modalGenericContent {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 700px;
+    max-width: 95vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Header del modal */
+  .modalGenericHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid #e8ecef;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .modalGenericHeader h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .modalGenericCloseBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .modalGenericCloseBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  /* Cuerpo del modal */
+  .modalGenericBody {
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  /* Formulario */
+  .modalGenericForm {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+  }
+  
+  /* Grid dinámico basado en showFrequency */
+  .modalGenericFormGrid {
+    display: grid;
+    gap: 1rem;
+    align-items: end;
+  }
+  
+  .modalGenericFormGrid--withFrequency {
+    grid-template-columns: 2fr 1fr 1fr auto;
+  }
+  
+  .modalGenericFormGrid--withoutFrequency {
+    grid-template-columns: 2fr 1fr auto;
+  }
+  
+  .modalGenericInput {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    background: white;
+  }
+  
+  .modalGenericInput:focus {
+    outline: none;
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+  }
+  
+  .modalGenericSelect {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modalGenericSelect:focus {
+    outline: none;
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+  }
+  
+  .modalGenericBtnPrimary {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .modalGenericBtnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+  }
+  
+  /* Lista de items */
+  .modalGenericItemsList {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  /* Header dinámico basado en showFrequency */
+  .modalGenericListHeader {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .modalGenericListHeader--withFrequency {
+    grid-template-columns: 2fr 1fr auto;
+  }
+  
+  .modalGenericListHeader--withoutFrequency {
+    grid-template-columns: 2fr 1fr auto;
+  }
+  
+  /* Row dinámico basado en showFrequency */
+  .modalGenericItemRow {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    align-items: center;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.2s ease;
+  }
+  
+  .modalGenericItemRow--withFrequency {
+    grid-template-columns: 2fr 1fr auto;
+  }
+  
+  .modalGenericItemRow--withoutFrequency {
+    grid-template-columns: 2fr 1fr auto;
+  }
+  
+  .modalGenericItemRow:hover {
+    background: #f8f9fa;
+  }
+  
+  .modalGenericItemName {
+    font-weight: 500;
+    color: #212529;
+  }
+  
+  .modalGenericItemAmount {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #28a745;
+    font-size: 0.9rem;
+  }
+  
+  .modalGenericBtnDelete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+  }
+  
+  .modalGenericBtnDelete:hover {
+    background: #c82333;
+    transform: scale(1.1);
+  }
+  
+  /* Totales */
+  .modalGenericTotals {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .modalGenericTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+  
+  .modalGenericTotalHighlight {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  /* Footer del modal */
+  .modalGenericFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid #e8ecef;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .modalGenericBtnSecondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modalGenericBtnSecondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+  }
+  
+  /* Estados vacíos */
+  .modalGenericEmptyState {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6c757d;
+  }
+  
+  .modalGenericEmptyStateIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  /* Indicador de frecuencia */
+  .modalGenericFrequency {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+  }

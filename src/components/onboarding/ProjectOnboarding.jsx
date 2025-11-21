@@ -58,12 +58,12 @@ export const ProjectOnboarding = React.memo(({ onProfileSelect, onSkip }) => {
       description: 'Tengo experiencia en análisis de viabilidad',
       icon: '🎓',
       features: [
-        'Modo avanzado desde el inicio',
-        'Acceso directo a todos los formularios',
-        'Cálculos detallados',
-        'Análisis comparativos'
+        'Guía avanzada paso a paso',
+        'Acceso a análisis detallados',
+        'Cálculos personalizados',
+        'Comparativas avanzadas'
       ],
-      recommendedStartingPoint: null, // Elige libremente
+      recommendedStartingPoint: 'market',
       difficulty: 'Avanzado',
       estimatedTime: '8-12 minutos'
     }
@@ -90,10 +90,10 @@ export const ProjectOnboarding = React.memo(({ onProfileSelect, onSkip }) => {
       <div className="onboarding-details">
         <div className="onboarding-details__header">
           <button onClick={handleBack} className="onboarding-details__back-btn">
-            ← Volver
+            ← Volver a la selección
           </button>
           <h2>Perfecto para {selectedProfile.title.toLowerCase()}</h2>
-          <p>Hemos personalizado la experiencia para ti</p>
+          <p>Hemos personalizado la experiencia guiada para ti</p>
         </div>
 
         <div className="onboarding-details__content">
@@ -133,29 +133,29 @@ export const ProjectOnboarding = React.memo(({ onProfileSelect, onSkip }) => {
             <div className="onboarding-details__recommendation">
               <h4>🎯 Recomendación de inicio</h4>
               <p>
-                Te sugerimos comenzar con el análisis de{' '}
+                Te sugerimos comenzar con el análisis de{" "}
                 <strong>
-                  {selectedProfile.recommendedStartingPoint === 'market' && 'Mercado'}
-                  {selectedProfile.recommendedStartingPoint === 'financial' && 'Financiero'}
-                  {selectedProfile.recommendedStartingPoint === 'technical' && 'Técnico'}
-                </strong>{' '}
+                  {selectedProfile.recommendedStartingPoint === "market" &&
+                    "Mercado"}
+                  {selectedProfile.recommendedStartingPoint === "financial" &&
+                    "Financiero"}
+                  {selectedProfile.recommendedStartingPoint === "technical" &&
+                    "Técnico"}
+                </strong>{" "}
                 para una experiencia más fluida.
               </p>
             </div>
           )}
 
           <div className="onboarding-details__actions">
-            <button 
+            <button
               onClick={handleConfirm}
               className="onboarding-details__confirm-btn"
             >
-              ✅ Comenzar con esta configuración
+              ✅ Comenzar experiencia guiada
             </button>
-            <button 
-              onClick={onSkip}
-              className="onboarding-details__skip-btn"
-            >
-              Prefiero elegir yo mismo
+            <button onClick={onSkip} className="onboarding-details__skip-btn">
+              Explorar por mi cuenta
             </button>
           </div>
         </div>
@@ -167,7 +167,7 @@ export const ProjectOnboarding = React.memo(({ onProfileSelect, onSkip }) => {
     <div className="project-onboarding">
       <div className="project-onboarding__header">
         <h1>🎯 Bienvenido al Análisis de Factibilidad</h1>
-        <p>Selecciona tu perfil para una experiencia personalizada</p>
+        <p>Selecciona tu perfil para una experiencia guiada personalizada</p>
       </div>
 
       <div className="project-onboarding__profiles">
@@ -202,8 +202,9 @@ export const ProjectOnboarding = React.memo(({ onProfileSelect, onSkip }) => {
       <div className="project-onboarding__help">
         <h4>💡 ¿No estás seguro?</h4>
         <p>
-          Si es tu primera vez, te recomendamos <strong>"Emprendedor Nuevo"</strong>. 
-          Te guiaremos paso a paso con explicaciones simples y ejemplos prácticos.
+          Si es tu primera vez, te recomendamos "Emprendedor Nuevo". 
+          Te guiaremos paso a paso con explicaciones claras y ejemplos prácticos.
+          Todos los perfiles incluyen asistencia guiada.
         </p>
       </div>
 
@@ -213,13 +214,13 @@ export const ProjectOnboarding = React.memo(({ onProfileSelect, onSkip }) => {
           disabled={!selectedProfile}
           className="project-onboarding__continue-btn"
         >
-          Continuar con mi perfil
+          Comenzar experiencia guiada
         </button>
         <button 
           onClick={onSkip}
           className="project-onboarding__skip-btn"
         >
-          Saltar y elegir yo mismo
+          Explorar por mi cuenta
         </button>
       </div>
     </div>

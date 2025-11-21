@@ -1,0 +1,21 @@
+/* src/styles/main.css - VERSIÓN CORRECTA */
+/* SOLO variables globales y reset - nada de componentes */
+@import './base/reset.css';      /* Solo esto es necesario */
+@import './base/typography.css'; /* Opcional: tipografía base */
+@import './base/layout.css';     /* Opcional: utilidades layout */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  .loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    gap: var(--space-lg);
+  }

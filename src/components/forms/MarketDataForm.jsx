@@ -1,4 +1,4 @@
-// src/components/forms/MarketDataForm.jsx (ACTUALIZADO)
+// src/components/forms/MarketDataForm.jsx (UNIFICADO)
 import React, { useState, useCallback } from 'react';
 
 export const MarketDataForm = React.memo(({ data, onChange, calculations }) => {
@@ -39,80 +39,86 @@ export const MarketDataForm = React.memo(({ data, onChange, calculations }) => {
   const marketMetrics = calculateMarketMetrics();
 
   return (
-    <div className="form-section market-form">
-      <div className="market-form__header">
-        <h3>📈 Factibilidad de Mercado</h3>
+    <div className="form-container market-form">
+      <div className="form-header">
+        <h3 className="form-title">Factibilidad de Mercado</h3>
         {hasValidData && (
           <button 
             onClick={() => setShowResults(!showResults)}
-            className="market-form__toggle-btn"
+            className="btn btn--secondary btn--sm"
           >
             {showResults ? '📊 Ocultar Análisis' : '🔍 Ver Análisis'}
           </button>
         )}
       </div>
       
-      <div className="market-form__inputs">
-        <div className="market-form__input-group">
-          <label>Tamaño del Mercado (en unidades):</label>
+      <div className="form-grid">
+        <div className="input-group">
+          <label className="input-label">Tamaño del Mercado (en unidades)</label>
           <input
+            className="input-field"
             type="number"
             value={localData.marketSize || ''}
             onChange={(e) => handleInputChange('marketSize', e.target.value)}
             placeholder="Ej: 10000"
           />
-          <small>Unidades totales en el mercado anual</small>
+          <small className="input-help">Unidades totales en el mercado anual</small>
         </div>
 
-        <div className="market-form__input-group">
-          <label>Crecimiento Anual del Mercado (%):</label>
+        <div className="input-group">
+          <label className="input-label">Crecimiento Anual del Mercado (%)</label>
           <input
+            className="input-field"
             type="number"
             step="0.1"
             value={localData.marketGrowth || ''}
             onChange={(e) => handleInputChange('marketGrowth', e.target.value)}
             placeholder="Ej: 8.5"
           />
-          <small>Tasa de crecimiento anual esperada</small>
+          <small className="input-help">Tasa de crecimiento anual esperada</small>
         </div>
 
-        <div className="market-form__input-group">
-          <label>Participación de Mercado Esperada (%):</label>
+        <div className="input-group">
+          <label className="input-label">Participación de Mercado Esperada (%)</label>
           <input
+            className="input-field"
             type="number"
             step="0.1"
             value={localData.marketShare || ''}
             onChange={(e) => handleInputChange('marketShare', e.target.value)}
             placeholder="Ej: 15.0"
           />
-          <small>Porcentaje del mercado que esperas capturar</small>
+          <small className="input-help">Porcentaje del mercado que esperas capturar</small>
         </div>
 
-        <div className="market-form__input-group">
-          <label>Número de Competidores Directos:</label>
+        <div className="input-group">
+          <label className="input-label">Número de Competidores Directos</label>
           <input
+            className="input-field"
             type="number"
             value={localData.competitors || ''}
             onChange={(e) => handleInputChange('competitors', e.target.value)}
             placeholder="Ej: 5"
           />
-          <small>Competidores principales en el mercado</small>
+          <small className="input-help">Competidores principales en el mercado</small>
         </div>
 
-        <div className="market-form__input-group">
-          <label>Precio Promedio del Producto/Servicio ($):</label>
+        <div className="input-group">
+          <label className="input-label">Precio Promedio del Producto/Servicio ($)</label>
           <input
+            className="input-field"
             type="number"
             value={localData.averagePrice || ''}
             onChange={(e) => handleInputChange('averagePrice', e.target.value)}
             placeholder="Ej: 99.99"
           />
-          <small>Precio promedio de venta</small>
+          <small className="input-help">Precio promedio de venta</small>
         </div>
 
-        <div className="market-form__input-group">
-          <label>Estacionalidad (1-10):</label>
+        <div className="input-group">
+          <label className="input-label">Estacionalidad (1-10)</label>
           <input
+            className="input-field"
             type="number"
             min="1"
             max="10"
@@ -120,121 +126,228 @@ export const MarketDataForm = React.memo(({ data, onChange, calculations }) => {
             onChange={(e) => handleInputChange('seasonality', e.target.value)}
             placeholder="1-10"
           />
-          <small>1 = Estable, 10 = Muy estacional</small>
+          <small className="input-help">1 = Estable, 10 = Muy estacional</small>
         </div>
       </div>
 
       {/* Resultados en Tiempo Real */}
       {showResults && calculations && (
-        <div className="market-form__results">
-          <h4>🎯 Análisis de Mercado</h4>
+        <div className="form-results">
+          <h4 className="results-title">🎯 Análisis de Mercado</h4>
           
           {/* Puntuación General */}
-          <div className="market-form__score-section">
-            <div className="market-form__score-card">
-              <div className="market-form__score-header">
-                <span>Puntuación de Mercado</span>
-                <span className={`market-form__score-badge ${calculations.market?.viable ? 'market-form__score-viable' : 'market-form__score-not-viable'}`}>
-                  {calculations.market?.viable ? 'VIABLE' : 'NO VIABLE'}
+          <div className="score-section">
+            <div className="score-card">
+              <div className="score-header">
+                <span className="score-label">Puntuación de Mercado</span>
+                <span className={`result-badge ${calculations.market?.viable ? 'badge--success' : 'badge--danger'}`}>
+                  {calculations.market?.viable ? '✅ VIABLE' : '❌ NO VIABLE'}
                 </span>
               </div>
-              <div className="market-form__score-value">
+              <div className={`score-value ${calculations.market?.viable ? 'value--positive' : 'value--negative'}`}>
                 {calculations.market?.score || 0}/100
               </div>
-              <div className="market-form__score-level">
-                Nivel: {calculations.market?.level || 'Bajo'}
+              <div className="score-level">
+                Nivel: <strong>{calculations.market?.level || 'Bajo'}</strong>
               </div>
             </div>
           </div>
 
           {/* Métricas del Mercado */}
-          <div className="market-form__metrics">
-            <h5>📊 Métricas del Mercado</h5>
-            <div className="market-form__metrics-grid">
-              <div className="market-form__metric-item">
-                <span className="market-form__metric-label">Valor Total del Mercado:</span>
-                <span className="market-form__metric-value">
+          <div className="metrics-section">
+            <h5 className="section-subtitle">📊 Métricas del Mercado</h5>
+            <div className="results-grid">
+              <div className="result-card">
+                <div className="result-header">
+                  <span className="result-label">Valor Total del Mercado</span>
+                  <span className="result-badge badge--info">
+                    💰 Total
+                  </span>
+                </div>
+                <div className="result-value">
                   ${marketMetrics.marketValue.toLocaleString(undefined, { 
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2 
                   })}
-                </span>
-                <small>Potencial total del mercado</small>
+                </div>
+                <div className="result-help">Potencial total del mercado</div>
               </div>
 
-              <div className="market-form__metric-item">
-                <span className="market-form__metric-label">Ingresos Potenciales:</span>
-                <span className="market-form__metric-value">
+              <div className="result-card">
+                <div className="result-header">
+                  <span className="result-label">Ingresos Potenciales</span>
+                  <span className={`result-badge ${
+                    marketMetrics.potentialRevenue > marketMetrics.marketValue * 0.1 ? 'badge--success' : 
+                    marketMetrics.potentialRevenue > marketMetrics.marketValue * 0.05 ? 'badge--warning' : 'badge--danger'
+                  }`}>
+                    {marketMetrics.potentialRevenue > marketMetrics.marketValue * 0.1 ? '🎯 Alto' : 
+                     marketMetrics.potentialRevenue > marketMetrics.marketValue * 0.05 ? '📈 Medio' : '📉 Bajo'}
+                  </span>
+                </div>
+                <div className={`result-value ${
+                  marketMetrics.potentialRevenue > marketMetrics.marketValue * 0.1 ? 'value--positive' : 
+                  marketMetrics.potentialRevenue > marketMetrics.marketValue * 0.05 ? 'value--warning' : 'value--negative'
+                }`}>
                   ${marketMetrics.potentialRevenue.toLocaleString(undefined, { 
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2 
                   })}
-                </span>
-                <small>Basado en participación esperada</small>
+                </div>
+                <div className="result-help">Basado en participación esperada</div>
               </div>
 
-              <div className="market-form__metric-item">
-                <span className="market-form__metric-label">Intensidad Competitiva:</span>
-                <span className={`market-form__metric-value ${marketMetrics.competitionIntensity === 'Baja' ? 'market-form__metric-positive' : marketMetrics.competitionIntensity === 'Media' ? 'market-form__metric-warning' : 'market-form__metric-danger'}`}>
+              <div className="result-card">
+                <div className="result-header">
+                  <span className="result-label">Intensidad Competitiva</span>
+                  <span className={`result-badge ${
+                    marketMetrics.competitionIntensity === 'Baja' ? 'badge--success' : 
+                    marketMetrics.competitionIntensity === 'Media' ? 'badge--warning' : 'badge--danger'
+                  }`}>
+                    {marketMetrics.competitionIntensity === 'Baja' ? '✅ Baja' : 
+                     marketMetrics.competitionIntensity === 'Media' ? '⚠️ Media' : '❌ Alta'}
+                  </span>
+                </div>
+                <div className={`result-value ${
+                  marketMetrics.competitionIntensity === 'Baja' ? 'value--positive' : 
+                  marketMetrics.competitionIntensity === 'Media' ? 'value--warning' : 'value--negative'
+                }`}>
                   {marketMetrics.competitionIntensity}
-                </span>
-                <small>Nivel de competencia</small>
+                </div>
+                <div className="result-help">Nivel de competencia</div>
               </div>
 
-              <div className="market-form__metric-item">
-                <span className="market-form__metric-label">Crecimiento del Mercado:</span>
-                <span className={`market-form__metric-value ${localData.marketGrowth > 8 ? 'market-form__metric-positive' : localData.marketGrowth > 5 ? 'market-form__metric-warning' : 'market-form__metric-danger'}`}>
+              <div className="result-card">
+                <div className="result-header">
+                  <span className="result-label">Crecimiento del Mercado</span>
+                  <span className={`result-badge ${
+                    localData.marketGrowth > 8 ? 'badge--success' : 
+                    localData.marketGrowth > 5 ? 'badge--warning' : 'badge--danger'
+                  }`}>
+                    {localData.marketGrowth > 8 ? '🚀 Alto' : 
+                     localData.marketGrowth > 5 ? '📈 Medio' : '📉 Bajo'}
+                  </span>
+                </div>
+                <div className={`result-value ${
+                  localData.marketGrowth > 8 ? 'value--positive' : 
+                  localData.marketGrowth > 5 ? 'value--warning' : 'value--negative'
+                }`}>
                   {localData.marketGrowth || 0}%
-                </span>
-                <small>Tasa de crecimiento anual</small>
+                </div>
+                <div className="result-help">Tasa de crecimiento anual</div>
               </div>
             </div>
           </div>
 
           {/* Análisis de Oportunidad */}
-          <div className="market-form__opportunity">
-            <h5>💼 Análisis de Oportunidad</h5>
-            <div className="market-form__opportunity-grid">
-              <div className="market-form__opportunity-item">
-                <span>Tamaño de Mercado:</span>
-                <strong className={localData.marketSize > 5000 ? 'market-form__status-good' : localData.marketSize > 1000 ? 'market-form__status-fair' : 'market-form__status-poor'}>
-                  {localData.marketSize > 5000 ? 'Grande' : localData.marketSize > 1000 ? 'Mediano' : 'Pequeño'}
-                </strong>
+          <div className="analysis-section">
+            <h5 className="section-subtitle">💼 Análisis de Oportunidad</h5>
+            <div className="analysis-grid">
+              <div className="analysis-item">
+                <div className="analysis-label">Tamaño de Mercado</div>
+                <div className={`analysis-value ${
+                  localData.marketSize > 5000 ? 'value--positive' : 
+                  localData.marketSize > 1000 ? 'value--warning' : 'value--negative'
+                }`}>
+                  {localData.marketSize > 5000 ? 'Grande' : 
+                   localData.marketSize > 1000 ? 'Mediano' : 'Pequeño'}
+                </div>
+                <div className="analysis-help">
+                  {localData.marketSize > 5000 ? 'Mercado extenso' : 
+                   localData.marketSize > 1000 ? 'Mercado moderado' : 'Mercado limitado'}
+                </div>
               </div>
               
-              <div className="market-form__opportunity-item">
-                <span>Participación Objetivo:</span>
-                <strong className={localData.marketShare > 20 ? 'market-form__status-good' : localData.marketShare > 10 ? 'market-form__status-fair' : 'market-form__status-poor'}>
+              <div className="analysis-item">
+                <div className="analysis-label">Participación Objetivo</div>
+                <div className={`analysis-value ${
+                  localData.marketShare > 20 ? 'value--positive' : 
+                  localData.marketShare > 10 ? 'value--warning' : 'value--negative'
+                }`}>
                   {localData.marketShare || 0}%
-                </strong>
+                </div>
+                <div className="analysis-help">
+                  {localData.marketShare > 20 ? 'Alta participación' : 
+                   localData.marketShare > 10 ? 'Participación media' : 'Baja participación'}
+                </div>
               </div>
               
-              <div className="market-form__opportunity-item">
-                <span>Estacionalidad:</span>
-                <strong className={localData.seasonality <= 3 ? 'market-form__status-good' : localData.seasonality <= 6 ? 'market-form__status-fair' : 'market-form__status-poor'}>
-                  {localData.seasonality <= 3 ? 'Estable' : localData.seasonality <= 6 ? 'Moderada' : 'Alta'}
-                </strong>
+              <div className="analysis-item">
+                <div className="analysis-label">Estacionalidad</div>
+                <div className={`analysis-value ${
+                  localData.seasonality <= 3 ? 'value--positive' : 
+                  localData.seasonality <= 6 ? 'value--warning' : 'value--negative'
+                }`}>
+                  {localData.seasonality <= 3 ? 'Estable' : 
+                   localData.seasonality <= 6 ? 'Moderada' : 'Alta'}
+                </div>
+                <div className="analysis-help">
+                  {localData.seasonality <= 3 ? 'Demanda constante' : 
+                   localData.seasonality <= 6 ? 'Variación moderada' : 'Alta variación estacional'}
+                </div>
               </div>
               
-              <div className="market-form__opportunity-item">
-                <span>Competencia:</span>
-                <strong className={localData.competitors <= 3 ? 'market-form__status-good' : localData.competitors <= 7 ? 'market-form__status-fair' : 'market-form__status-poor'}>
+              <div className="analysis-item">
+                <div className="analysis-label">Competencia</div>
+                <div className={`analysis-value ${
+                  localData.competitors <= 3 ? 'value--positive' : 
+                  localData.competitors <= 7 ? 'value--warning' : 'value--negative'
+                }`}>
                   {localData.competitors || 0} competidores
-                </strong>
+                </div>
+                <div className="analysis-help">
+                  {localData.competitors <= 3 ? 'Baja competencia' : 
+                   localData.competitors <= 7 ? 'Competencia media' : 'Alta competencia'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Potencial de Crecimiento */}
+          <div className="growth-section">
+            <h5 className="section-subtitle">📈 Potencial de Crecimiento</h5>
+            <div className="growth-grid">
+              <div className="growth-item">
+                <div className="growth-label">Mercado en Crecimiento</div>
+                <div className={`growth-indicator ${
+                  localData.marketGrowth > 10 ? 'growth-high' : 
+                  localData.marketGrowth > 5 ? 'growth-medium' : 'growth-low'
+                }`}>
+                  {localData.marketGrowth > 10 ? 'Alto' : 
+                   localData.marketGrowth > 5 ? 'Moderado' : 'Bajo'}
+                </div>
+                <div className="growth-description">
+                  {localData.marketGrowth > 10 ? 'Crecimiento acelerado' : 
+                   localData.marketGrowth > 5 ? 'Crecimiento estable' : 'Crecimiento limitado'}
+                </div>
+              </div>
+              
+              <div className="growth-item">
+                <div className="growth-label">Oportunidad de Penetración</div>
+                <div className={`growth-indicator ${
+                  localData.competitors <= 3 ? 'growth-high' : 
+                  localData.competitors <= 7 ? 'growth-medium' : 'growth-low'
+                }`}>
+                  {localData.competitors <= 3 ? 'Alta' : 
+                   localData.competitors <= 7 ? 'Media' : 'Baja'}
+                </div>
+                <div className="growth-description">
+                  {localData.competitors <= 3 ? 'Mercado con espacio' : 
+                   localData.competitors <= 7 ? 'Competencia manejable' : 'Mercado saturado'}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Recomendaciones */}
           {calculations.suggestions && calculations.suggestions.filter(s => s.campo === 'market').length > 0 && (
-            <div className="market-form__recommendations">
-              <h5>💡 Recomendaciones de Mercado</h5>
+            <div className="recommendations-section">
+              <h5 className="section-subtitle">💡 Recomendaciones de Mercado</h5>
               {calculations.suggestions
                 .filter(suggestion => suggestion.campo === 'market')
                 .map((suggestion, index) => (
-                  <div key={index} className="market-form__recommendation">
-                    <p className="market-form__recommendation-title">{suggestion.mensaje}</p>
-                    <ul className="market-form__recommendation-list">
+                  <div key={index} className="recommendation-card">
+                    <p className="recommendation-title">{suggestion.mensaje}</p>
+                    <ul className="recommendation-list">
                       {suggestion.sugerencias.map((item, idx) => (
                         <li key={idx}>{item}</li>
                       ))}
@@ -244,32 +357,12 @@ export const MarketDataForm = React.memo(({ data, onChange, calculations }) => {
               }
             </div>
           )}
-
-          {/* Potencial de Crecimiento */}
-          <div className="market-form__growth-potential">
-            <h5>📈 Potencial de Crecimiento</h5>
-            <div className="market-form__growth-indicators">
-              <div className="market-form__growth-item">
-                <span>Mercado en Crecimiento:</span>
-                <div className={localData.marketGrowth > 10 ? 'market-form__growth-high' : localData.marketGrowth > 5 ? 'market-form__growth-medium' : 'market-form__growth-low'}>
-                  {localData.marketGrowth > 10 ? 'Alto' : localData.marketGrowth > 5 ? 'Moderado' : 'Bajo'}
-                </div>
-              </div>
-              
-              <div className="market-form__growth-item">
-                <span>Oportunidad de Penetración:</span>
-                <div className={localData.competitors <= 3 ? 'market-form__growth-high' : localData.competitors <= 7 ? 'market-form__growth-medium' : 'market-form__growth-low'}>
-                  {localData.competitors <= 3 ? 'Alta' : localData.competitors <= 7 ? 'Media' : 'Baja'}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
       {/* Indicador de Estado */}
       {!hasValidData && (
-        <div className="market-form__data-required">
+        <div className="form-message form-message--info">
           <p>📈 Completa los datos de mercado para ver el análisis</p>
         </div>
       )}
