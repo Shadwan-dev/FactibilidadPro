@@ -1,0 +1,311 @@
+/* src/components/results/FinancialResults.css */
+.financial-results {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .results-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+  }
+  
+  .results-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+  }
+  
+  .results-subtitle {
+    margin: 8px 0 0 0;
+    opacity: 0.9;
+    font-size: 1.1rem;
+  }
+  
+  /* Indicadores Principales */
+  .main-indicators,
+  .secondary-indicators {
+    margin-bottom: 30px;
+  }
+  
+  .main-indicators h4,
+  .secondary-indicators h4,
+  .sensitivity-analysis h4,
+  .viability-assessment h4,
+  .recommendations h4 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  
+  .indicators-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* Tarjetas de Indicadores */
+  .indicator-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .indicator-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .indicator-card.primary {
+    border-left: 4px solid #4299e1;
+  }
+  
+  .indicator-card.secondary {
+    border-left: 4px solid #48bb78;
+  }
+  
+  .indicator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .indicator-header h5 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1.1rem;
+  }
+  
+  .indicator-badge {
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .indicator-badge.positive {
+    background: #c6f6d5;
+    color: #22543d;
+  }
+  
+  .indicator-badge.negative {
+    background: #fed7d7;
+    color: #742a2a;
+  }
+  
+  .indicator-badge.info {
+    background: #bee3f8;
+    color: #2a4365;
+  }
+  
+  .indicator-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .indicator-details {
+    font-size: 0.9rem;
+    color: #4a5568;
+  }
+  
+  .indicator-details p {
+    margin: 8px 0;
+    line-height: 1.4;
+  }
+  
+  /* Análisis de Sensibilidad */
+  .sensitivity-analysis {
+    background: #f7fafc;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .sensitivity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .sensitivity-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .sensitivity-item h6 {
+    margin: 0 0 10px 0;
+    color: #4a5568;
+    font-size: 0.9rem;
+  }
+  
+  .impact-negative {
+    color: #e53e3e;
+    font-weight: bold;
+  }
+  
+  .impact-positive {
+    color: #38a169;
+    font-weight: bold;
+  }
+  
+  .sensitivity-note {
+    font-size: 0.85rem;
+    color: #718096;
+    font-style: italic;
+    margin: 0;
+  }
+  
+  /* Evaluación de Viabilidad */
+  .viability-assessment {
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .viability-assessment.viable {
+    background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+    border: 2px solid #38a169;
+  }
+  
+  .viability-assessment.not-viable {
+    background: linear-gradient(135deg, #fed7d7, #feb2b2);
+    border: 2px solid #e53e3e;
+  }
+  
+  .viability-summary {
+    text-align: center;
+  }
+  
+  .viability-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .viability-icon {
+    font-size: 2rem;
+  }
+  
+  .viability-header h5 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #2d3748;
+  }
+  
+  .viability-details {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .criteria-list {
+    margin-top: 20px;
+  }
+  
+  .criteria-list h6 {
+    margin-bottom: 10px;
+    color: #2d3748;
+  }
+  
+  .criteria-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .criteria-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .criteria-list li.met {
+    color: #38a169;
+  }
+  
+  .criteria-list li.not-met {
+    color: #e53e3e;
+  }
+  
+  /* Recomendaciones */
+  .recommendations {
+    background: #fffaf0;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #ed8936;
+  }
+  
+  .recommendations-list {
+    display: grid;
+    gap: 20px;
+  }
+  
+  .recommendation-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #ed8936;
+  }
+  
+  .recommendation-item h6 {
+    margin: 0 0 15px 0;
+    color: #2d3748;
+    font-size: 1rem;
+  }
+  
+  .recommendation-item ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #4a5568;
+  }
+  
+  .recommendation-item li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  
+  /* Estados vacíos */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #718096;
+    background: #f7fafc;
+    border-radius: 12px;
+    border: 2px dashed #cbd5e0;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .indicators-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .sensitivity-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .financial-results {
+      padding: 10px;
+    }
+    
+    .viability-header {
+      flex-direction: column;
+      text-align: center;
+    }
+  }

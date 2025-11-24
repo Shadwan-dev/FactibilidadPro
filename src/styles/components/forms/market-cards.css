@@ -1,0 +1,108 @@
+/* src/styles/components/forms/market-cards.css */
+.market-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+  }
+  
+  .market-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
+  }
+  
+  .market-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+  
+  .market-card-label {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  
+  .market-card-description {
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .market-btn-modal {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  
+  .market-btn-modal:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+  
+  .market-card-rating {
+    margin-bottom: 1rem;
+  }
+  
+  .market-rating-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .market-card-items {
+    min-height: 60px;
+  }
+  
+  .market-card-item {
+    background: #f8fafc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid #3b82f6;
+  }
+  
+  .market-item-name {
+    font-size: 0.9rem;
+    color: #475569;
+  }
+  
+  .market-card-more {
+    background: #f1f5f9;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .market-card-empty {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    border: 1px dashed #cbd5e1;
+  }

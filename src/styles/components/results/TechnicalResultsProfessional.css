@@ -1,0 +1,750 @@
+/* src/components/results/TechnicalResultsProfessional.css */
+.professional-technical-results {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ffffff;
+  color: #1a202c;
+}
+
+/* HEADER EJECUTIVO - MEJORADO */
+.technical-executive-summary {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.technical-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.technical-summary-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+}
+
+.technical-viability-badge {
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.technical-viability-badge.viable {
+  background: rgba(34, 197, 94, 0.95);
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+.technical-viability-badge.not-viable {
+  background: rgba(239, 68, 68, 0.95);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.technical-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.technical-summary-card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.technical-summary-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.technical-summary-card h4 {
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.technical-score {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.technical-level {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.level-high { color: #34d399 !important; }
+.level-medium { color: #fbbf24 !important; }
+.level-low { color: #f87171 !important; }
+
+.capabilities-count {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.capabilities-detail {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.operational-feasibility {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.operational-feasibility.feasible {
+  color: #34d399;
+}
+
+.operational-feasibility.not-feasible {
+  color: #f87171;
+}
+
+.feasibility-detail {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* PUNTUACIÓN TÉCNICA - SECCIÓN PRIORITARIA */
+.technical-dimensions-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.technical-dimensions-section h3 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #3b82f6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.dimension-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dimension-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+.dimension-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+
+.dimension-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.dimension-header h5 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.dimension-weight {
+  background: #e2e8f0;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #475569;
+  font-weight: 600;
+}
+
+.dimension-progress {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.dimension-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 5px;
+  transition: width 0.8s ease;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.dimension-score {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 15px;
+  background: white;
+  padding: 8px;
+  border-radius: 8px;
+  border: 2px solid #f1f5f9;
+}
+
+.dimension-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dimension-details li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.dimension-details li:last-child {
+  border-bottom: none;
+}
+
+.dimension-details li.completed {
+  color: #059669;
+  font-weight: 500;
+}
+
+.dimension-details li.pending {
+  color: #6b7280;
+}
+
+/* FORTALEZAS Y DEBILIDADES TÉCNICAS - SECCIÓN PRIORITARIA */
+.technical-swot-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.technical-swot-section h3 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #3b82f6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.swot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.swot-card {
+  border-radius: 12px;
+  padding: 25px;
+  background: #f8fafc;
+  border: 2px solid;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.swot-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.swot-card.strengths {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.swot-card.strengths::before {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.swot-card.weaknesses {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+.swot-card.weaknesses::before {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.swot-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.swot-card h4 {
+  margin: 0 0 20px 0;
+  color: #1e293b;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.swot-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.swot-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+.swot-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(5px);
+}
+
+.swot-icon {
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.swot-empty {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+}
+
+/* RIESGOS TÉCNICOS */
+.technical-risks-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.technical-risks-section h3 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #3b82f6;
+}
+
+.risks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.risk-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  border-top: 4px solid;
+  transition: transform 0.2s ease;
+}
+
+.risk-card:hover {
+  transform: translateY(-2px);
+}
+
+.risk-card.high {
+  border-top-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+.risk-card.medium {
+  border-top-color: #f59e0b;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.risk-card.low {
+  border-top-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.risk-card h5 {
+  margin: 0 0 15px 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.risk-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.risk-item {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #374151;
+  border-left: 3px solid;
+}
+
+.risk-card.high .risk-item {
+  border-left-color: #ef4444;
+}
+
+.risk-card.medium .risk-item {
+  border-left-color: #f59e0b;
+}
+
+.risk-card.low .risk-item {
+  border-left-color: #10b981;
+}
+
+/* RECOMENDACIONES TÉCNICAS */
+.technical-recommendations-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.technical-recommendations-section h3 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #3b82f6;
+}
+
+.technical-recommendations-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.technical-recommendation-card {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 12px;
+  border-left: 4px solid;
+  transition: all 0.3s ease;
+}
+
+.technical-recommendation-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.technical-recommendation-card.high {
+  border-left-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+.technical-recommendation-card.medium {
+  border-left-color: #f59e0b;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.technical-recommendation-card.low {
+  border-left-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.technical-recommendation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.technical-recommendation-header h5 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.technical-priority-badge {
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.technical-priority-badge.high {
+  background: #fecaca;
+  color: #dc2626;
+}
+
+.technical-priority-badge.medium {
+  background: #fde68a;
+  color: #d97706;
+}
+
+.technical-priority-badge.low {
+  background: #bbf7d0;
+  color: #15803d;
+}
+
+.technical-recommendation-content ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #374151;
+}
+
+.technical-recommendation-content li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+/* CONCLUSIÓN */
+.technical-conclusion-section {
+  margin-bottom: 40px;
+}
+
+.technical-conclusion {
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 2px solid;
+}
+
+.technical-conclusion.positive {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #10b981;
+}
+
+.technical-conclusion.negative {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #ef4444;
+}
+
+.technical-conclusion h3 {
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.conclusion-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.conclusion-icon {
+  font-size: 2rem;
+}
+
+.conclusion-header h4 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.conclusion-details p {
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+  color: #374151;
+  font-size: 1.05rem;
+}
+
+.conclusion-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.conclusion-metric {
+  text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.conclusion-metric label {
+  display: block;
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.metric-value.good {
+  color: #10b981;
+}
+
+.metric-value.medium {
+  color: #f59e0b;
+}
+
+.metric-value.poor {
+  color: #ef4444;
+}
+
+/* ESTADO VACÍO */
+.empty-state-technical {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 2px dashed #cbd5e0;
+}
+
+.empty-state-technical h3 {
+  margin: 0 0 15px 0;
+  color: #374151;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.empty-state-technical p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .professional-technical-results {
+    padding: 15px;
+  }
+  
+  .technical-summary-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .dimensions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .swot-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .risks-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .technical-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .technical-dimensions-section,
+  .technical-swot-section,
+  .technical-risks-section,
+  .technical-recommendations-section {
+    padding: 20px;
+  }
+  
+  .conclusion-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ANIMACIONES */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.professional-technical-results > * {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.technical-summary-card,
+.dimension-card,
+.swot-card,
+.risk-card,
+.technical-recommendation-card {
+  animation: fadeInUp 0.8s ease-out;
+}

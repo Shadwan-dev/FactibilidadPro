@@ -1,0 +1,121 @@
+/* src/styles/components/actions/ExportPDFButton.css (ACTUALIZADO) */
+.export-pdf-button {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 180px;
+  min-height: 80px;
+}
+
+.export-pdf-button:hover:not(.disabled):not(.exporting) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.export-pdf-button.exporting {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  cursor: wait;
+  min-height: 90px;
+}
+
+.export-pdf-button.exporting .export-pdf-button-icon {
+  animation: spin 1s linear infinite;
+}
+
+.export-pdf-button.disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.export-pdf-button-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.export-pdf-button-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.export-pdf-button-text {
+  font-weight: 600;
+}
+
+.export-pdf-button-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  z-index: 2;
+}
+
+/* BARRA DE PROGRESO */
+.export-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.export-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffffff, #fef3c7);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* EFECTO DE PULSO DURANTE EXPORTACIÓN */
+.export-pdf-button.exporting::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ANIMACIÓN DE ÉXITO */
+@keyframes successPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.export-pdf-button.success {
+  animation: successPulse 0.5s ease-in-out;
+}

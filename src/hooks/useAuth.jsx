@@ -1,4 +1,4 @@
-// src/hooks/useAuth.jsx
+// src/hooks/useAuth.jsx (CORREGIDO)
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { 
   onAuthStateChanged, 
@@ -10,10 +10,9 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase/config';
 
-// Crear contexto para Auth
-const AuthContext = createContext();
+// ✅ EXPORTAR AuthContext explícitamente
+export const AuthContext = createContext();
 
-// Hook personalizado para usar el contexto
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -22,41 +21,74 @@ export const useAuth = () => {
   return context;
 };
 
-// Provider component - SIN JSX
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Escuchar cambios en la autenticación
+  // Verificar autenticación master al cargar
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('🔄 Estado de autenticación:', user ? 'Usuario conectado' : 'Usuario desconectado');
+    const checkMasterAuth = () => {
+      const isMasterAuth = localStorage.getItem('isMasterAuthenticated');
+      const masterUser = localStorage.getItem('masterUser');
       
-      if (user) {
-        setCurrentUser({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          emailVerified: user.emailVerified,
-          role: user.email?.includes('admin') || user.email?.includes('master') ? 'master' : 'user'
-        });
-      } else {
-        setCurrentUser(null);
+      if (isMasterAuth === 'true' && masterUser) {
+        try {
+          const userData = JSON.parse(masterUser);
+          setCurrentUser(userData);
+          setLoading(false);
+          return true;
+        } catch (err) {
+          console.error('Error parsing master user:', err);
+          localStorage.removeItem('masterUser');
+          localStorage.removeItem('isMasterAuthenticated');
+        }
       }
-      
-      setLoading(false);
-    });
+      return false;
+    };
 
-    return unsubscribe;
+    // Si no hay usuario master, verificar Firebase auth
+    if (!checkMasterAuth()) {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        console.log('🔄 Estado de autenticación Firebase:', user ? 'Usuario conectado' : 'Usuario desconectado');
+        
+        if (user) {
+          setCurrentUser({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            emailVerified: user.emailVerified,
+            role: user.email?.includes('admin') || user.email?.includes('master') ? 'master' : 'user',
+            isMaster: false
+          });
+        } else {
+          setCurrentUser(null);
+        }
+        
+        setLoading(false);
+      });
+
+      return unsubscribe;
+    }
   }, []);
 
-  // Iniciar sesión
+  // Iniciar sesión con Firebase
   const login = async (email, password) => {
     try {
       setError('');
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return { success: true, user: userCredential.user };
+      
+      const userData = {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName,
+        emailVerified: userCredential.user.emailVerified,
+        role: 'user',
+        isMaster: false
+      };
+      
+      setCurrentUser(userData);
+      return { success: true, user: userData };
     } catch (error) {
       const errorMessage = getAuthErrorMessage(error.code);
       setError(errorMessage);
@@ -74,7 +106,17 @@ export const AuthProvider = ({ children }) => {
         await updateProfile(userCredential.user, { displayName });
       }
       
-      return { success: true, user: userCredential.user };
+      const userData = {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        displayName: displayName || userCredential.user.displayName,
+        emailVerified: userCredential.user.emailVerified,
+        role: 'user',
+        isMaster: false
+      };
+      
+      setCurrentUser(userData);
+      return { success: true, user: userData };
     } catch (error) {
       const errorMessage = getAuthErrorMessage(error.code);
       setError(errorMessage);
@@ -82,11 +124,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Cerrar sesión
+  // Cerrar sesión (para ambos tipos de usuario)
   const logout = async () => {
     try {
       setError('');
-      await signOut(auth);
+      
+      // Limpiar autenticación master
+      localStorage.removeItem('masterUser');
+      localStorage.removeItem('isMasterAuthenticated');
+      
+      // Cerrar sesión de Firebase si está autenticado
+      if (auth.currentUser) {
+        await signOut(auth);
+      }
+      
+      setCurrentUser(null);
       return { success: true };
     } catch (error) {
       setError(error.message);
@@ -105,6 +157,11 @@ export const AuthProvider = ({ children }) => {
       setError(errorMessage);
       return { success: false, error: errorMessage };
     }
+  };
+
+  // ✅ NUEVO: Función para establecer usuario master
+  const setMasterUser = (userData) => {
+    setCurrentUser(userData);
   };
 
   // Función para traducir errores de Firebase
@@ -134,13 +191,14 @@ export const AuthProvider = ({ children }) => {
     signup,
     logout,
     resetPassword,
+    setMasterUser, // ✅ Exportar la función
     
     // Utilidades
     isAuthenticated: !!currentUser,
-    isAdmin: currentUser?.role === 'master',
+    isAdmin: currentUser?.role === 'master' || currentUser?.isMaster,
+    isMaster: currentUser?.isMaster,
     clearError: () => setError('')
   };
 
-  // ✅ USAR React.createElement EN LUGAR DE JSX
   return React.createElement(AuthContext.Provider, { value: value }, children);
 };

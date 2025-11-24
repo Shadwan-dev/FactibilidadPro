@@ -1,5 +1,6 @@
 // src/components/ProjectDetails.js (VERSIÓN EN ESPAÑOL)
 import React from 'react';
+import ReactDOM from 'react-dom/client'; // Añadir esta importación
 
 export const ProjectDetails = ({ project }) => {
   // Función para determinar el color según el score
@@ -159,7 +160,7 @@ export const ProjectDetails = ({ project }) => {
             <div style={{ marginBottom: '10px' }}>
               <strong style={{ color: '#495057', fontSize: '12px' }}>Fecha de Creación:</strong>
               <div style={{ color: '#2c3e50' }}>
-                {project.creationDate ? new Date(project.creationDate?.toDate()).toLocaleDateString('es-ES') : 'No especificada'}
+              {project.creationDate ? new Date(project.creationDate).toLocaleDateString('es-ES') : 'No especificada'}
               </div>
             </div>
             <div style={{ marginBottom: '10px' }}>

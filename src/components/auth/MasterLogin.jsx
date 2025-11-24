@@ -1,28 +1,29 @@
-// src/components/auth/MasterLogin.jsx (VERSIÓN CORREGIDA)
+// src/components/auth/MasterLogin.jsx (CORREGIDO)
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth'; // ✅ Usar el hook en lugar del contexto directamente
 
-export function MasterLogin({ onLogin, onSwitchToNormal }) {
+export function MasterLogin({ onSwitchToNormal }) {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { setMasterUser } = useAuth(); // ✅ Usar el hook
 
-  // SOLUCIÓN: Agregar coma entre propiedades
-  const MASTER_USERS = {    
-    'yurkel': 'yurkel',  // ← COMA AGREGADA AQUÍ
+  const MASTER_USERS = {
+    'yurkel': 'yurkel',
     'noel': 'noel'
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // Simular carga
-    setTimeout(() => {
-      // SOLUCIÓN: Convertir a minúsculas para evitar errores de case
+    try {
       const usernameLower = formData.username.toLowerCase();
       const passwordLower = formData.password.toLowerCase();
       
@@ -34,12 +35,28 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
           isMaster: true,
           role: 'master'
         };
-        onLogin(userData);
+        
+        console.log('✅ Credenciales master correctas:', userData);
+        
+        // ✅ Usar la función del hook para establecer el usuario master
+        setMasterUser(userData);
+        
+        // Guardar en localStorage para persistencia
+        localStorage.setItem('masterUser', JSON.stringify(userData));
+        localStorage.setItem('isMasterAuthenticated', 'true');
+        
+        // Redirigir al dashboard
+        navigate('/dashboard');
+        
       } else {
-        setError('Credenciales master incorrectas. Verifique si las mayúsculas están activas');
+        setError('Credenciales master incorrectas');
       }
+    } catch (err) {
+      console.error('❌ Error en login master:', err);
+      setError('Error al iniciar sesión');
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e) => {
@@ -84,7 +101,7 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
               placeholder="yurkel"
               required
               disabled={isLoading}
-              autoComplete="off" // Cambiado a "off" para mejor prevención
+              autoComplete="off"
             />
           </div>
           
@@ -145,11 +162,8 @@ export function MasterLogin({ onLogin, onSwitchToNormal }) {
               Yurkel (Admin)
             </button>
           </div>
-          <div className="demo-info">            
-            <p><strong>Permisos:</strong> Acceso completo al sistema</p>
-          </div>
         </div>
       </div>
     </div>
   );
-} 
+}

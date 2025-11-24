@@ -1,0 +1,459 @@
+/* src/styles/components/forms/market-modals-unique.css */
+
+/* ===== MODAL OVERLAY ÚNICO ===== */
+.market-form-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(102, 126, 234, 0.8); /* Morado del tema mercado */
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    animation: marketModalFadeIn 0.3s ease-out;
+  }
+  
+  @keyframes marketModalFadeIn {
+    from {
+      opacity: 0;
+      backdrop-filter: blur(0px);
+    }
+    to {
+      opacity: 1;
+      backdrop-filter: blur(8px);
+    }
+  }
+  
+  /* ===== MODAL PRINCIPAL ÚNICO ===== */
+  .market-form-modal {
+    background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 
+      0 25px 50px -12px rgba(102, 126, 234, 0.3),
+      0 8px 25px rgba(0, 0, 0, 0.15);
+    animation: marketModalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    position: relative;
+  }
+  
+  @keyframes marketModalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  .market-form-modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    border-radius: 24px 24px 0 0;
+  }
+  
+  /* ===== HEADER DEL MODAL ÚNICO ===== */
+  .market-form-modal-header {
+    padding: 2.5rem 2.5rem 1rem 2.5rem;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    position: relative;
+  }
+  
+  .market-form-modal-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem 0;
+    color: #1e293b; /* Color oscuro para buen contraste */
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.025em;
+  }
+  
+  .market-form-modal-description {
+    margin: 0;
+    color: #64748b; /* Gris con buen contraste */
+    font-size: 1.1rem;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  
+  .market-form-modal-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(102, 126, 234, 0.1);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: bold;
+  }
+  
+  .market-form-modal-close:hover {
+    background: rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: scale(1.1);
+    color: #764ba2;
+  }
+  
+  /* ===== CONTENIDO DEL MODAL ÚNICO ===== */
+  .market-form-modal-content {
+    padding: 2rem 2.5rem;
+  }
+  
+  /* ===== CAMPOS DE FORMULARIO ÚNICOS ===== */
+  .market-form-modal-fields {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .market-form-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .market-form-modal-label {
+    font-weight: 700;
+    color: #374151; /* Color oscuro para buen contraste */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: capitalize;
+  }
+  
+  .market-form-modal-label::before {
+    content: '📝';
+    font-size: 1.1em;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  .market-form-modal-input {
+    padding: 1rem 1.25rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    color: #1e293b; /* Color oscuro para buen contraste */
+    font-family: inherit;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .market-form-modal-input::placeholder {
+    color: #94a3b8; /* Placeholder con buen contraste */
+    font-weight: 500;
+  }
+  
+  .market-form-modal-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 
+      0 0 0 3px rgba(102, 126, 234, 0.1),
+      0 4px 12px rgba(102, 126, 234, 0.15);
+    background: #ffffff;
+    color: #1e293b;
+    transform: translateY(-1px);
+  }
+  
+  /* ===== BOTÓN AGREGAR ÚNICO ===== */
+  .market-form-modal-add-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1.25rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .market-form-modal-add-btn:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .market-form-modal-add-btn:disabled {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* ===== LISTA DE ITEMS AGREGADOS ÚNICA ===== */
+  .market-form-modal-items {
+    margin-bottom: 2rem;
+  }
+  
+  .market-form-modal-items-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e293b; /* Color oscuro para buen contraste */
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .market-form-modal-items-title::before {
+    content: '📋';
+    font-size: 1.2em;
+  }
+  
+  .market-form-modal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+    color: #374151; /* Color con buen contraste */
+  }
+  
+  .market-form-modal-item:hover {
+    transform: translateX(5px);
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+    border-left-color: #764ba2;
+  }
+  
+  .market-form-modal-item-text {
+    flex: 1;
+    font-weight: 500;
+    color: #374151; /* Color con buen contraste */
+  }
+  
+  .market-form-modal-remove-btn {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+  }
+  
+  .market-form-modal-remove-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+  
+  /* ===== SELECTOR DE RATING ÚNICO ===== */
+  .market-form-modal-rating {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  
+  .market-form-modal-rating-label {
+    font-weight: 700;
+    color: #374151; /* Color oscuro para buen contraste */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .market-form-modal-rating-label::before {
+    content: '⭐';
+    font-size: 1.1em;
+  }
+  
+  .market-form-modal-rating-select {
+    padding: 1rem 1.25rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #ffffff;
+    color: #1e293b; /* Color oscuro para buen contraste */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 3rem;
+  }
+  
+  .market-form-modal-rating-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 
+      0 0 0 3px rgba(102, 126, 234, 0.1),
+      0 4px 12px rgba(102, 126, 234, 0.15);
+    background-color: #ffffff;
+    color: #1e293b;
+  }
+  
+  .market-form-modal-rating-select option {
+    background: #ffffff;
+    color: #1e293b; /* Color oscuro para buen contraste */
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  /* ===== ACCIONES DEL MODAL ÚNICAS ===== */
+  .market-form-modal-actions {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: flex-end;
+    padding: 2rem 2.5rem;
+    border-top: 1px solid rgba(102, 126, 234, 0.1);
+    background: rgba(248, 250, 255, 0.5);
+    border-radius: 0 0 24px 24px;
+  }
+  
+  .market-form-modal-cancel {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .market-form-modal-cancel:hover {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    color: #475569;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+  
+  .market-form-modal-save {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .market-form-modal-save:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .market-form-modal-save:disabled {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .market-form-modal {
+      width: 95%;
+      max-height: 95vh;
+      border-radius: 20px;
+    }
+    
+    .market-form-modal-header {
+      padding: 2rem 1.5rem 1rem 1.5rem;
+    }
+    
+    .market-form-modal-content {
+      padding: 1.5rem 1.5rem;
+    }
+    
+    .market-form-modal-actions {
+      padding: 1.5rem 1.5rem;
+      flex-direction: column-reverse;
+    }
+    
+    .market-form-modal-close {
+      top: 1.5rem;
+      right: 1.5rem;
+    }
+    
+    .market-form-modal-title {
+      font-size: 1.5rem;
+      padding-right: 3rem;
+    }
+  }
+  
+  /* ===== MEJORA DE ACCESIBILIDAD ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .market-form-modal-overlay,
+    .market-form-modal,
+    .market-form-modal-close,
+    .market-form-modal-input,
+    .market-form-modal-add-btn,
+    .market-form-modal-item,
+    .market-form-modal-remove-btn,
+    .market-form-modal-rating-select,
+    .market-form-modal-cancel,
+    .market-form-modal-save {
+      animation: none;
+      transition: none;
+    }
+  }
+  
+  /* ===== ESTADOS DE ENFOQUE MEJORADOS ===== */
+  .market-form-modal-input:focus-visible,
+  .market-form-modal-rating-select:focus-visible,
+  .market-form-modal-add-btn:focus-visible,
+  .market-form-modal-remove-btn:focus-visible,
+  .market-form-modal-cancel:focus-visible,
+  .market-form-modal-save:focus-visible,
+  .market-form-modal-close:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+  }
